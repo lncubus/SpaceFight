@@ -245,8 +245,6 @@ namespace SF.Space
             }
             AccelerationValue = a1;
             HeadingValue = phi1;
-            //oldS += oldV + oldA / 2;
-            //oldV += oldA;
         }
     }
 }
