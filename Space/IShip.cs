@@ -3,7 +3,7 @@ namespace SF.Space
 {
     public interface IShip
     {
-        IShipClass Class { get; }
+        ShipClass Class { get; }
         string Nation { get; }
         string Name { get; }
         string ClassName { get; }

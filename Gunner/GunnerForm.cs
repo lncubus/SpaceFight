@@ -29,11 +29,11 @@ namespace Gunner
         }
 
         private IHelm helm;
-        private SF.ServiceLibrary.SpaceClient client;
+        private SF.ClientLibrary.SpaceClient client;
 
         private void Login()
         {
-            client = new SF.ServiceLibrary.SpaceClient();
+            client = new SF.ClientLibrary.SpaceClient();
 
             var shipNames = new SortedDictionary<string, ICollection<string>>();
             foreach (var nation in client.GetNations())

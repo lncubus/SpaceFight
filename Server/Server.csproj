@@ -70,9 +70,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServiceLibrary\ServiceLibrary.csproj">
+    <ProjectReference Include="..\ServerLibrary\ServerLibrary.csproj">
       <Project>{D5E65F6F-9CE3-4A5B-9C6E-C51E1A11EA09}</Project>
-      <Name>ServiceLibrary</Name>
+      <Name>ServerLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\Space\Space.csproj">
       <Project>{7B294650-E5F5-4B36-AD49-57A5CB03EA3D}</Project>

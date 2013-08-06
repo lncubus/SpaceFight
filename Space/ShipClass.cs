@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace SF.Space
 {
     [DataContract]
-    public class ShipClass : IShipClass
+    public class ShipClass
     {
         [DataMember]
         public string Nation { get; set; }

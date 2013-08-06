@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -46,8 +45,8 @@ namespace Server
 
             string text = thing.ToString();
             Type thingType = thing.GetType();
-            const string defaultNamespace = "SF.";
-            if (text.StartsWith(defaultNamespace, StringComparison.Ordinal))
+            const string DefaultNamespace = "SF.";
+            if (text.StartsWith(DefaultNamespace, StringComparison.Ordinal))
             {
                 // Use plain type name instead:
                 text = thingType.Name;
@@ -86,7 +85,7 @@ namespace Server
                 InternalAddDictionaryNodes(enumNode,
                     (System.Collections.IDictionary)enumerable);
             else
-                InternalAddCollectionNodes(enumNode, enumerable, name);
+                InternalAddCollectionNodes(enumNode, enumerable);
             parent.Nodes.Add(enumNode);
         }
 
@@ -112,7 +111,7 @@ namespace Server
         }
 
         protected void InternalAddCollectionNodes(TreeNode enumNode,
-            System.Collections.ICollection enumerable, string name)
+            System.Collections.ICollection enumerable)
         {
             foreach (object child in enumerable)
             {
@@ -137,10 +136,10 @@ namespace Server
                 return;
             PropertyInfo[] properties = instance.GetType().GetProperties();
             FieldInfo[] fields = instance.GetType().GetFields();
-            if (properties != null && properties.Length > 0)
+            if (properties.Length > 0)
                 foreach (PropertyInfo property in properties)
                     ShowProperty(parent, instance, property);
-            if (fields != null && fields.Length > 0)
+            if (fields.Length > 0)
                 foreach (FieldInfo field in fields)
                     ShowField(parent, instance, field);
         }

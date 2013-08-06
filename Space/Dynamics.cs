@@ -1,109 +1,90 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
 
 namespace SF.Space
 {
-    internal class Dynamics
+    public class Dynamics
     {
         public const double TimeEpsilon = 1E-6; // 86 ms
 
         private sealed class LinearValue
         {
-            private int direction;
-            private double fromValue;
-            private double toValue;
-            private double fromTime;
-            private double toTime;
-            private readonly double speed;
-            private readonly double modulo;
+            private double m_fromTime;
+            private double m_toTime;
 
-            public int Direction
-            {
-                get { return direction; }
-            }
+            public int Direction { get; private set; }
 
-            public double ToValue
-            {
-                get { return toValue; }
-            }
+            public double ToValue { get; private set; }
 
-            public double FromValue
-            {
-                get { return fromValue; }
-            }
+            public double FromValue { get; private set; }
 
-            public double Speed
-            {
-                get { return speed; }
-            }
+            public double Speed { get; private set; }
+
+            public double Modulo { get; private set; }
 
             public LinearValue(double t, double Value, double ValueTo, double Speed, double Mod)
             {
-                modulo = Mod;
-                speed = Speed;
+                this.Modulo = Mod;
+                this.Speed = Speed;
                 Reset(t, Value);
                 Set(t, ValueTo);
             }
 
-            public void Reset(double t, double val)
-            {
-                direction = 0;
-                fromTime = t;
-                fromValue = val;
-                toTime = double.PositiveInfinity;
-                toValue = val;
-            }
-
             public bool WillReset(double t)
             {
-                if (double.IsInfinity(toTime) || double.IsNaN(toTime))
+                if (double.IsInfinity(this.m_toTime) || double.IsNaN(this.m_toTime))
                     return false;
-                if (t + TimeEpsilon >= toTime)
+                if (t + TimeEpsilon >= this.m_toTime)
                     return true;
                 return false;
             }
 
             public double Get(double t)
             {
-                if (double.IsInfinity(toTime) || double.IsNaN(toTime))
-                    return toValue;
+                if (double.IsInfinity(this.m_toTime) || double.IsNaN(this.m_toTime))
+                    return this.ToValue;
                 if (WillReset(t))
                 {
-                    Reset(t, toValue);
-                    return toValue;
+                    Reset(t, this.ToValue);
+                    return this.ToValue;
                 }
-                return fromValue + direction * speed * (t - fromTime);
+                return this.FromValue + this.Direction * this.Speed * (t - this.m_fromTime);
             }
 
             public void Set(double t, double goesTo)
             {
                 double currentValue = Get(t);
                 double diff = goesTo - currentValue;
-                direction = diff < 0 ? -1 : 1;
+                this.Direction = diff < 0 ? -1 : 1;
                 diff = Math.Abs(diff);
-                if (modulo > 0)
+                if (this.Modulo > 0)
                 {
-                    if (diff > modulo)
-                        diff -= Math.Floor(diff / modulo) * modulo;
-                    if (diff > modulo / 2)
+                    if (diff > this.Modulo)
+                        diff -= Math.Floor(diff / this.Modulo) * this.Modulo;
+                    if (diff > this.Modulo / 2)
                     {
-                        diff = modulo - diff;
-                        direction = -direction;
+                        diff = this.Modulo - diff;
+                        this.Direction = -this.Direction;
                     }
                 }
-                double tau = diff / speed;
+                double tau = diff / this.Speed;
                 if (tau <= TimeEpsilon)
                     Reset(t, goesTo);
                 else
                 {
-                    fromTime = t;
-                    fromValue = currentValue;
-                    toTime = t + tau;
-                    toValue = goesTo;
+                    this.m_fromTime = t;
+                    this.FromValue = currentValue;
+                    this.m_toTime = t + tau;
+                    this.ToValue = goesTo;
                 }
+            }
+
+            private void Reset(double t, double val)
+            {
+                this.Direction = 0;
+                this.m_fromTime = t;
+                this.FromValue = val;
+                this.m_toTime = double.PositiveInfinity;
+                this.ToValue = val;
             }
         }
 
@@ -174,7 +155,7 @@ namespace SF.Space
 
         public Vector S { get; private set; }
 
-        public Dynamics(IShipClass Class, SpaceShip Def, TimeSpan time)
+        public Dynamics(ShipClass Class, SpaceShip Def, TimeSpan time)
         {
             t1 = t0 = time.TotalSeconds;
             S = Def.Position;

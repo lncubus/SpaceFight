@@ -1,74 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using SF.Space;
 
-namespace SF.ServiceLibrary
+namespace SF.ClientLibrary
 {
     internal class RemoteShip : IShip
     {
-        public static IDictionary<string, IShipClass> Classes;
-        private SpaceShip that;
+        public static IDictionary<string, ShipClass> Classes;
+        private SpaceShip m_that;
 
         public RemoteShip(SpaceShip def)
         {
-            that = def;
+            this.m_that = def;
         }
 
-        public IShipClass Class
+        public ShipClass Class
         {
             get
             {
-                if (!Classes.ContainsKey(that.ClassName))
+                if (!Classes.ContainsKey(this.m_that.ClassName))
                     return null;
-                return Classes[that.ClassName];
+                return Classes[this.m_that.ClassName];
             }
         }
 
         public void Update(SpaceShip def)
         {
-            that = def;
+            this.m_that = def;
         }
 
         public string Nation
         {
-            get { return that.Nation; }
+            get { return this.m_that.Nation; }
         }
 
         public string Name
         {
-            get { return that.ShipName; }
+            get { return this.m_that.ShipName; }
         }
 
         public string ClassName
         {
-            get { return that.ClassName; }
+            get { return this.m_that.ClassName; }
         }
 
         public double Heading
         {
-            get { return that.Heading; }
+            get { return this.m_that.Heading; }
         }
 
         public double Roll
         {
-            get { return that.Roll; }
+            get { return this.m_that.Roll; }
         }
 
         public double Acceleration
         {
-            get { return that.Acceleration; }
+            get { return this.m_that.Acceleration; }
         }
 
         public Vector S
         {
-            get { return that.Position; }
+            get { return this.m_that.Position; }
         }
 
         public Vector V
         {
-            get { return that.Speed; }
+            get { return this.m_that.Speed; }
         }
 
         public Vector A

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace SF.Space
 {
@@ -42,22 +38,6 @@ namespace SF.Space
                 Nation = ship.Nation,
                 Position = ship.S,
                 Speed = ship.V,
-            };
-        }
-
-        public static IHelm LoadHelm(IDictionary<string, IShipClass> classes, SpaceShip that)
-        {
-            var shipClass = classes[that.ClassName];
-            var shipDynamics = new Dynamics(shipClass, that, TimeSpan.Zero);
-            return new Helm
-            {
-                Ship = new Ship
-                {
-                    Name = that.ShipName,
-                    Class = shipClass,
-                    Nation = that.Nation,
-                    Dynamics = shipDynamics,
-                },
             };
         }
 

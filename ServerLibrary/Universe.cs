@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using System.Text;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Threading;
+using System.Xml.Serialization;
 
-namespace SF.Space
+using SF.Space;
+
+namespace SF.ServerLibrary
 {
     public sealed class Universe
     {
@@ -17,11 +18,11 @@ namespace SF.Space
         public const int SmallDelay = 100;
 
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
-        public readonly SortedDictionary<string, IShipClass> Classes = new SortedDictionary<string, IShipClass>();
+        public readonly SortedDictionary<string, ShipClass> Classes = new SortedDictionary<string, ShipClass>();
         public readonly SortedDictionary<string, IHelm> Helms = new SortedDictionary<string, IHelm>();
-        private readonly Thread BackgroundWorker;
+        private readonly Thread m_backgroundWorker;
 
-        private string SerializeCollection<T, U>(ICollection<T> collection) where U : T
+        private string SerializeCollection<T, U>(IEnumerable<T> collection) where U : T
         {
             var list = collection.Cast<U>().ToArray();
             var serializer = new XmlSerializer(list.GetType());
@@ -42,66 +43,65 @@ namespace SF.Space
         public Universe()
         {
             var classes = File.ReadAllText("classes.xml");
-            foreach (var i in DeserializeCollection<ShipClass>(classes))
-                Classes.Add(i.Name, i);
+            foreach (var i in this.DeserializeCollection<ShipClass>(classes))
+                this.Classes.Add(i.Name, i);
             var helms = File.ReadAllText("helms.xml");
-            foreach (var def in DeserializeCollection<SpaceShip>(helms))
+            foreach (var def in this.DeserializeCollection<SpaceShip>(helms))
             {
-                var helm = SpaceShip.LoadHelm(Classes, def);
-                Helms.Add(helm.Ship.Name, helm);
+                var helm = Helm.Load(this.Classes, def);
+                this.Helms.Add(helm.Ship.Name, helm);
             }
-            BackgroundWorker = new Thread(TimingThreadStart);
-            BackgroundWorker.IsBackground = true;
+            this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 
         public bool IsRunning
         {
-            get { return m_stopWatch.IsRunning; }
+            get { return this.m_stopWatch.IsRunning; }
             set
             {
-                if (m_stopWatch.IsRunning == value)
+                if (this.m_stopWatch.IsRunning == value)
                     return;
                 if (value)
                 {
-                    m_stopWatch.Start();
-                    if (!BackgroundWorker.IsAlive)
-                        BackgroundWorker.Start();
+                    this.m_stopWatch.Start();
+                    if (!this.m_backgroundWorker.IsAlive)
+                        this.m_backgroundWorker.Start();
                 }
                 else
-                    m_stopWatch.Stop();
+                    this.m_stopWatch.Stop();
             }
         }
 
         public TimeSpan Time
         {
-            get { return m_stopWatch.Elapsed; }
+            get { return this.m_stopWatch.Elapsed; }
         }
 
         public IHelm GetHelm(string nation, string name)
         {
-            var helm = Helms[name];
+            var helm = this.Helms[name];
             return helm.Ship.Nation != nation ? null : helm;
         }
 
-        public ICollection<IShip> GetVisibleShips(IHelm me)
+        public IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            return Helms.Where(i => i.Value != me).Select(i => i.Value.Ship).ToList(); 
+            return this.Helms.Where(i => i.Value != me).Select(i => i.Value.Ship).ToList(); 
         }
 
         public ICollection<string> GetNations()
         {
-            return Helms.Select(i => i.Value.Ship.Nation).Distinct().ToList();
+            return this.Helms.Select(i => i.Value.Ship.Nation).Distinct().ToList();
         }
 
         public ICollection<string> GetShipNames(string nation)
         {
-            return Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct().ToList();
+            return this.Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct().ToList();
         }
 
-        public ICollection<IShipClass> GetShipClasses(string nation)
+        public IEnumerable<ShipClass> GetShipClasses(string nation)
         {
-            var ourClasses = Classes.Values.Where(c => c.Nation == nation);
-            var ourShipClasses = Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
+            var ourClasses = this.Classes.Values.Where(c => c.Nation == nation);
+            var ourShipClasses = this.Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
             var result = ourClasses.Union(ourShipClasses).Distinct().ToList();
             return result;
         }
@@ -111,18 +111,13 @@ namespace SF.Space
             while (true)
             {
                 Thread.Sleep(SmallDelay);
-                if (m_stopWatch.IsRunning)
+                if (this.m_stopWatch.IsRunning)
                 {
-                    double t = Time.TotalSeconds;
-                    foreach (var helm in Helms.Values)
+                    double t = this.Time.TotalSeconds;
+                    foreach (var helm in this.Helms.Values)
                         ((Ship)helm.Ship).Dynamics.UpdateTime(t);
                 }
             }
-        }
-
-        public void Update()
-        {
-            throw new InvalidOperationException();
         }
     }
 }

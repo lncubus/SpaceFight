@@ -1,34 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 using SF.Space;
 
-namespace SF.ServiceLibrary
+namespace SF.ServerLibrary
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "SpaceServer" in both code and config file together.
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class SpaceServer : IServer
     {
-        public static Universe Instance = new Universe();
+        public static readonly Universe Instance = new Universe();
 
-        private IHelm helm;
+        private IHelm m_helm;
+
         public bool Login(string nation, string ship)
         {
-            helm = Instance.GetHelm(nation, ship);
-            return helm != null;
+            this.m_helm = Instance.GetHelm(nation, ship);
+            return this.m_helm != null;
         }
 
         public void Logout()
         {
-            helm = null;
+            this.m_helm = null;
         }
 
         public void Connect(string password)
         {
-            helm = null;
+            this.m_helm = null;
         }
 
         public ICollection<string> GetNations()
@@ -48,36 +47,36 @@ namespace SF.ServiceLibrary
 
         public SpaceShip GetHelm()
         {
-            return SpaceShip.Store(helm);
+            return SpaceShip.Store(this.m_helm);
         }
 
         public ICollection<ShipClass> GetShipClasses()
         {
-            return Instance.GetShipClasses(helm.Ship.Nation).OfType<ShipClass>().ToList();
+            return Instance.GetShipClasses(this.m_helm.Ship.Nation).ToList();
         }
 
         public ICollection<SpaceShip> GetVisibleShips()
         {
-            return Instance.GetVisibleShips(helm).Select(s => SpaceShip.Store(s)).ToList();
+            return Instance.GetVisibleShips(this.m_helm).Select(SpaceShip.Store).ToList();
         }
 
         public void SetHeadingTo(double value)
         {
-            helm.HeadingTo = value;
+            this.m_helm.HeadingTo = value;
         }
 
         public void SetRollTo(double value)
         {
-            helm.RollTo = value;
+            this.m_helm.RollTo = value;
         }
 
         public void SetAccelerateTo(double value)
         {
             if (value < 0)
                 value = 0;
-            if (value > helm.Ship.Class.MaximumAcceleration)
-                value = helm.Ship.Class.MaximumAcceleration;
-            helm.AccelerateTo = value;
+            if (value > this.m_helm.Ship.Class.MaximumAcceleration)
+                value = this.m_helm.Ship.Class.MaximumAcceleration;
+            this.m_helm.AccelerateTo = value;
         }
     }
 }

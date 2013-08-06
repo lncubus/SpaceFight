@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.ServiceModel;
-using SF.ServiceLibrary;
+
+using SF.ServerLibrary;
 
 namespace Server
 {
+
     public partial class ServerForm : Form
     {
         public ServerForm()
@@ -18,11 +20,12 @@ namespace Server
             InitializeComponent();
         }
 
-        private ServiceHost host; 
+        private ServiceHost Host { get; set; }
+
         private void ServerForm_Load(object sender, EventArgs e)
         {
-            host = new ServiceHost(typeof(SpaceServer));
-            host.Open();
+            this.Host = new ServiceHost(typeof(SpaceServer));
+            this.Host.Open();
             if (SpaceServer.Instance == null)
                 Close();
             else
@@ -33,16 +36,11 @@ namespace Server
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (host != null)
-                host.Close();
+            if (this.Host != null)
+                this.Host.Close();
         }
 
-        private TreeNode ShowNode(object thing)
-        {
-            return ShowNode(thing, null);
-        }
-
-        private TreeNode ShowNode(object thing, TreeNode parentNode)
+        private TreeNode ShowNode(object thing, TreeNode parentNode = null)
         {
             treeView.BeginUpdate();
             TreeBuilder builder;

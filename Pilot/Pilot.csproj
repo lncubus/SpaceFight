@@ -84,13 +84,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj">
+      <Project>{5F31C902-13E4-403D-968F-6525F08BDD67}</Project>
+      <Name>ClientLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Controls\Controls.csproj">
       <Project>{0716121E-A384-46B1-8F17-AF16749D561F}</Project>
       <Name>Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceLibrary\ServiceLibrary.csproj">
-      <Project>{D5E65F6F-9CE3-4A5B-9C6E-C51E1A11EA09}</Project>
-      <Name>ServiceLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\Space\Space.csproj">
       <Project>{7B294650-E5F5-4B36-AD49-57A5CB03EA3D}</Project>
