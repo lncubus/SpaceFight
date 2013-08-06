@@ -14,7 +14,16 @@ namespace SF.Controls
     {
         public const double DefaultMinValue = 1000;
         public const double DefaultMaxValue = 1000000000;
-        private int m_first = 1;
+
+        private enum FirstDigit
+        {
+            Zero = 0,
+            One = 1,
+            Two = 2,
+            Five = 5
+        }
+
+        private FirstDigit m_first = FirstDigit.One;
         private int m_zeros = 7;
         private string m_unit = "км";
 
@@ -38,7 +47,7 @@ namespace SF.Controls
         {
             get
             {
-                return Math.Round(m_first * Math.Pow(10, m_zeros));
+                return Math.Round((int)m_first * Math.Pow(10, m_zeros));
             }
             set
             {
@@ -49,18 +58,24 @@ namespace SF.Controls
                 m_zeros = (int)Math.Truncate(Math.Log10(value));
                 double first = value / Math.Pow(10, m_zeros);
                 if (first < 1.5)
-                    m_first = 1;
+                    m_first = FirstDigit.One;
                 else if (first < 3.5)
-                    m_first = 2;
+                    m_first = FirstDigit.Two;
                 else if (first < 7.5)
-                    m_first = 5;
+                    m_first = FirstDigit.Five;
                 else
                 {
-                    m_first = 1;
+                    m_first = FirstDigit.One;
                     m_zeros++;
                 }
+                UpdateDigits();
+                EventHandler handler = OnValueChanged;
+                if (handler != null)
+                    handler(this, null);
             }
         }
+
+        public event EventHandler OnValueChanged;
 
         public ScaleControl()
         {
@@ -72,12 +87,50 @@ namespace SF.Controls
 
         private void buttonZoomIn_Click(object sender, EventArgs e)
         {
-            Value /= 3.3;
+            ZoomIn();
         }
 
         private void buttonZoomOut_Click(object sender, EventArgs e)
         {
-            Value *= 3.3;
+            ZoomOut();
+        }
+
+        private void ZoomIn()
+        {
+            double scale = Value;
+            switch (m_first)
+            {
+                case FirstDigit.Zero :
+                    scale = MinValue;
+                    break;
+                case FirstDigit.One :
+                case FirstDigit.Two :
+                    scale /= 2;
+                    break;
+                case FirstDigit.Five :
+                    scale /= 2.5;
+                    break;
+            }
+            Value = scale;
+        }
+
+        private void ZoomOut()
+        {
+            double scale = Value;
+            switch (m_first)
+            {
+                case FirstDigit.Zero:
+                    scale = MinValue;
+                    break;
+                case FirstDigit.One:
+                case FirstDigit.Five:
+                    scale *= 2;
+                    break;
+                case FirstDigit.Two:
+                    scale *= 2.5;
+                    break;
+            }
+            Value = scale;
         }
 
         private void UpdateDigits()

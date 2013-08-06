@@ -17,8 +17,8 @@ namespace Pilot
         {
             InitializeComponent();
             tableLayoutPanel.Visible = false;
-            labelScale.Text = MathUtils.NumberToText(spaceGridControl.WorldScale, Km);
             timerUpdate.Enabled = true;
+            scaleControl.OnValueChanged += scaleControl_ValueChanged;
             spaceGridControl.Options = 
                 SpaceGridOptions.FriendlyMissleCircles | SpaceGridOptions.FriendlyVulnerableSectors |
                 SpaceGridOptions.HostileVulnerableSectors |
@@ -33,12 +33,6 @@ namespace Pilot
             {
                 Pencil = Pens.DarkGreen
             };
-
-        public const string Km = "км";
-        public const double MinimalScale = 1000;
-        public const double MaximalScale = 1000000000000;
-
-        private double ScaleFactor;
 
         private void Login()
         {
@@ -57,7 +51,7 @@ namespace Pilot
                 tableLayoutPanel.Visible = true;
                 spaceGridControl.OwnShip = helm.Ship;
                 spaceGridControl.Curves.Add(Trajectory);
-                ScaleFactor = Math.Log10(spaceGridControl.WorldScale);
+                spaceGridControl.WorldScale = scaleControl.Value;
                 timerUpdate.Enabled = true;
             }
         }
@@ -89,22 +83,9 @@ namespace Pilot
                 Trajectory.RemoveRange(0, Trajectory.Count - TrajectorySize);
         }
 
-        private void buttonZoomIn_Click(object sender, EventArgs e)
+        private void scaleControl_ValueChanged(object sender, EventArgs e)
         {
-            if (spaceGridControl.WorldScale <= MinimalScale * 2)
-                return;
-            ScaleFactor -= 0.5;
-            spaceGridControl.WorldScale = Math.Exp(ScaleFactor * MathUtils.Ln10);
-            labelScale.Text = MathUtils.NumberToText(spaceGridControl.WorldScale, Km);
-        }
-
-        private void buttonZoomOut_Click(object sender, EventArgs e)
-        {
-            if (spaceGridControl.WorldScale >= MaximalScale / 2)
-                return;
-            ScaleFactor += 0.5;
-            spaceGridControl.WorldScale = Math.Exp(ScaleFactor * MathUtils.Ln10);
-            labelScale.Text = MathUtils.NumberToText(spaceGridControl.WorldScale, Km);
+            spaceGridControl.WorldScale = scaleControl.Value;
         }
     }
 }
