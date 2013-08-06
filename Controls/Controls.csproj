@@ -59,6 +59,12 @@
     <Compile Include="RoundControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ScaleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ScaleControl.Designer.cs">
+      <DependentUpon>ScaleControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShipControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -76,6 +82,9 @@
   <ItemGroup>
     <EmbeddedResource Include="LogonDialog.resx">
       <DependentUpon>LogonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScaleControl.resx">
+      <DependentUpon>ScaleControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ShipControl.resx">
       <DependentUpon>ShipControl.cs</DependentUpon>
