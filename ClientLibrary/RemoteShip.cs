@@ -6,9 +6,9 @@ namespace SF.ClientLibrary
     internal class RemoteShip : IShip
     {
         public static IDictionary<string, ShipClass> Classes;
-        private SpaceShip m_that;
+        private ShipDefinition m_that;
 
-        public RemoteShip(SpaceShip def)
+        public RemoteShip(ShipDefinition def)
         {
             this.m_that = def;
         }
@@ -23,7 +23,7 @@ namespace SF.ClientLibrary
             }
         }
 
-        public void Update(SpaceShip def)
+        public void Update(ShipDefinition def)
         {
             this.m_that = def;
         }

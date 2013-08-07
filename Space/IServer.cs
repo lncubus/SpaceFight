@@ -27,10 +27,10 @@ namespace SF.Space
         TimeSpan GetTime();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        SpaceShip GetHelm();
+        HelmDefinition GetHelm();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        ICollection<SpaceShip> GetVisibleShips();
+        ICollection<ShipDefinition> GetVisibleShips();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
         ICollection<ShipClass> GetShipClasses();

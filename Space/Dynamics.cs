@@ -155,7 +155,7 @@ namespace SF.Space
 
         public Vector S { get; private set; }
 
-        public Dynamics(ShipClass Class, SpaceShip Def, TimeSpan time)
+        public Dynamics(ShipClass Class, HelmDefinition Def, TimeSpan time)
         {
             t1 = t0 = time.TotalSeconds;
             S = Def.Position;

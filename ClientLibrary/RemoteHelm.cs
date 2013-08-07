@@ -6,9 +6,9 @@ namespace SF.ClientLibrary
     {
         private readonly IServer m_client;
         private readonly RemoteShip m_ship;
-        private SpaceShip m_that;
+        private HelmDefinition m_that;
 
-        public RemoteHelm(IServer client, SpaceShip def)
+        public RemoteHelm(IServer client, HelmDefinition def)
         {
             this.m_that = def;
             this.m_client = client;
@@ -20,7 +20,7 @@ namespace SF.ClientLibrary
             get { return this.m_ship; }
         }
 
-        public void Update(SpaceShip def)
+        public void Update(HelmDefinition def)
         {
             this.m_ship.Update(def);
             this.m_that = def;

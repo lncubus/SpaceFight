@@ -45,9 +45,9 @@ namespace SF.ServerLibrary
             return Instance.Time;
         }
 
-        public SpaceShip GetHelm()
+        public HelmDefinition GetHelm()
         {
-            return SpaceShip.Store(this.m_helm);
+            return HelmDefinition.Store(this.m_helm);
         }
 
         public ICollection<ShipClass> GetShipClasses()
@@ -55,9 +55,9 @@ namespace SF.ServerLibrary
             return Instance.GetShipClasses(this.m_helm.Ship.Nation).ToList();
         }
 
-        public ICollection<SpaceShip> GetVisibleShips()
+        public ICollection<ShipDefinition> GetVisibleShips()
         {
-            return Instance.GetVisibleShips(this.m_helm).Select(SpaceShip.Store).ToList();
+            return Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store).ToList();
         }
 
         public void SetHeadingTo(double value)

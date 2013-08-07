@@ -43,8 +43,9 @@
     <Compile Include="MathUtils.cs" />
     <Compile Include="ShipClass.cs" />
     <Compile Include="Dynamics.cs" />
+    <Compile Include="ShipDefinition.cs" />
     <Compile Include="SpaceExtensions.cs" />
-    <Compile Include="SpaceShip.cs" />
+    <Compile Include="HelmDefinition.cs" />
     <Compile Include="Vector.cs" />
     <Compile Include="IShip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

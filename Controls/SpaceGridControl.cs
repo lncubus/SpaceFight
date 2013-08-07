@@ -50,47 +50,47 @@ namespace SF.Controls
         /// </summary>
         public double WorldScale
         {
-            get { return m_Scale; }
+            get { return this.m_scale; }
             set
             {
-                if (m_Scale == value)
+                if (this.m_scale == value)
                     return;
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException("Scale value should be positive.");
-                m_Scale = value;
+                this.m_scale = value;
                 Invalidate();
             }
         }
-        private double m_Scale = DefaultScale;
+        private double m_scale = DefaultScale;
 
         /// <summary>
         /// Coordinates of the center of the grid.
         /// </summary>
         public Vector Origin
         {
-            get { return m_Origin; }
+            get { return this.m_origin; }
             set
             {
-                if (m_Origin == value)
+                if (this.m_origin == value)
                     return;
-                m_Origin = value;
+                this.m_origin = value;
                 Invalidate();
             }
         }
-        private Vector m_Origin;
+        private Vector m_origin;
 
         public bool Polar
         {
-            get { return m_Polar; }
+            get { return this.m_polar; }
             set
             {
-                if (m_Polar == value)
+                if (this.m_polar == value)
                     return;
-                m_Polar = value;
+                this.m_polar = value;
                 Invalidate();
             }
         }
-        private bool m_Polar;
+        private bool m_polar;
 
         public double Rotation
         {
@@ -296,8 +296,8 @@ namespace SF.Controls
             var points = new[]
                 {
                     WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading + Math.PI / 4) * size),
-                    WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading + Math.PI * 5 / 6) * size),
-                    WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading - Math.PI * 5 / 6) * size),
+                    WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading + Math.PI * 11 / 12) * size),
+                    WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading - Math.PI * 11 / 12) * size),
                     WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading - Math.PI / 4) * size),
                 };
             bool visible = points.Any(p => m_client.Contains(p));

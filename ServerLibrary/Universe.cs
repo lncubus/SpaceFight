@@ -46,7 +46,7 @@ namespace SF.ServerLibrary
             foreach (var i in this.DeserializeCollection<ShipClass>(classes))
                 this.Classes.Add(i.Name, i);
             var helms = File.ReadAllText("helms.xml");
-            foreach (var def in this.DeserializeCollection<SpaceShip>(helms))
+            foreach (var def in this.DeserializeCollection<HelmDefinition>(helms))
             {
                 var helm = Helm.Load(this.Classes, def);
                 this.Helms.Add(helm.Ship.Name, helm);
