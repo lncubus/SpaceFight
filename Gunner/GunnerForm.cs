@@ -37,7 +37,7 @@ namespace Gunner
 
             var shipNames = new SortedDictionary<string, ICollection<string>>();
             foreach (var nation in client.GetNations())
-                shipNames.Add(nation, client.GetShipNames(nation));
+                shipNames.Add(nation, client.GetShipNames(nation).ToList());
             var credentials = LogonDialog.Execute(shipNames);
             if (credentials == null)
                 Close();

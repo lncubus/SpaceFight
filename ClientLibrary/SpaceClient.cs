@@ -39,19 +39,14 @@ namespace SF.ClientLibrary
             return this.Client.GetTime();
         }
 
-        public ICollection<string> GetNations()
+        public IEnumerable<string> GetNations()
         {
             return this.Client.GetNations();
         }
 
-        public ICollection<string> GetShipNames(string nation)
+        public IEnumerable<string> GetShipNames(string nation)
         {
             return this.Client.GetShipNames(nation);
-        }
-
-        public ICollection<ShipClass> GetShipClasses()
-        {
-            return this.Classes.Values;
         }
 
         public IHelm GetHelm(string nation, string name)

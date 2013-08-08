@@ -30,12 +30,12 @@ namespace SF.ServerLibrary
             this.m_helm = null;
         }
 
-        public ICollection<string> GetNations()
+        public IEnumerable<string> GetNations()
         {
             return Instance.GetNations();
         }
 
-        public ICollection<string> GetShipNames(string nation)
+        public IEnumerable<string> GetShipNames(string nation)
         {
             return Instance.GetShipNames(nation);
         }
@@ -50,14 +50,14 @@ namespace SF.ServerLibrary
             return HelmDefinition.Store(this.m_helm);
         }
 
-        public ICollection<ShipClass> GetShipClasses()
+        public IEnumerable<ShipClass> GetShipClasses()
         {
-            return Instance.GetShipClasses(this.m_helm.Ship.Nation).ToList();
+            return Instance.GetShipClasses(this.m_helm.Ship.Nation);
         }
 
-        public ICollection<ShipDefinition> GetVisibleShips()
+        public IEnumerable<ShipDefinition> GetVisibleShips()
         {
-            return Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store).ToList();
+            return Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store);
         }
 
         public void SetHeadingTo(double value)

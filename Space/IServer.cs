@@ -18,10 +18,10 @@ namespace SF.Space
         void Connect(string password);
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        ICollection<string> GetNations();
+        IEnumerable<string> GetNations();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        ICollection<string> GetShipNames(string nation);
+        IEnumerable<string> GetShipNames(string nation);
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
         TimeSpan GetTime();
@@ -30,10 +30,10 @@ namespace SF.Space
         HelmDefinition GetHelm();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        ICollection<ShipDefinition> GetVisibleShips();
+        IEnumerable<ShipDefinition> GetVisibleShips();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        ICollection<ShipClass> GetShipClasses();
+        IEnumerable<ShipClass> GetShipClasses();
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void SetHeadingTo(double value);

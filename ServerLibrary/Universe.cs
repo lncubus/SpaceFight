@@ -18,7 +18,7 @@ namespace SF.ServerLibrary
         public const int SmallDelay = 100;
 
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
-        public readonly SortedDictionary<string, IHelm> Helms = new SortedDictionary<string, IHelm>();
+        public readonly IDictionary<string, IHelm> Helms;
         private readonly Thread m_backgroundWorker;
 
         private string SerializeCollection<T, U>(IEnumerable<T> collection) where U : T
@@ -42,14 +42,13 @@ namespace SF.ServerLibrary
         public Universe()
         {
             var classes = File.ReadAllText("classes.xml");
-            foreach (var i in this.DeserializeCollection<ShipClass>(classes))
-                this.Classes.Add(i.Name, i);
-            var helms = File.ReadAllText("helms.xml");
-            foreach (var def in this.DeserializeCollection<HelmDefinition>(helms))
+            var catalogDefinition = new CatalogDefinition
             {
-                var helm = Helm.Load(this.Classes, def);
-                this.Helms.Add(helm.Ship.Name, helm);
-            }
+                ShipClasses = this.DeserializeCollection<ShipClass>(classes),
+            };
+            Catalog.Create(catalogDefinition);
+            var helms = File.ReadAllText("helms.xml");
+            Helms = this.DeserializeCollection<HelmDefinition>(helms).Select(def => Helm.Load(def)).ToDictionary(helm => helm.Ship.Name);
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 
@@ -87,9 +86,9 @@ namespace SF.ServerLibrary
             return this.Helms.Where(i => i.Value != me).Select(i => i.Value.Ship).ToList(); 
         }
 
-        public ICollection<string> GetNations()
+        public IEnumerable<string> GetNations()
         {
-            return this.Helms.Select(i => i.Value.Ship.Nation).Distinct().ToList();
+            return this.Helms.Select(i => i.Value.Ship.Nation).Distinct();
         }
 
         public ICollection<string> GetShipNames(string nation)
@@ -99,9 +98,9 @@ namespace SF.ServerLibrary
 
         public IEnumerable<ShipClass> GetShipClasses(string nation)
         {
-            var ourClasses = this.Classes.Values.Where(c => c.Nation == nation);
+            var ourClasses = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
             var ourShipClasses = this.Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
-            var result = ourClasses.Union(ourShipClasses).Distinct().ToList();
+            var result = ourClasses.Union(ourShipClasses).Distinct();
             return result;
         }
 

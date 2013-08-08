@@ -15,7 +15,9 @@ namespace SF.ServerLibrary
 
         public static IHelm Load(HelmDefinition that)
         {
-            var shipClass  Catalog.Instance.GetShipClass(that.ClassName);
+            var shipClass = Catalog.Instance.GetShipClass(that.ClassName);
+            if (shipClass == null)
+                throw new NullReferenceException("Undefined ship class " + that.ClassName);
             var shipDynamics = new Dynamics(shipClass, that, TimeSpan.Zero);
             return new Helm
             {
