@@ -5,7 +5,6 @@ namespace SF.ClientLibrary
 {
     internal class RemoteShip : IShip
     {
-        public static IDictionary<string, ShipClass> Classes;
         private ShipDefinition m_that;
 
         public RemoteShip(ShipDefinition def)
@@ -17,9 +16,7 @@ namespace SF.ClientLibrary
         {
             get
             {
-                if (!Classes.ContainsKey(this.m_that.ClassName))
-                    return null;
-                return Classes[this.m_that.ClassName];
+                return Catalog.Instance.GetShipClass(this.m_that.ClassName);
             }
         }
 

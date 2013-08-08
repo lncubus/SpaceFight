@@ -34,11 +34,7 @@ namespace Gunner
         private void Login()
         {
             client = new SF.ClientLibrary.SpaceClient();
-
-            var shipNames = new SortedDictionary<string, ICollection<string>>();
-            foreach (var nation in client.GetNations())
-                shipNames.Add(nation, client.GetShipNames(nation).ToList());
-            var credentials = LogonDialog.Execute(shipNames);
+            var credentials = LogonDialog.Execute(client.GetShipNames());
             if (credentials == null)
                 Close();
             else
@@ -60,7 +56,7 @@ namespace Gunner
 
         private void GetData()
         {
-            spaceGridControl.Ships = client.GetVisibleShips();
+            spaceGridControl.Ships = client.GetVisibleShips().ToList();
             var s = helm.Ship.S;
             var h = helm.Ship.Heading;
             spaceGridControl.Origin = s;

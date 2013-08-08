@@ -18,22 +18,19 @@ namespace SF.Space
         void Connect(string password);
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        IEnumerable<string> GetNations();
-
-        [OperationContract(IsInitiating = false, IsTerminating = false)]
-        IEnumerable<string> GetShipNames(string nation);
+        IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetShipNames();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
         TimeSpan GetTime();
+
+        [OperationContract(IsInitiating = false, IsTerminating = false)]
+        CatalogDefinition GetCatalog();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
         HelmDefinition GetHelm();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
         IEnumerable<ShipDefinition> GetVisibleShips();
-
-        [OperationContract(IsInitiating = false, IsTerminating = false)]
-        IEnumerable<ShipClass> GetShipClasses();
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void SetHeadingTo(double value);

@@ -83,7 +83,7 @@ namespace SF.ServerLibrary
 
         public IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            return this.Helms.Where(i => i.Value != me).Select(i => i.Value.Ship).ToList(); 
+            return this.Helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
         }
 
         public IEnumerable<string> GetNations()
@@ -91,9 +91,9 @@ namespace SF.ServerLibrary
             return this.Helms.Select(i => i.Value.Ship.Nation).Distinct();
         }
 
-        public ICollection<string> GetShipNames(string nation)
+        public IEnumerable<string> GetShipNames(string nation)
         {
-            return this.Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct().ToList();
+            return this.Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct();
         }
 
         public IEnumerable<ShipClass> GetShipClasses(string nation)

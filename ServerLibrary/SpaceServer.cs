@@ -30,14 +30,9 @@ namespace SF.ServerLibrary
             this.m_helm = null;
         }
 
-        public IEnumerable<string> GetNations()
+        public IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetShipNames()
         {
-            return Instance.GetNations();
-        }
-
-        public IEnumerable<string> GetShipNames(string nation)
-        {
-            return Instance.GetShipNames(nation);
+            return Instance.GetNations().Select(nation => new KeyValuePair<string, IEnumerable<string>>(nation, Instance.GetShipNames(nation)));
         }
 
         public TimeSpan GetTime()
@@ -45,14 +40,14 @@ namespace SF.ServerLibrary
             return Instance.Time;
         }
 
+        public CatalogDefinition GetCatalog()
+        {
+            return CatalogDefinition.Store(Catalog.Instance);
+        }
+
         public HelmDefinition GetHelm()
         {
             return HelmDefinition.Store(this.m_helm);
-        }
-
-        public IEnumerable<ShipClass> GetShipClasses()
-        {
-            return Instance.GetShipClasses(this.m_helm.Ship.Nation);
         }
 
         public IEnumerable<ShipDefinition> GetVisibleShips()

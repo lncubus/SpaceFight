@@ -12,7 +12,6 @@ namespace SF.ClientLibrary
         public static string Password = string.Empty;
         private readonly IServer Client;
         private readonly ChannelFactory<IServer> Factory;
-        private IDictionary<string, ShipClass> Classes;
         private IDictionary<string, RemoteShip> Ships;
         private RemoteHelm Helm;
 
@@ -28,8 +27,6 @@ namespace SF.ClientLibrary
             if (this.Client != null)
                 this.Client.Logout();
             this.Factory.Close();
-            RemoteShip.Classes = null;
-            this.Classes = null;
             this.Ships = null;
             this.Helm = null;
         }
@@ -39,30 +36,31 @@ namespace SF.ClientLibrary
             return this.Client.GetTime();
         }
 
-        public IEnumerable<string> GetNations()
+        public IDictionary<string, ICollection<string>> GetShipNames()
         {
-            return this.Client.GetNations();
-        }
-
-        public IEnumerable<string> GetShipNames(string nation)
-        {
-            return this.Client.GetShipNames(nation);
+            var result = new SortedDictionary<string, ICollection<string>>();
+            foreach (var pair in this.Client.GetShipNames())
+            {
+                var list = pair.Value.ToList();
+                list.Sort();
+                result.Add(pair.Key, list);
+            }
+            return result;
         }
 
         public IHelm GetHelm(string nation, string name)
         {
             this.Client.Login(nation, name);
-            this.Classes = this.Client.GetShipClasses().ToDictionary(c => c.Name);
-            RemoteShip.Classes = this.Classes;
+            Catalog.Create(this.Client.GetCatalog());
             var shipInfo = this.Client.GetHelm();
             this.Helm = new RemoteHelm(this.Client, shipInfo);
             this.Ships = this.Client.GetVisibleShips().Select(def => new RemoteShip(def)).ToDictionary(s => s.Name);
             return this.Helm;
         }
 
-        public ICollection<IShip> GetVisibleShips()
+        public IEnumerable<IShip> GetVisibleShips()
         {
-            return this.Ships.Values.OfType<IShip>().ToList();
+            return this.Ships.Values;
         }
 
         public void Update()
