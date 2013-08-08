@@ -38,6 +38,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catalog.cs" />
+    <Compile Include="CatalogDefinition.cs" />
     <Compile Include="IHelm.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="MathUtils.cs" />

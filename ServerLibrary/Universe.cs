@@ -18,7 +18,6 @@ namespace SF.ServerLibrary
         public const int SmallDelay = 100;
 
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
-        public readonly SortedDictionary<string, ShipClass> Classes = new SortedDictionary<string, ShipClass>();
         public readonly SortedDictionary<string, IHelm> Helms = new SortedDictionary<string, IHelm>();
         private readonly Thread m_backgroundWorker;
 

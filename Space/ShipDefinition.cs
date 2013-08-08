@@ -36,6 +36,5 @@ namespace SF.Space
                 Speed = ship.V,
             };
         }
-
     }
 }

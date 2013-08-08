@@ -13,9 +13,9 @@ namespace SF.ServerLibrary
         public double AccelerateTo { get { return this.Dynamics.AccelerateTo; } set { this.Dynamics.AccelerateTo = value; } }
         public IShip Ship { get; private set; }
 
-        public static IHelm Load(IDictionary<string, ShipClass> classes, HelmDefinition that)
+        public static IHelm Load(HelmDefinition that)
         {
-            var shipClass = classes[that.ClassName];
+            var shipClass  Catalog.Instance.GetShipClass(that.ClassName);
             var shipDynamics = new Dynamics(shipClass, that, TimeSpan.Zero);
             return new Helm
             {
