@@ -48,5 +48,19 @@ namespace SF.Space
             var sum = Math.Abs(a) + Math.Abs(b);
             return diff <= sum * epsilon;
         }
+
+        public static double Linear(double min, double max, double lambda)
+        {
+            return min * (1 - lambda) + max * lambda;
+        }
+
+        public static double LimitedLinear(double min, double max, double lambda)
+        {
+            if (lambda < 0)
+                lambda = 0;
+            if (lambda > 1)
+                lambda = 1;
+            return Linear(min, max, lambda);
+        }
     }
 }

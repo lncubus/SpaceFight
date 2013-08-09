@@ -36,15 +36,11 @@ namespace SF.ClientLibrary
             return this.Client.GetTime();
         }
 
-        public IDictionary<string, ICollection<string>> GetShipNames()
+        public IDictionary<string, string[]> GetShipNames()
         {
-            var result = new SortedDictionary<string, ICollection<string>>();
+            var result = new SortedDictionary<string, string[]>();
             foreach (var pair in this.Client.GetShipNames())
-            {
-                var list = pair.Value.ToList();
-                list.Sort();
-                result.Add(pair.Key, list);
-            }
+                result.Add(pair.Key, pair.Value);
             return result;
         }
 

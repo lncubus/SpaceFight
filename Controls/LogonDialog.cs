@@ -24,9 +24,9 @@ namespace SF.Controls
             public string Password;
         }
 
-        private IDictionary<string, ICollection<string>> ShipNames;
+        private IDictionary<string, string[]> ShipNames;
 
-        public static Logon Execute(IDictionary<string, ICollection<string>> ships)
+        public static Logon Execute(IDictionary<string, string[]> ships)
         {
             var dialog = new LogonDialog
             {
@@ -61,7 +61,7 @@ namespace SF.Controls
             string nation = comboBoxState.Text;
             if (string.IsNullOrEmpty(nation))
                 return;
-            comboBoxShip.Items.AddRange(ShipNames[nation].ToArray());
+            comboBoxShip.Items.AddRange(ShipNames[nation]);
         }
 
         private void comboBoxShip_SelectedValueChanged(object sender, EventArgs e)
