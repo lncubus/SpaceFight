@@ -30,9 +30,20 @@ namespace SF.ServerLibrary
             this.m_helm = null;
         }
 
-        public IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetShipNames()
+        public KeyValuePair<string, string[]>[] GetShipNames()
         {
-            return Instance.GetNations().Select(nation => new KeyValuePair<string, IEnumerable<string>>(nation, Instance.GetShipNames(nation)));
+            var nations = Instance.GetNations().ToList();
+            nations.Sort();
+            int n = nations.Count;
+            var result = new KeyValuePair<string, string[]>[n];
+            for (int i = 0; i < n; i++)
+            {
+                var nation = nations[i];
+                var ships = Instance.GetShipNames(nation).ToList();
+                ships.Sort();
+                result[i] = new KeyValuePair<string, string[]>(nation, ships.ToArray());
+            }
+            return result;
         }
 
         public TimeSpan GetTime()
@@ -50,9 +61,9 @@ namespace SF.ServerLibrary
             return HelmDefinition.Store(this.m_helm);
         }
 
-        public IEnumerable<ShipDefinition> GetVisibleShips()
+        public ShipDefinition[] GetVisibleShips()
         {
-            return Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store);
+            return Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store).ToArray();
         }
 
         public void SetHeadingTo(double value)

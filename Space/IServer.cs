@@ -18,7 +18,7 @@ namespace SF.Space
         void Connect(string password);
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetShipNames();
+        KeyValuePair<string, string[]>[] GetShipNames();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
         TimeSpan GetTime();
@@ -30,7 +30,7 @@ namespace SF.Space
         HelmDefinition GetHelm();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        IEnumerable<ShipDefinition> GetVisibleShips();
+        ShipDefinition[] GetVisibleShips();
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void SetHeadingTo(double value);
