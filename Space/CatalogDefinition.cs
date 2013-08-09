@@ -10,13 +10,5 @@ namespace SF.Space
     {
         [DataMember]
         public ShipClass[] ShipClasses { get; set; }
-
-        public static CatalogDefinition Store(Catalog catalog)
-        {
-            return new CatalogDefinition
-            {
-                ShipClasses = catalog.ShipClasses.Values.ToArray(),
-            };
-        }
     }
 }

@@ -53,7 +53,7 @@ namespace SF.ServerLibrary
 
         public CatalogDefinition GetCatalog()
         {
-            return CatalogDefinition.Store(Catalog.Instance);
+            return Instance.GetCatalog(m_helm.Ship.Nation);
         }
 
         public HelmDefinition GetHelm()

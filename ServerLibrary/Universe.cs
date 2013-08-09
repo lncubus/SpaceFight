@@ -18,7 +18,8 @@ namespace SF.ServerLibrary
         public const int SmallDelay = 100;
 
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
-        public readonly IDictionary<string, IHelm> Helms;
+
+        private readonly IDictionary<string, IHelm> m_helms;
         private readonly Thread m_backgroundWorker;
 
         private string SerializeObject<T>(T instance)
@@ -64,7 +65,7 @@ namespace SF.ServerLibrary
             Catalog.Create(catalogDefinition);
             var ships = File.ReadAllText("helms.xml");
             var helms = this.DeserializeCollection<HelmDefinition>(ships);
-            Helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
+            m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 
@@ -91,33 +92,36 @@ namespace SF.ServerLibrary
             get { return this.m_stopWatch.Elapsed; }
         }
 
+        public CatalogDefinition GetCatalog(string nation)
+        {
+            var ourClasses = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
+            var ourShipClasses = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
+            var shipClasses = ourClasses.Union(ourShipClasses).Distinct();
+            return new CatalogDefinition
+            {
+                ShipClasses = shipClasses.ToArray(),
+            };
+        }
+
         public IHelm GetHelm(string nation, string name)
         {
-            var helm = this.Helms[name];
+            var helm = this.m_helms[name];
             return helm.Ship.Nation != nation ? null : helm;
         }
 
         public IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            return this.Helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
+            return this.m_helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
         }
 
         public IEnumerable<string> GetNations()
         {
-            return this.Helms.Select(i => i.Value.Ship.Nation).Distinct();
+            return this.m_helms.Select(i => i.Value.Ship.Nation).Distinct();
         }
 
         public IEnumerable<string> GetShipNames(string nation)
         {
-            return this.Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct();
-        }
-
-        public IEnumerable<ShipClass> GetShipClasses(string nation)
-        {
-            var ourClasses = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
-            var ourShipClasses = this.Helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
-            var result = ourClasses.Union(ourShipClasses).Distinct();
-            return result;
+            return this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct();
         }
 
         private void TimingThreadStart()
@@ -128,7 +132,7 @@ namespace SF.ServerLibrary
                 if (this.m_stopWatch.IsRunning)
                 {
                     double t = this.Time.TotalSeconds;
-                    foreach (var helm in this.Helms.Values)
+                    foreach (var helm in this.m_helms.Values)
                         ((Ship)helm.Ship).Dynamics.UpdateTime(t);
                 }
             }
