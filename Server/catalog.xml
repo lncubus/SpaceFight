@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ShipClasses>
+    <ShipClass>
+      <Nation>Undefined</Nation>
+      <Name>Unknown</Name>
+      <MaximumAcceleration>5000</MaximumAcceleration>
+      <FullAccelerationTime>15</FullAccelerationTime>
+      <RoundRollTime>60</RoundRollTime>
+      <FullTurnTime>120</FullTurnTime>
+      <MissleRange>7500000</MissleRange>
+    </ShipClass>
+  </ShipClasses>
+</Catalog>

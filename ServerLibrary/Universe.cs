@@ -21,6 +21,24 @@ namespace SF.ServerLibrary
         public readonly IDictionary<string, IHelm> Helms;
         private readonly Thread m_backgroundWorker;
 
+        private string SerializeObject<T>(T instance)
+        {
+            var serializer = new XmlSerializer(instance.GetType());
+            var writer = new StringWriter();
+            serializer.Serialize(writer, instance);
+            writer.Close();
+            return writer.ToString();
+        }
+
+        private T DeserializeObject<T>(string source)
+        {
+            var serializer = new XmlSerializer(typeof(T));
+            var reader = new StringReader(source);
+            var read = (T)serializer.Deserialize(reader);
+            reader.Close();
+            return read;
+        }
+
         private string SerializeCollection<T, U>(IEnumerable<T> collection) where U : T
         {
             var list = collection.Cast<U>().ToArray();
@@ -38,17 +56,15 @@ namespace SF.ServerLibrary
             var read = (U[])serializer.Deserialize(reader);
             return read;
         }
-        
+
         public Universe()
         {
-            var classes = File.ReadAllText("classes.xml");
-            var catalogDefinition = new CatalogDefinition
-            {
-                ShipClasses = this.DeserializeCollection<ShipClass>(classes),
-            };
+            var catalog = File.ReadAllText("catalog.xml");
+            var catalogDefinition = this.DeserializeObject<CatalogDefinition>(catalog);
             Catalog.Create(catalogDefinition);
-            var helms = File.ReadAllText("helms.xml");
-            Helms = this.DeserializeCollection<HelmDefinition>(helms).Select(def => Helm.Load(def)).ToDictionary(helm => helm.Ship.Name);
+            var ships = File.ReadAllText("helms.xml");
+            var helms = this.DeserializeCollection<HelmDefinition>(ships);
+            Helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 

@@ -28,7 +28,7 @@ namespace Pilot
         private IHelm helm;
         private SF.ClientLibrary.SpaceClient client;
 
-        private const int TrajectorySize = 2500;
+        private const int TrajectorySize = 250;
         private SpaceGridControl.Curve Trajectory = new SpaceGridControl.Curve
             {
                 Pencil = Pens.DarkGreen
