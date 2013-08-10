@@ -77,6 +77,8 @@ namespace Pilot
                 Trajectory.Add(s);
             if (Trajectory.Count > TrajectorySize)
                 Trajectory.RemoveRange(0, Trajectory.Count - TrajectorySize);
+            indicatorControl.Speed = v;
+            indicatorControl.Location = s;
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)

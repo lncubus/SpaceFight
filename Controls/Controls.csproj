@@ -43,6 +43,12 @@
     <Compile Include="CompassControl.Designer.cs">
       <DependentUpon>CompassControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="IndicatorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IndicatorControl.Designer.cs">
+      <DependentUpon>IndicatorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogonDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="IndicatorControl.resx">
+      <DependentUpon>IndicatorControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogonDialog.resx">
       <DependentUpon>LogonDialog.cs</DependentUpon>
     </EmbeddedResource>

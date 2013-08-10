@@ -35,6 +35,7 @@
             this.spaceGridControl = new SF.Controls.SpaceGridControl();
             this.shipControl = new SF.Controls.ShipControl();
             this.scaleControl = new SF.Controls.ScaleControl();
+            this.indicatorControl = new SF.Controls.IndicatorControl();
             this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,6 +53,7 @@
             this.tableLayoutPanel.Controls.Add(this.spaceGridControl, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.shipControl, 1, 1);
             this.tableLayoutPanel.Controls.Add(this.scaleControl, 1, 0);
+            this.tableLayoutPanel.Controls.Add(this.indicatorControl, 1, 2);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -77,7 +79,7 @@
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
             this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 3);
-            this.spaceGridControl.Size = new System.Drawing.Size(533, 572);
+            this.spaceGridControl.Size = new System.Drawing.Size(533, 595);
             this.spaceGridControl.TabIndex = 0;
             this.spaceGridControl.WorldScale = 1000000D;
             // 
@@ -89,7 +91,7 @@
             this.shipControl.Location = new System.Drawing.Point(542, 38);
             this.shipControl.Name = "shipControl";
             this.shipControl.ReadOnly = false;
-            this.shipControl.Size = new System.Drawing.Size(249, 415);
+            this.shipControl.Size = new System.Drawing.Size(249, 435);
             this.shipControl.TabIndex = 2;
             // 
             // scaleControl
@@ -104,6 +106,12 @@
             this.scaleControl.TabIndex = 3;
             this.scaleControl.Unit = "км";
             this.scaleControl.Value = 10000000D;
+            // 
+            // indicatorControl
+            // 
+            this.indicatorControl.Name = "indicatorControl";
+            this.indicatorControl.Size = new System.Drawing.Size(249, 119);
+            this.indicatorControl.TabIndex = 4;
             // 
             // PilotForm
             // 
@@ -127,6 +135,7 @@
         private SF.Controls.SpaceGridControl spaceGridControl;
         private SF.Controls.ShipControl shipControl;
         private SF.Controls.ScaleControl scaleControl;
+        private SF.Controls.IndicatorControl indicatorControl;
     }
 }
 
