@@ -69,7 +69,6 @@ namespace Pilot
         private void GetData()
         {
             spaceGridControl.Ships = client.GetVisibleShips().ToList();
-
             var s = helm.Ship.S;
             var v = helm.Ship.V;
             spaceGridControl.Origin = s;
@@ -78,7 +77,7 @@ namespace Pilot
             if (Trajectory.Count > TrajectorySize)
                 Trajectory.RemoveRange(0, Trajectory.Count - TrajectorySize);
             indicatorControl.Speed = v;
-            indicatorControl.Location = s;
+            indicatorControl.Position = s;
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)

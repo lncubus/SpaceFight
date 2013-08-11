@@ -151,14 +151,18 @@ namespace SF.Controls
         }
 
         private void DrawGridLines(Graphics graphics)
-        {
+        { 
             if (Options.HasFlag(SpaceGridOptions.NoGrid))
                 return;
+            var logScale = Math.Log10(WorldScale);
+            var scale = Math.Pow(10, Math.Ceiling(logScale) - logScale);
+            var dpiX = (int)(scale * graphics.DpiX);
+            var dpiY = (int)(scale * graphics.DpiY);
             if (Polar)
             {
-                var dpiX = (int)graphics.DpiX;
-                var dpiY = (int)graphics.DpiY;
-                var n = m_client.Width / (2 * dpiX) + m_client.Height / (2 * dpiY);
+                var n = (int)(m_client.Width / (2.0 * dpiX) + m_client.Height / (2.0 * dpiY));
+                if (n <= 1)
+                    n = 1;
                 for (var i = 1; i <= n; i++)
                     graphics.DrawEllipse(BlackPencil, m_center.X - i * dpiX, m_center.Y - i * dpiY, 2 * i * dpiX, 2 * i * dpiY);
                 const int N = 12;
@@ -185,18 +189,16 @@ namespace SF.Controls
             }
             else
             {
-                var dpi = (int)graphics.DpiX;
-                var n = m_client.Width / (2 * dpi);
+                var n = m_client.Width / (2 * dpiX);
                 for (var i = -n; i <= n; i++)
                 {
-                    var x = m_center.X + i * dpi;
+                    var x = m_center.X + i * dpiX;
                     graphics.DrawLine(BlackPencil, x, m_client.Top, x, m_client.Bottom);
                 }
-                dpi = (int)graphics.DpiY;
-                n = m_client.Height / (2 * dpi);
+                n = m_client.Height / (2 * dpiY);
                 for (var i = -n; i <= n; i++)
                 {
-                    var y = m_center.Y + i * dpi;
+                    var y = m_center.Y + i * dpiY;
                     graphics.DrawLine(BlackPencil, m_client.Left, y, m_client.Right, y);
                 }
             }

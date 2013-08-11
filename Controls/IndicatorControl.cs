@@ -21,7 +21,7 @@ namespace SF.Controls
         }
 
         private Vector m_speed;
-        private Vector m_location;
+        private Vector m_position;
         public const string SpeedUnit = "км/с";
         public const string LocationUnit = "км";
 
@@ -35,12 +35,12 @@ namespace SF.Controls
             }
         }
 
-        public Vector Location
+        public Vector Position
         {
-            get { return m_location; }
+            get { return m_position; }
             set
             {
-                m_location = value;
+                m_position = value;
                 UpdateControl();
             }
         }
@@ -50,8 +50,8 @@ namespace SF.Controls
             labelSpeedX.Text = MathUtils.NumberToText(Speed.X, string.Empty);
             labelSpeedY.Text = MathUtils.NumberToText(Speed.Y, string.Empty);
             labelSpeedFull.Text = MathUtils.NumberToText(Speed.Length, string.Empty);
-            labelLocationX.Text = MathUtils.NumberToText(Location.X, string.Empty);
-            labelLocationY.Text = MathUtils.NumberToText(Location.Y, string.Empty);
+            labelLocationX.Text = MathUtils.NumberToText(Position.X, string.Empty);
+            labelLocationY.Text = MathUtils.NumberToText(Position.Y, string.Empty);
         }
     }
 }

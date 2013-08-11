@@ -81,7 +81,7 @@
             this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 3);
             this.spaceGridControl.Size = new System.Drawing.Size(533, 595);
             this.spaceGridControl.TabIndex = 0;
-            this.spaceGridControl.WorldScale = 1000000D;
+            this.spaceGridControl.WorldScale = 2000000D;
             // 
             // shipControl
             // 
@@ -91,7 +91,7 @@
             this.shipControl.Location = new System.Drawing.Point(542, 38);
             this.shipControl.Name = "shipControl";
             this.shipControl.ReadOnly = false;
-            this.shipControl.Size = new System.Drawing.Size(249, 435);
+            this.shipControl.Size = new System.Drawing.Size(249, 415);
             this.shipControl.TabIndex = 2;
             // 
             // scaleControl
@@ -105,10 +105,11 @@
             this.scaleControl.Size = new System.Drawing.Size(249, 29);
             this.scaleControl.TabIndex = 3;
             this.scaleControl.Unit = "км";
-            this.scaleControl.Value = 10000000D;
+            this.scaleControl.Value = 2000000D;
             // 
             // indicatorControl
             // 
+            this.indicatorControl.Location = new System.Drawing.Point(542, 459);
             this.indicatorControl.Name = "indicatorControl";
             this.indicatorControl.Size = new System.Drawing.Size(249, 119);
             this.indicatorControl.TabIndex = 4;
@@ -125,7 +126,6 @@
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion

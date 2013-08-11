@@ -23,8 +23,8 @@ namespace SF.Controls
             Five = 5
         }
 
-        private FirstDigit m_first = FirstDigit.One;
-        private int m_zeros = 7;
+        private FirstDigit m_first = FirstDigit.Two;
+        private int m_zeros = 6;
         private string m_unit = "км";
 
         public string Unit
