@@ -79,6 +79,19 @@ namespace SF.Controls
         }
         private Vector m_origin;
 
+        public bool StaticGrid
+        {
+            get { return this.m_staticGrid; }
+            set
+            {
+                if (this.m_staticGrid == value)
+                    return;
+                this.m_staticGrid = value;
+                Invalidate();
+            }
+        }
+        private bool m_staticGrid = true;
+
         public bool Polar
         {
             get { return this.m_polar; }
@@ -189,16 +202,24 @@ namespace SF.Controls
             }
             else
             {
+                var center = m_center;
+                if (StaticGrid)
+                {
+                    var dx = graphics.DpiX * Math.IEEERemainder(Origin.X, WorldScale * scale) / WorldScale;
+                    var dy = graphics.DpiY * Math.IEEERemainder(Origin.Y, WorldScale * scale) / WorldScale;
+                    center.X += (int)dx;
+                    center.Y += (int)dy;
+                }
                 var n = m_client.Width / (2 * dpiX);
                 for (var i = -n; i <= n; i++)
                 {
-                    var x = m_center.X + i * dpiX;
+                    var x = center.X + i * dpiX;
                     graphics.DrawLine(BlackPencil, x, m_client.Top, x, m_client.Bottom);
                 }
                 n = m_client.Height / (2 * dpiY);
                 for (var i = -n; i <= n; i++)
                 {
-                    var y = m_center.Y + i * dpiY;
+                    var y = center.Y + i * dpiY;
                     graphics.DrawLine(BlackPencil, m_client.Left, y, m_client.Right, y);
                 }
             }
@@ -263,7 +284,7 @@ namespace SF.Controls
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
             bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
-            var range = (isMyShip || isFriendlyShip || OwnShip != null && OwnShip.Class == null) ?
+            var range = (isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null && OwnShip.Class == null) ?
                 MaximumMissleRange : OwnShip.Class.MissleRange;
             if (Options.HasFlag(SpaceGridOptions.FriendlySectorsByMyMissleRange) && OwnShip != null && OwnShip.Class != null)
                 range = OwnShip.Class.MissleRange;
