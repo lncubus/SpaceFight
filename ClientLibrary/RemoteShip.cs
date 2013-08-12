@@ -16,7 +16,7 @@ namespace SF.ClientLibrary
         {
             get
             {
-                return Catalog.Instance.GetShipClass(this.m_that.ClassName);
+                return Catalog.Instance.GetShipClass(this.ClassName);
             }
         }
 

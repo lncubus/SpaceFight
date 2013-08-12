@@ -47,7 +47,6 @@
     <Compile Include="MissleClass.cs" />
     <Compile Include="MissleDefinition.cs" />
     <Compile Include="ShipClass.cs" />
-    <Compile Include="Dynamics.cs" />
     <Compile Include="ShipDefinition.cs" />
     <Compile Include="SpaceExtensions.cs" />
     <Compile Include="HelmDefinition.cs" />
