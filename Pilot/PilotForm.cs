@@ -42,7 +42,8 @@ namespace Pilot
                 Close();
             else
             {
-                shipControl.Helm = helm = client.GetHelm(credentials.Nation, credentials.ShipName);
+                client.Login(credentials.Nation, credentials.ShipName);
+                shipControl.Helm = helm = client.GetHelm();
                 Text = helm.Ship.Name;
                 tableLayoutPanel.Visible = true;
                 spaceGridControl.OwnShip = helm.Ship;

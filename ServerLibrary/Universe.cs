@@ -94,12 +94,14 @@ namespace SF.ServerLibrary
 
         public CatalogDefinition GetCatalog(string nation)
         {
-            var ourClasses = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
-            var ourShipClasses = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
-            var shipClasses = ourClasses.Union(ourShipClasses).Distinct();
+            var shipClassesByNation = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
+            var shipClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
+            var missleClassesByNation = Catalog.Instance.MissleClasses.Values.Where(c => c.Nation == nation);
+            //var missleClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
             return new CatalogDefinition
             {
-                ShipClasses = shipClasses.ToArray(),
+                ShipClasses = shipClassesByNation.Union(shipClassesByShips).Distinct().ToArray(),
+                MissleClasses = missleClassesByNation.ToArray(),
             };
         }
 
@@ -112,6 +114,11 @@ namespace SF.ServerLibrary
         public IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
             return this.m_helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
+        }
+
+        public IEnumerable<IMissle> GetVisibleMissles(IHelm me)
+        {
+            yield break;
         }
 
         public IEnumerable<string> GetNations()

@@ -46,24 +46,20 @@ namespace SF.ServerLibrary
             return result;
         }
 
-        public TimeSpan GetTime()
-        {
-            return Instance.Time;
-        }
-
         public CatalogDefinition GetCatalog()
         {
             return Instance.GetCatalog(m_helm.Ship.Nation);
         }
 
-        public HelmDefinition GetHelm()
+        public View GetView()
         {
-            return HelmDefinition.Store(this.m_helm);
-        }
-
-        public ShipDefinition[] GetVisibleShips()
-        {
-            return Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store).ToArray();
+            return new View
+            {
+                Time = Instance.Time,
+                Helm = HelmDefinition.Store(this.m_helm),
+                Ships = Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store).ToArray(),
+                Missles = Instance.GetVisibleMissles(this.m_helm).Select(MissleDefinition.Store).ToArray(),
+            };
         }
 
         public void SetHeadingTo(double value)

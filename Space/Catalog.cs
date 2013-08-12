@@ -8,6 +8,7 @@ namespace SF.Space
     public class Catalog
     {
         public IDictionary<string, ShipClass> ShipClasses { get; private set; }
+        public IDictionary<string, MissleClass> MissleClasses { get; private set; }
         public static Catalog Instance { get; private set; }
 
         public ShipClass GetShipClass(string name)
@@ -16,9 +17,16 @@ namespace SF.Space
             return ShipClasses.TryGetValue(name, out result) ? result : null;
         }
 
+        public MissleClass GetMissleClass(string name)
+        {
+            MissleClass result;
+            return MissleClasses.TryGetValue(name, out result) ? result : null;
+        }
+
         private Catalog(CatalogDefinition def)
         {
-            ShipClasses = def.ShipClasses.ToDictionary(c => c.Name); 
+            ShipClasses = (def.ShipClasses ?? new ShipClass[0]) .ToDictionary(c => c.Name);
+            MissleClasses = (def.MissleClasses ?? new MissleClass[0]).ToDictionary(c => c.Name); 
         }
 
         public static void Create(CatalogDefinition def)

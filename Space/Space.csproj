@@ -41,8 +41,11 @@
     <Compile Include="Catalog.cs" />
     <Compile Include="CatalogDefinition.cs" />
     <Compile Include="IHelm.cs" />
+    <Compile Include="IMissle.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="MathUtils.cs" />
+    <Compile Include="MissleClass.cs" />
+    <Compile Include="MissleDefinition.cs" />
     <Compile Include="ShipClass.cs" />
     <Compile Include="Dynamics.cs" />
     <Compile Include="ShipDefinition.cs" />
@@ -51,6 +54,7 @@
     <Compile Include="Vector.cs" />
     <Compile Include="IShip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

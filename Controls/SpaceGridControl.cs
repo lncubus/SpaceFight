@@ -207,7 +207,7 @@ namespace SF.Controls
                 {
                     var dx = graphics.DpiX * Math.IEEERemainder(Origin.X, WorldScale * scale) / WorldScale;
                     var dy = graphics.DpiY * Math.IEEERemainder(Origin.Y, WorldScale * scale) / WorldScale;
-                    center.X += (int)dx;
+                    center.X -= (int)dx;
                     center.Y += (int)dy;
                 }
                 var n = m_client.Width / (2 * dpiX);

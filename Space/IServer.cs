@@ -21,16 +21,10 @@ namespace SF.Space
         KeyValuePair<string, string[]>[] GetShipNames();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        TimeSpan GetTime();
-
-        [OperationContract(IsInitiating = false, IsTerminating = false)]
         CatalogDefinition GetCatalog();
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        HelmDefinition GetHelm();
-
-        [OperationContract(IsInitiating = false, IsTerminating = false)]
-        ShipDefinition[] GetVisibleShips();
+        View GetView();
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void SetHeadingTo(double value);

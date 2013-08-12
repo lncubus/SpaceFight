@@ -10,5 +10,7 @@ namespace SF.Space
     {
         [DataMember]
         public ShipClass[] ShipClasses { get; set; }
+        [DataMember]
+        public MissleClass[] MissleClasses { get; set; }
     }
 }

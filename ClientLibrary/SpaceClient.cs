@@ -31,11 +31,6 @@ namespace SF.ClientLibrary
             this.Helm = null;
         }
 
-        public TimeSpan GetTime()
-        {
-            return this.Client.GetTime();
-        }
-
         public IDictionary<string, string[]> GetShipNames()
         {
             var result = new SortedDictionary<string, string[]>();
@@ -44,13 +39,17 @@ namespace SF.ClientLibrary
             return result;
         }
 
-        public IHelm GetHelm(string nation, string name)
+        public void Login(string nation, string name)
         {
             this.Client.Login(nation, name);
             Catalog.Create(this.Client.GetCatalog());
-            var shipInfo = this.Client.GetHelm();
-            this.Helm = new RemoteHelm(this.Client, shipInfo);
-            this.Ships = this.Client.GetVisibleShips().Select(def => new RemoteShip(def)).ToDictionary(s => s.Name);
+            var view = this.Client.GetView();
+            this.Helm = new RemoteHelm(this.Client, view.Helm);
+            this.Ships = view.Ships.Select(def => new RemoteShip(def)).ToDictionary(s => s.Name);
+        }
+
+        public IHelm GetHelm()
+        {
             return this.Helm;
         }
 
@@ -61,10 +60,9 @@ namespace SF.ClientLibrary
 
         public void Update()
         {
-            var helm = this.Client.GetHelm();
-            this.Helm.Update(helm);
-            var ships = this.Client.GetVisibleShips();
-            foreach (var ship in ships)
+            var view = this.Client.GetView();
+            this.Helm.Update(view.Helm);
+            foreach (var ship in view.Ships)
                 if (this.Ships.ContainsKey(ship.ShipName))
                     this.Ships[ship.ShipName].Update(ship);
                 else

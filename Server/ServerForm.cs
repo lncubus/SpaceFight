@@ -12,7 +12,6 @@ using SF.ServerLibrary;
 
 namespace Server
 {
-
     public partial class ServerForm : Form
     {
         public ServerForm()
