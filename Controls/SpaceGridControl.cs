@@ -167,12 +167,12 @@ namespace SF.Controls
             if (Options.HasFlag(SpaceGridOptions.NoGrid))
                 return;
             var logScale = Math.Log10(WorldScale);
-            var scale = Math.Pow(10, Math.Ceiling(logScale) - logScale);
-            var dpiX = (int)(scale * graphics.DpiX);
-            var dpiY = (int)(scale * graphics.DpiY);
+            float scale = (float)Math.Pow(10, Math.Ceiling(logScale) - logScale);
+            float dpiX = scale * graphics.DpiX;
+            float dpiY = scale * graphics.DpiY;
             if (Polar)
             {
-                var n = (int)(m_client.Width / (2.0 * dpiX) + m_client.Height / (2.0 * dpiY));
+                var n = (int) (m_client.Width / (2.0 * dpiX) + m_client.Height / (2.0 * dpiY));
                 if (n <= 1)
                     n = 1;
                 for (var i = 1; i <= n; i++)
@@ -180,42 +180,42 @@ namespace SF.Controls
                 const int N = 12;
                 for (int i = 1; i <= N; i++)
                 {
-                    var p = new Point
+                    var p = new PointF
                     {
-                        X = (int)(m_center.X + dpiX * n * Math.Cos(2 * Math.PI * i / N)),
-                        Y = (int)(m_center.Y + dpiY * n * Math.Sin(2 * Math.PI * i / N))
+                        X = (float)(m_center.X + dpiX * n * Math.Cos(2 * Math.PI * i / N)),
+                        Y = (float)(m_center.Y + dpiY * n * Math.Sin(2 * Math.PI * i / N))
                     };
                     graphics.DrawLine(BlackPencil, m_center, p);
-                    p = new Point
+                    p = new PointF
                     {
-                        X = (int)(m_center.X + dpiX * n * Math.Cos(2 * Math.PI * (i + 0.5) / N)),
-                        Y = (int)(m_center.Y + dpiY * n * Math.Sin(2 * Math.PI * (i + 0.5) / N))
+                        X = (float)(m_center.X + dpiX * n * Math.Cos(2 * Math.PI * (i + 0.5) / N)),
+                        Y = (float)(m_center.Y + dpiY * n * Math.Sin(2 * Math.PI * (i + 0.5) / N))
                     };
-                    var q = new Point
+                    var q = new PointF
                     {
-                        X = (int)(m_center.X + 2 * dpiX * Math.Cos(2 * Math.PI * (i + 0.5) / N)),
-                        Y = (int)(m_center.Y + 2 * dpiY * Math.Sin(2 * Math.PI * (i + 0.5) / N))
+                        X = (float)(m_center.X + 2 * dpiX * Math.Cos(2 * Math.PI * (i + 0.5) / N)),
+                        Y = (float)(m_center.Y + 2 * dpiY * Math.Sin(2 * Math.PI * (i + 0.5) / N))
                     };
                     graphics.DrawLine(BlackPencil, p, q);
                 }
             }
             else
             {
-                var center = m_center;
+                PointF center = m_center;
                 if (StaticGrid)
                 {
-                    var dx = graphics.DpiX * Math.IEEERemainder(Origin.X, WorldScale * scale) / WorldScale;
-                    var dy = graphics.DpiY * Math.IEEERemainder(Origin.Y, WorldScale * scale) / WorldScale;
-                    center.X -= (int)dx;
-                    center.Y += (int)dy;
+                    var dx = (float)(graphics.DpiX * Math.IEEERemainder(Origin.X, WorldScale * scale) / WorldScale);
+                    var dy = (float)(graphics.DpiY * Math.IEEERemainder(Origin.Y, WorldScale * scale) / WorldScale);
+                    center.X -= dx;
+                    center.Y += dy;
                 }
-                var n = m_client.Width / (2 * dpiX);
+                var n = (int) (m_client.Width / (2 * dpiX));
                 for (var i = -n; i <= n; i++)
                 {
                     var x = center.X + i * dpiX;
                     graphics.DrawLine(BlackPencil, x, m_client.Top, x, m_client.Bottom);
                 }
-                n = m_client.Height / (2 * dpiY);
+                n = (int) (m_client.Height / (2 * dpiY));
                 for (var i = -n; i <= n; i++)
                 {
                     var y = center.Y + i * dpiY;
@@ -226,9 +226,9 @@ namespace SF.Controls
 
         protected override void DrawContents(PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             m_client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             DrawGridLines(e.Graphics);
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             foreach (var c in Curves)
                 DrawCurve(e.Graphics, c);
             if (OwnShip != null)
