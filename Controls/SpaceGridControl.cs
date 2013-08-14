@@ -157,7 +157,6 @@ namespace SF.Controls
 
         protected override void DrawBackgroound(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             m_client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             e.Graphics.FillRectangle(WhitePaper, m_client);
             e.Graphics.DrawRectangle(BlackPen, m_client);
@@ -227,9 +226,9 @@ namespace SF.Controls
 
         protected override void DrawContents(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             m_client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             DrawGridLines(e.Graphics);
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             foreach (var c in Curves)
                 DrawCurve(e.Graphics, c);
             if (OwnShip != null)
