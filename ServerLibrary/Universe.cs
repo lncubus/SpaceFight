@@ -20,7 +20,7 @@ namespace SF.ServerLibrary
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
 
         private readonly IDictionary<string, IHelm> m_helms;
-        private readonly IList<IMissile> m_missles;
+        private readonly IList<IMissile> m_missiles;
         private readonly Thread m_backgroundWorker;
 
         private string SerializeObject<T>(T instance)
@@ -68,12 +68,12 @@ namespace SF.ServerLibrary
             var helms = this.DeserializeCollection<HelmDefinition>(ships);
             foreach (var h in helms)
             {
-                h.MissleName = "Дротик";
-                h.MissleNumber = 6;
+                h.MissileName = "Дротик";
+                h.MissileNumber = 6;
             }
             File.WriteAllText("helms2.xml", this.SerializeCollection<HelmDefinition, HelmDefinition>(helms));
             m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
-            m_missles = new List<IMissile>();
+            m_missiles = new List<IMissile>();
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 
@@ -104,12 +104,12 @@ namespace SF.ServerLibrary
         {
             var shipClassesByNation = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
             var shipClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
-            var missleClassesByNation = Catalog.Instance.MissleClasses.Values.Where(c => c.Nation == nation);
-            var missleClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Missle);
+            var missileClassesByNation = Catalog.Instance.MissileClasses.Values.Where(c => c.Nation == nation);
+            var missileClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Missile);
             return new CatalogDefinition
             {
                 ShipClasses = shipClassesByNation.Union(shipClassesByShips).Distinct().ToArray(),
-                MissleClasses = missleClassesByNation.Union(missleClassesByShips).Distinct().ToArray(),
+                MissileClasses = missileClassesByNation.Union(missileClassesByShips).Distinct().ToArray(),
             };
         }
 
@@ -134,9 +134,9 @@ namespace SF.ServerLibrary
             return this.m_helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
         }
 
-        public IEnumerable<IMissile> GetVisibleMissles(IHelm me)
+        public IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
         {
-            return this.m_missles;
+            return this.m_missiles;
         }
 
         public IEnumerable<string> GetNations()
@@ -151,12 +151,12 @@ namespace SF.ServerLibrary
 
         public void Fire(IShip from, bool left, string to, int number)
         {
-            number = Math.Min(number, from.Missles);
+            number = Math.Min(number, from.Missiles);
             var target = GetHelm(to);
-            if (from.Missle == null || target == null || number <= 0)
+            if (from.Missile == null || target == null || number <= 0)
                 return;
             var result = new Missile(from, left, target.Ship, number, Time);
-            m_missles.Add(result);
+            m_missiles.Add(result);
         }
 
         private void TimingThreadStart()
@@ -169,11 +169,11 @@ namespace SF.ServerLibrary
                     double t = this.Time.TotalSeconds;
                     foreach (var helm in m_helms.Values)
                         ((Ship)helm.Ship).Dynamics.UpdateTime(t);
-                    foreach (Missile missle in m_missles)
-                        missle.UpdateTime(t);
-                    var deleted = m_missles.Where(missle => missle.IsDead);
-                    foreach (var missle in deleted)
-                        m_missles.Remove(missle);
+                    foreach (Missile missile in m_missiles)
+                        missile.UpdateTime(t);
+                    var deleted = m_missiles.Where(missile => missile.IsDead);
+                    foreach (var missile in deleted)
+                        m_missiles.Remove(missile);
                 }
             }
         }

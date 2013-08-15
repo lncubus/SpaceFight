@@ -3,23 +3,23 @@ namespace SF.ClientLibrary
 {
     internal class RemoteMissile : IMissile
     {
-        private MissleDefinition m_that;
+        private MissileDefinition m_that;
 
-        public RemoteMissile(MissleDefinition def)
+        public RemoteMissile(MissileDefinition def)
         {
             this.m_that = def;
         }
 
-        public void Update(MissleDefinition def)
+        public void Update(MissileDefinition def)
         {
             this.m_that = def;
         }
 
-        public MissleClass Class
+        public MissileClass Class
         {
             get
             {
-                return Catalog.Instance.GetMissleClass(this.ClassName);
+                return Catalog.Instance.GetMissileClass(this.ClassName);
             }
         }
 

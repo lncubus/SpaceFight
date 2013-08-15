@@ -20,9 +20,9 @@ namespace Pilot
             timerUpdate.Enabled = true;
             scaleControl.OnValueChanged += scaleControl_ValueChanged;
             spaceGridControl.Options = 
-                SpaceGridOptions.FriendlyMissleCircles | SpaceGridOptions.FriendlyVulnerableSectors |
+                SpaceGridOptions.FriendlyMissileCircles | SpaceGridOptions.FriendlyVulnerableSectors |
                 SpaceGridOptions.HostileVulnerableSectors |
-                SpaceGridOptions.MyMissleCircles | SpaceGridOptions.MyVulnerableSectors;
+                SpaceGridOptions.MyMissileCircles | SpaceGridOptions.MyVulnerableSectors;
         }
 
         private IHelm helm;

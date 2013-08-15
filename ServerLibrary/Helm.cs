@@ -18,12 +18,12 @@ namespace SF.ServerLibrary
             var shipClass = Catalog.Instance.GetShipClass(that.ClassName);
             if (shipClass == null)
                 throw new NullReferenceException("Undefined ship class " + that.ClassName);
-            MissleClass missleClass = null;
-            if (!string.IsNullOrEmpty(that.MissleName))
+            MissileClass missileClass = null;
+            if (!string.IsNullOrEmpty(that.MissileName))
             {
-                missleClass = Catalog.Instance.GetMissleClass(that.MissleName);
-                if (missleClass == null)
-                    throw new NullReferenceException("Undefined Missile class " + that.MissleName);
+                missileClass = Catalog.Instance.GetMissileClass(that.MissileName);
+                if (missileClass == null)
+                    throw new NullReferenceException("Undefined Missile class " + that.MissileName);
             }
             var shipDynamics = new Dynamics(shipClass, that, TimeSpan.Zero);
             return new Helm
@@ -34,8 +34,8 @@ namespace SF.ServerLibrary
                     Class = shipClass,
                     Nation = that.Nation,
                     Dynamics = shipDynamics,
-                    Missle = missleClass,
-                    Missles = that.MissleNumber,
+                    Missile = missileClass,
+                    Missiles = that.MissileNumber,
                 },
             };
         }

@@ -2,7 +2,7 @@
 {
     public interface IMissile
     {
-        MissleClass Class { get; }
+        MissileClass Class { get; }
         string Nation { get; }
         string ClassName { get; }
         bool IsDead { get; }

@@ -40,19 +40,19 @@ namespace SF.ClientLibrary
             get { return this.m_that.ClassName; }
         }
 
-        public MissleClass Missle
+        public MissileClass Missile
         {
-            get { return Catalog.Instance.GetMissleClass(m_that.MissleName); }
+            get { return Catalog.Instance.GetMissileClass(m_that.MissileName); }
         }
 
-        public string MissleName
+        public string MissileName
         {
-            get { return this.m_that.MissleName; }
+            get { return this.m_that.MissileName; }
         }
 
-        public int Missles
+        public int Missiles
         {
-            get { return m_that.MissleNumber; }
+            get { return m_that.MissileNumber; }
         }
 
         public double Heading

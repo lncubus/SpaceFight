@@ -17,11 +17,11 @@ namespace SF.ServerLibrary
             get { return this.Class.Name; }
         }
 
-        public MissleClass Missle { get; set; }
-        public int Missles { get; set; }
-        public string MissleName
+        public MissileClass Missile { get; set; }
+        public int Missiles { get; set; }
+        public string MissileName
         {
-            get { return this.Missle.Name; }
+            get { return this.Missile.Name; }
         }
 
         public Vector S

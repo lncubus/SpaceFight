@@ -6,7 +6,7 @@ namespace SF.ServerLibrary
 
     public class Missile : IMissile
     {
-        public MissleClass Class { get; set; }
+        public MissileClass Class { get; set; }
         public string Nation { get; set; }
 
         private string m_className;
@@ -51,11 +51,11 @@ namespace SF.ServerLibrary
 
         public Missile(IShip from, bool left, IShip to, int number, TimeSpan time)
         {
-            this.Class = from.Missle;
+            this.Class = from.Missile;
             this.s0 = this.S = from.S;
             this.v0 = this.V = from.V;
             this.t0 = this.Started = time.TotalSeconds;
-            this.Number = Math.Min(number, from.Missles);
+            this.Number = Math.Min(number, from.Missiles);
             this.heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;
         }

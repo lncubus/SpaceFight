@@ -19,6 +19,6 @@ namespace SF.Space
         public ShipDefinition[] Ships { get; set; }
 
         [DataMember]
-        public MissleDefinition[] Missles { get; set; }
+        public MissileDefinition[] Missiles { get; set; }
     }
 }

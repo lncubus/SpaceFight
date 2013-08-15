@@ -58,7 +58,7 @@ namespace SF.ServerLibrary
                 Time = Instance.Time,
                 Helm = HelmDefinition.Store(this.m_helm),
                 Ships = Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store).ToArray(),
-                Missles = Instance.GetVisibleMissles(this.m_helm).Select(MissleDefinition.Store).ToArray(),
+                Missiles = Instance.GetVisibleMissiles(this.m_helm).Select(MissileDefinition.Store).ToArray(),
             };
         }
 

@@ -343,9 +343,9 @@ namespace SF.Controls
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
             bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
             var range = (isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
-                SpaceExtensions.MaximumMissileRange : this.OwnShip.MissleRange();
-            if (Options.HasFlag(SpaceGridOptions.FriendlySectorsByMyMissleRange) && OwnShip != null && OwnShip.Class != null)
-                range = OwnShip.MissleRange();
+                SpaceExtensions.MaximumMissileRange : this.OwnShip.MissileRange();
+            if (Options.HasFlag(SpaceGridOptions.FriendlySectorsByMyMissileRange) && OwnShip != null && OwnShip.Class != null)
+                range = OwnShip.MissileRange();
             if ((isMyShip && !Options.HasFlag(SpaceGridOptions.MyVulnerableSectors)) ||
                 (isFriendlyShip && !Options.HasFlag(SpaceGridOptions.FriendlyVulnerableSectors)) ||
                 (isHostileShip && !Options.HasFlag(SpaceGridOptions.HostileVulnerableSectors)))
@@ -359,12 +359,12 @@ namespace SF.Controls
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
             bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
-            if ((isMyShip && !Options.HasFlag(SpaceGridOptions.MyMissleCircles)) ||
-                (isFriendlyShip && !Options.HasFlag(SpaceGridOptions.FriendlyMissleCircles)) ||
-                (isHostileShip && !Options.HasFlag(SpaceGridOptions.HostileMissleCircles)))
+            if ((isMyShip && !Options.HasFlag(SpaceGridOptions.MyMissileCircles)) ||
+                (isFriendlyShip && !Options.HasFlag(SpaceGridOptions.FriendlyMissileCircles)) ||
+                (isHostileShip && !Options.HasFlag(SpaceGridOptions.HostileMissileCircles)))
                 return;
             var pen = MissileCircles.Select(OwnShip, ship);
-            var range = (OwnShip != null && OwnShip.Nation != ship.Nation) ? SpaceExtensions.MaximumMissileRange : ship.MissleRange();
+            var range = (OwnShip != null && OwnShip.Nation != ship.Nation) ? SpaceExtensions.MaximumMissileRange : ship.MissileRange();
             WorldDrawCircle(graphics, pen, ship.S, range);
         }
 
@@ -448,13 +448,13 @@ namespace SF.Controls
     {
         None = 0,
         NoGrid = 0x01,
-        MyMissleCircles = 0x02,
-        FriendlyMissleCircles = 0x04,
-        HostileMissleCircles = 0x08,
+        MyMissileCircles = 0x02,
+        FriendlyMissileCircles = 0x04,
+        HostileMissileCircles = 0x08,
         MyVulnerableSectors = 0x10,
         FriendlyVulnerableSectors = 0x20,
         HostileVulnerableSectors = 0x40,
-        FriendlySectorsByMyMissleRange = 0x1000
+        FriendlySectorsByMyMissileRange = 0x1000
     };
 
     public class PenSet

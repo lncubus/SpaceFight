@@ -18,14 +18,14 @@ namespace SF.Space
             return Math.Abs(Math.Cos(ship.Roll));
         }
 
-        public static double MissleRange(this IShip ship)
+        public static double MissileRange(this IShip ship)
         {
-            if (string.IsNullOrEmpty(ship.MissleName))
+            if (string.IsNullOrEmpty(ship.MissileName))
                 return 0;
-            if (ship.Missle == null)
+            if (ship.Missile == null)
                 return MaximumMissileRange;
-            var t = ship.Missle.FlyTime;
-            return ship.Missle.Acceleration * t * t / 2;
+            var t = ship.Missile.FlyTime;
+            return ship.Missile.Acceleration * t * t / 2;
         }
     }
 }

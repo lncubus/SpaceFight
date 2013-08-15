@@ -24,8 +24,8 @@ namespace Gunner
             spaceGridControl.Options =
                 SpaceGridOptions.FriendlyVulnerableSectors |
                 SpaceGridOptions.HostileVulnerableSectors |
-                SpaceGridOptions.MyMissleCircles |
-                SpaceGridOptions.FriendlySectorsByMyMissleRange;
+                SpaceGridOptions.MyMissileCircles |
+                SpaceGridOptions.FriendlySectorsByMyMissileRange;
         }
 
         private IHelm helm;

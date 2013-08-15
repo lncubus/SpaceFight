@@ -3,7 +3,7 @@
 namespace SF.Space
 {
     [DataContract]
-    public class MissleDefinition
+    public class MissileDefinition
     {
         [DataMember]
         public string ClassName;
@@ -16,9 +16,9 @@ namespace SF.Space
         [DataMember]
         public Vector Speed;
 
-        public static MissleDefinition Store(IMissile missile)
+        public static MissileDefinition Store(IMissile missile)
         {
-            return new MissleDefinition
+            return new MissileDefinition
             {
                 ClassName = missile.Class.Name,
                 Nation = missile.Nation,

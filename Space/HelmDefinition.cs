@@ -28,8 +28,8 @@ namespace SF.Space
                 Nation = helm.Ship.Nation,
                 Position = helm.Ship.S,
                 Speed = helm.Ship.V,
-                MissleName = helm.Ship.MissleName,
-                MissleNumber = helm.Ship.Missles,
+                MissileName = helm.Ship.MissileName,
+                MissileNumber = helm.Ship.Missiles,
             };
         }
     }

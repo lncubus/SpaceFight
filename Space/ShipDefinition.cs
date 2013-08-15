@@ -10,9 +10,9 @@ namespace SF.Space
         [DataMember]
         public string Nation;
         [DataMember]
-        public int MissleNumber;
+        public int MissileNumber;
         [DataMember]
-        public string MissleName;
+        public string MissileName;
         [DataMember]
         public string ShipName;
         [DataMember]
@@ -38,6 +38,8 @@ namespace SF.Space
                 Nation = ship.Nation,
                 Position = ship.S,
                 Speed = ship.V,
+                MissileName = ship.MissileName,
+                MissileNumber = ship.Missiles,
             };
         }
     }

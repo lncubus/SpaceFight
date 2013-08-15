@@ -8,9 +8,9 @@ namespace SF.Space
         string Name { get; }
         string ClassName { get; }
 
-        MissleClass Missle { get; }
-        string MissleName { get; }
-        int Missles { get; }
+        MissileClass Missile { get; }
+        string MissileName { get; }
+        int Missiles { get; }
 
         double Heading { get; }
         double Roll { get; }

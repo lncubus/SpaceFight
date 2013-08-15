@@ -3,7 +3,7 @@
 namespace SF.Space
 {
     [DataContract]
-    public class MissleClass
+    public class MissileClass
     {
         [DataMember]
         public string Nation { get; set; }
