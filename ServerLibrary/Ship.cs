@@ -4,7 +4,6 @@ namespace SF.ServerLibrary
 {
     internal class Ship : IShip
     {
-        public ShipClass Class { get; set; }
         public string Nation { get; set; }
         public string Name { get; set; }
         public Dynamics Dynamics;
@@ -12,11 +11,17 @@ namespace SF.ServerLibrary
         public double Roll { get { return this.Dynamics.RollValue; } }
         public double Acceleration { get { return this.Dynamics.AccelerationValue; } }
 
-        private string m_className;
+        public ShipClass Class { get; set; }
         public string ClassName
         {
-            get { return this.Class == null ? this.m_className : this.Class.Name; }
-            set { this.m_className = value; }
+            get { return this.Class.Name; }
+        }
+
+        public MissleClass Missle { get; set; }
+        public int Missles { get; set; }
+        public string MissleName
+        {
+            get { return this.Missle.Name; }
         }
 
         public Vector S

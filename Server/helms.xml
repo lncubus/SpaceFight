@@ -1,40 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-16"?>
 <ArrayOfHelmDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <!--HelmDefinition>
-    <ClassName>Unknown</ClassName>
-    <ShipName>Quark</ShipName>
-    <Nation>Queers</Nation>
-    <Heading>2.4849358466294005</Heading>
-    <Roll>2.6889947156925316</Roll>
-    <Acceleration>0.19124684631416894</Acceleration>
-    <HeadingTo>2.4849358466294005</HeadingTo>
-    <RollTo>1.6889947156925316</RollTo>
-    <AccelerateTo>2.19124684631416894</AccelerateTo>
-    <Position X="0" Y="0" />
-    <Speed X="0" Y="0" />
-  </HelmDefinition-->
   <HelmDefinition>
     <ClassName>Unknown</ClassName>
+    <Nation>Звездное Королевство Ути-путикора</Nation>
+    <MissleNumber>6</MissleNumber>
+    <MissleName>Дротик</MissleName>
     <ShipName>Паршивец Нимитц</ShipName>
-    <Nation>Звездное Королевство Ути-путикора</Nation>
+    <Heading>0</Heading>
+    <Roll>0</Roll>
+    <Acceleration>0</Acceleration>
     <Position X="25000000" Y="0" />
+    <Speed X="0" Y="0" />
+    <HeadingTo>0</HeadingTo>
+    <RollTo>0</RollTo>
+    <AccelerateTo>0</AccelerateTo>
   </HelmDefinition>
   <HelmDefinition>
     <ClassName>Unknown</ClassName>
-    <ShipName>Звездная Шлюха</ShipName>
     <Nation>Звездное Королевство Ути-путикора</Nation>
+    <MissleNumber>2</MissleNumber>
+    <MissleName>Дротик</MissleName>
+    <ShipName>Звездная Шлюха</ShipName>
+    <Heading>0</Heading>
+    <Roll>0</Roll>
+    <Acceleration>0</Acceleration>
     <Position X="21000000" Y="5000000" />
+    <Speed X="0" Y="0" />
+    <HeadingTo>0</HeadingTo>
+    <RollTo>0</RollTo>
+    <AccelerateTo>0</AccelerateTo>
   </HelmDefinition>
   <HelmDefinition>
     <ClassName>Unknown</ClassName>
+    <Nation>Всенародная Республика Хрен Вам</Nation>
+    <MissleNumber>6</MissleNumber>
+    <MissleName>Дротик</MissleName>
     <ShipName>Командате ЧеБурашка</ShipName>
-    <Nation>Всенародная Республика Хрен Вам</Nation>
+    <Heading>0</Heading>
+    <Roll>0</Roll>
+    <Acceleration>0</Acceleration>
     <Position X="10000000" Y="0" />
+    <Speed X="0" Y="0" />
+    <HeadingTo>0</HeadingTo>
+    <RollTo>0</RollTo>
+    <AccelerateTo>0</AccelerateTo>
   </HelmDefinition>
   <HelmDefinition>
     <ClassName>Unknown</ClassName>
-    <ShipName>Кровавый Комиссар</ShipName>
     <Nation>Всенародная Республика Хрен Вам</Nation>
+    <MissleNumber>2</MissleNumber>
+    <MissleName>Дротик</MissleName>
+    <ShipName>Кровавый Комиссар</ShipName>
+    <Heading>0</Heading>
+    <Roll>0</Roll>
+    <Acceleration>0</Acceleration>
     <Position X="10000000" Y="3000000" />
+    <Speed X="0" Y="0" />
+    <HeadingTo>0</HeadingTo>
+    <RollTo>0</RollTo>
+    <AccelerateTo>0</AccelerateTo>
   </HelmDefinition>
 </ArrayOfHelmDefinition>

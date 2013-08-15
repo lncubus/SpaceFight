@@ -16,15 +16,15 @@ namespace SF.Space
         [DataMember]
         public Vector Speed;
 
-        public static MissleDefinition Store(IMissle missle)
+        public static MissleDefinition Store(IMissile missile)
         {
             return new MissleDefinition
             {
-                ClassName = missle.Class.Name,
-                Nation = missle.Nation,
-                Acceleration = missle.A,
-                Position = missle.S,
-                Speed = missle.V,
+                ClassName = missile.Class.Name,
+                Nation = missile.Nation,
+                Acceleration = missile.A,
+                Position = missile.S,
+                Speed = missile.V,
             };
         }
     }

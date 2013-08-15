@@ -10,6 +10,10 @@ namespace SF.Space
         [DataMember]
         public string Nation;
         [DataMember]
+        public int MissleNumber;
+        [DataMember]
+        public string MissleName;
+        [DataMember]
         public string ShipName;
         [DataMember]
         public double Heading;

@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Dynamics.cs" />
     <Compile Include="Helm.cs" />
-    <Compile Include="Missle.cs" />
+    <Compile Include="Missile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="SpaceServer.cs" />

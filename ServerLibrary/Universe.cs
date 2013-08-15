@@ -20,6 +20,7 @@ namespace SF.ServerLibrary
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
 
         private readonly IDictionary<string, IHelm> m_helms;
+        private readonly IList<IMissile> m_missles;
         private readonly Thread m_backgroundWorker;
 
         private string SerializeObject<T>(T instance)
@@ -65,7 +66,14 @@ namespace SF.ServerLibrary
             Catalog.Create(catalogDefinition);
             var ships = File.ReadAllText("helms.xml");
             var helms = this.DeserializeCollection<HelmDefinition>(ships);
+            foreach (var h in helms)
+            {
+                h.MissleName = "Дротик";
+                h.MissleNumber = 6;
+            }
+            File.WriteAllText("helms2.xml", this.SerializeCollection<HelmDefinition, HelmDefinition>(helms));
             m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
+            m_missles = new List<IMissile>();
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 
@@ -97,18 +105,28 @@ namespace SF.ServerLibrary
             var shipClassesByNation = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
             var shipClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
             var missleClassesByNation = Catalog.Instance.MissleClasses.Values.Where(c => c.Nation == nation);
-            //var missleClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
+            var missleClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Missle);
             return new CatalogDefinition
             {
                 ShipClasses = shipClassesByNation.Union(shipClassesByShips).Distinct().ToArray(),
-                MissleClasses = missleClassesByNation.ToArray(),
+                MissleClasses = missleClassesByNation.Union(missleClassesByShips).Distinct().ToArray(),
             };
+        }
+
+        public IHelm GetHelm(string name)
+        {
+            IHelm result;
+            if (!m_helms.TryGetValue(name, out result))
+                return null;
+            return result;
         }
 
         public IHelm GetHelm(string nation, string name)
         {
-            var helm = this.m_helms[name];
-            return helm.Ship.Nation != nation ? null : helm;
+            var helm = GetHelm(name);
+            if (helm.Ship.Nation != nation)
+                return null;
+            return helm;
         }
 
         public IEnumerable<IShip> GetVisibleShips(IHelm me)
@@ -116,9 +134,9 @@ namespace SF.ServerLibrary
             return this.m_helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
         }
 
-        public IEnumerable<IMissle> GetVisibleMissles(IHelm me)
+        public IEnumerable<IMissile> GetVisibleMissles(IHelm me)
         {
-            yield break;
+            return this.m_missles;
         }
 
         public IEnumerable<string> GetNations()
@@ -131,6 +149,16 @@ namespace SF.ServerLibrary
             return this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct();
         }
 
+        public void Fire(IShip from, bool left, string to, int number)
+        {
+            number = Math.Min(number, from.Missles);
+            var target = GetHelm(to);
+            if (from.Missle == null || target == null || number <= 0)
+                return;
+            var result = new Missile(from, left, target.Ship, number, Time);
+            m_missles.Add(result);
+        }
+
         private void TimingThreadStart()
         {
             while (true)
@@ -139,8 +167,13 @@ namespace SF.ServerLibrary
                 if (this.m_stopWatch.IsRunning)
                 {
                     double t = this.Time.TotalSeconds;
-                    foreach (var helm in this.m_helms.Values)
+                    foreach (var helm in m_helms.Values)
                         ((Ship)helm.Ship).Dynamics.UpdateTime(t);
+                    foreach (Missile missle in m_missles)
+                        missle.UpdateTime(t);
+                    var deleted = m_missles.Where(missle => missle.IsDead);
+                    foreach (var missle in deleted)
+                        m_missles.Remove(missle);
                 }
             }
         }

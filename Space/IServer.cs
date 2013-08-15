@@ -34,5 +34,8 @@ namespace SF.Space
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void SetAccelerateTo(double value);
+
+        [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
+        void Fire(bool left, string to, int number);
     }
 }

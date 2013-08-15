@@ -14,13 +14,13 @@ namespace SF.Space
         public ShipClass GetShipClass(string name)
         {
             ShipClass result;
-            return ShipClasses.TryGetValue(name, out result) ? result : null;
+            return !string.IsNullOrEmpty(name) && ShipClasses.TryGetValue(name, out result) ? result : null;
         }
 
         public MissleClass GetMissleClass(string name)
         {
             MissleClass result;
-            return MissleClasses.TryGetValue(name, out result) ? result : null;
+            return !string.IsNullOrEmpty(name) && MissleClasses.TryGetValue(name, out result) ? result : null;
         }
 
         private Catalog(CatalogDefinition def)

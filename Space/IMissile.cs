@@ -1,14 +1,15 @@
-﻿using System;
-namespace SF.Space
+﻿namespace SF.Space
 {
-    public interface IMissle
+    public interface IMissile
     {
         MissleClass Class { get; }
         string Nation { get; }
         string ClassName { get; }
+        bool IsDead { get; }
 
         Vector S { get; }
         Vector V { get; }
         Vector A { get; }
+
     }
 }

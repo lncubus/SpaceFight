@@ -24,10 +24,12 @@ namespace SF.Space
                 Heading = helm.Ship.Heading,
                 Roll = helm.Ship.Roll,
                 ShipName = helm.Ship.Name,
-                ClassName = helm.Ship.Class.Name,
+                ClassName = helm.Ship.ClassName,
                 Nation = helm.Ship.Nation,
                 Position = helm.Ship.S,
                 Speed = helm.Ship.V,
+                MissleName = helm.Ship.MissleName,
+                MissleNumber = helm.Ship.Missles,
             };
         }
     }

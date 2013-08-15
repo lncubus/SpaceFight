@@ -8,7 +8,18 @@
       <FullAccelerationTime>15</FullAccelerationTime>
       <RoundRollTime>60</RoundRollTime>
       <FullTurnTime>120</FullTurnTime>
-      <MissleRange>7500000</MissleRange>
     </ShipClass>
   </ShipClasses>
+  <MissleClasses>
+    <MissleClass>
+      <Nation>Undefined</Nation>
+      <Name>Дротик</Name>
+      <Acceleration>10000</Acceleration>
+      <FlyTime>30</FlyTime>
+      <Targeting>3</Targeting>
+      <HitDistance>3000</HitDistance>
+      <Damage>1</Damage>
+      <JammerResistance>0</JammerResistance>
+    </MissleClass>
+  </MissleClasses>
 </Catalog>

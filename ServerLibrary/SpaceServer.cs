@@ -80,5 +80,10 @@ namespace SF.ServerLibrary
                 value = this.m_helm.Ship.Class.MaximumAcceleration;
             this.m_helm.AccelerateTo = value;
         }
+
+        public void Fire(bool left, string to, int number)
+        {
+            Instance.Fire(m_helm.Ship, left, to, number);
+        }
     }
 }

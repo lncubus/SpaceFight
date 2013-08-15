@@ -12,9 +12,6 @@ namespace SF.Controls
     public class SpaceGridControl : RoundControl
     {
         public const double DefaultScale = 1E6;
-        public const double MaximumMissleRange = 10000000;
-        public const double ThroatAngle = 45 * Math.PI / 180;
-        public const double SkirtAngle = 15 * Math.PI / 180;
         //public const double BoardMedianAngle = (Math.PI - SkirtAngle / 2  + ThroatAngle / 2) / 2;
         //public const double BoardSweepAngle = (Math.PI - (SkirtAngle + ThroatAngle) / 2);
 
@@ -29,7 +26,7 @@ namespace SF.Controls
                 Hostile = Pens.DarkGray,
             };
 
-        public readonly PenSet MissleCircles =
+        public readonly PenSet MissileCircles =
             new PenSet
             {
                 My = Pens.Navy,
@@ -132,7 +129,53 @@ namespace SF.Controls
 
         public readonly List<Curve> Curves = new List<Curve>();
 
-        public Point WorldToDevice(Graphics g, Vector v)
+        private IShip m_selectedShip;
+        public IShip SelectedShip
+        {
+            get
+            {
+                return m_selectedShip;
+            }
+            set
+            {
+                if (m_selectedShip == value)
+                    return;
+                m_selectedShip = value;
+                Invalidate();
+            }
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            SelectedShip = SelectShip(e.Location);
+            base.OnMouseClick(e);
+        }
+
+        private IShip SelectShip(Point point)
+        {
+            Graphics g = this.CreateGraphics();
+            var p = this.DeviceToWorld(g, point);
+            var ships = Ships.ToList();
+            if (OwnShip != null)
+                ships.Add(OwnShip);
+            if (ships.Count == 0)
+                return null;
+            ships = ships.Where(ship => (ship.S - p).Length < WorldScale / 2).ToList();
+            if (ships.Count == 0)
+                return null;
+            if (ships.Count == 1)
+                return ships.First();
+            ships.Sort((a, b) => (a.S - p).SquareLength.CompareTo((b.S - p).SquareLength));
+            if (SelectedShip == null)
+                return ships.First();
+            var i = ships.IndexOf(SelectedShip);
+            if (i < 0)
+                return ships.First();
+            i = (i + 1) % ships.Count;
+            return ships[i];
+        }
+
+        public PointF WorldToDevice(Graphics g, Vector v)
         {
             var p = ((v - Origin) / WorldScale).Rotate(-Rotation);
             p.X *= g.DpiX;
@@ -142,17 +185,26 @@ namespace SF.Controls
             var radius = Math.Max(Math.Abs(p.X), Math.Abs(p.Y));
             if (radius >= IntegerMaxValue)
                 p = p * IntegerMaxValue / radius;
-            return new Point((int)p.X, (int)p.Y);
+            return new PointF((float)p.X, (float)p.Y);
         }
 
-        private int WorldToDevice(float dpi, double x)
+        public Vector DeviceToWorld(Graphics g, Point p)
+        {
+            return new Vector
+            {
+                X = (p.X - m_center.X) / g.DpiX,
+                Y = -(p.Y - m_center.Y) / g.DpiY,
+            }.Rotate(Rotation) * WorldScale + Origin;
+        }
+
+        private float WorldToDevice(float dpi, double x)
         {
             var result = x * dpi / WorldScale;
             if (result <= IntegerMinValue)
                 return IntegerMinValue;
             if (result >= IntegerMaxValue)
                 return IntegerMaxValue;
-            return (int)result;
+            return (float)result;
         }
 
         protected override void DrawBackgroound(PaintEventArgs e)
@@ -231,18 +283,20 @@ namespace SF.Controls
             DrawGridLines(e.Graphics);
             foreach (var c in Curves)
                 DrawCurve(e.Graphics, c);
-            if (OwnShip != null)
-                DrawShip(e.Graphics, OwnShip);
             if (Ships != null && Ships.Count > 0)
                 foreach (var ship in Ships)
                     DrawShip(e.Graphics, ship);
+            if (OwnShip != null)
+                DrawShip(e.Graphics, OwnShip);
+            if (SelectedShip != null)
+                DrawShipSelection(e.Graphics, SelectedShip);
         }
 
         private void DrawCurve(Graphics graphics, Curve curve)
         {
             if (curve.Count == 0)
                 return;
-            var points = new List<Point>();
+            var points = new List<PointF>();
             foreach (var p in curve)
             {
                 var q = WorldToDevice(graphics, p);
@@ -260,19 +314,24 @@ namespace SF.Controls
             {
                 var q = points[0];
                 points.Clear();
-                points.Add(new Point(q.X + 4, q.Y));
-                points.Add(new Point(q.X, q.Y + 4));
-                points.Add(new Point(q.X - 4, q.Y));
-                points.Add(new Point(q.X, q.Y - 4));
+                points.Add(new PointF(q.X + 4, q.Y));
+                points.Add(new PointF(q.X, q.Y + 4));
+                points.Add(new PointF(q.X - 4, q.Y));
+                points.Add(new PointF(q.X, q.Y - 4));
                 graphics.DrawPolygon(curve.Pencil, points.ToArray());
             }
+        }
+
+        private bool IsVisible(PointF[] points)
+        {
+            return points.Any(p => m_client.Contains((int)p.X, (int)p.Y));
         }
 
         private void DrawShip(Graphics graphics, IShip ship)
         {
             DrawShipHull(graphics, ship);
             if (ship.Board() > 0.5)
-                DrawMissleCircle(graphics, ship);
+                DrawMissileCircle(graphics, ship);
             DrawVulnerableSectors(graphics, ship);
             DrawShipWedge(graphics, ship);
         }
@@ -283,19 +342,19 @@ namespace SF.Controls
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
             bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
-            var range = (isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null && OwnShip.Class == null) ?
-                MaximumMissleRange : OwnShip.Class.MissleRange;
+            var range = (isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
+                SpaceExtensions.MaximumMissileRange : this.OwnShip.MissleRange();
             if (Options.HasFlag(SpaceGridOptions.FriendlySectorsByMyMissleRange) && OwnShip != null && OwnShip.Class != null)
-                range = OwnShip.Class.MissleRange;
+                range = OwnShip.MissleRange();
             if ((isMyShip && !Options.HasFlag(SpaceGridOptions.MyVulnerableSectors)) ||
                 (isFriendlyShip && !Options.HasFlag(SpaceGridOptions.FriendlyVulnerableSectors)) ||
                 (isHostileShip && !Options.HasFlag(SpaceGridOptions.HostileVulnerableSectors)))
                 return;
-            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading, ThroatAngle);
-            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading - Math.PI, SkirtAngle);
+            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading, SpaceExtensions.ThroatAngle);
+            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading - Math.PI, SpaceExtensions.SkirtAngle);
         }
 
-        private void DrawMissleCircle(Graphics graphics, IShip ship)
+        private void DrawMissileCircle(Graphics graphics, IShip ship)
         {
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
@@ -304,11 +363,26 @@ namespace SF.Controls
                 (isFriendlyShip && !Options.HasFlag(SpaceGridOptions.FriendlyMissleCircles)) ||
                 (isHostileShip && !Options.HasFlag(SpaceGridOptions.HostileMissleCircles)))
                 return;
-            var pen = MissleCircles.Select(OwnShip, ship);
-            var range = (ship.Class == null || (OwnShip != null && OwnShip.Nation != ship.Nation)) ? MaximumMissleRange : ship.Class.MissleRange;
+            var pen = MissileCircles.Select(OwnShip, ship);
+            var range = (OwnShip != null && OwnShip.Nation != ship.Nation) ? SpaceExtensions.MaximumMissileRange : ship.MissleRange();
             WorldDrawCircle(graphics, pen, ship.S, range);
         }
 
+        private void DrawShipSelection(Graphics graphics, IShip ship)
+        {
+            float size = 1.0F / 4;
+            var pen = BlackPen;
+            var position = WorldToDevice(graphics, ship.S);
+            var rect = new RectangleF
+            {
+                X = position.X - size * graphics.DpiX,
+                Y = position.Y - size * graphics.DpiY,
+                Width = 2 * size * graphics.DpiX,
+                Height = 2 * size * graphics.DpiY,
+            };
+            graphics.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+        
         private void DrawShipWedge(Graphics graphics, IShip ship)
         {
             if (ship.Board() > 0.5)
@@ -322,8 +396,7 @@ namespace SF.Controls
                     WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading - Math.PI * 11 / 12) * size),
                     WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading - Math.PI / 4) * size),
                 };
-            bool visible = points.Any(p => m_client.Contains(p));
-            if (!visible)
+            if (!IsVisible(points))
                 return;
             graphics.DrawLine(pen, points[0], points[1]);
             graphics.DrawLine(pen, points[2], points[3]);
@@ -340,8 +413,7 @@ namespace SF.Controls
                     WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading + alpha) * size),
                     WorldToDevice(graphics, ship.S + Vector.Direction(ship.Heading - alpha) * size),
                 };
-            bool visible = points.Any(p => m_client.Contains(p));
-            if (!visible)
+            if (!IsVisible(points))
                 return;
             graphics.DrawPolygon(pen, points);
         }

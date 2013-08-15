@@ -1,11 +1,11 @@
 ﻿using SF.Space;
 namespace SF.ClientLibrary
 {
-    internal class RemoteMissle : IMissle
+    internal class RemoteMissile : IMissile
     {
         private MissleDefinition m_that;
 
-        public RemoteMissle(MissleDefinition def)
+        public RemoteMissile(MissleDefinition def)
         {
             this.m_that = def;
         }
@@ -46,6 +46,11 @@ namespace SF.ClientLibrary
         public Vector A
         {
             get { return m_that.Acceleration; }
+        }
+
+        public bool IsDead
+        {
+            get { return false; }
         }
     }
 }

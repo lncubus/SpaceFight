@@ -40,6 +40,21 @@ namespace SF.ClientLibrary
             get { return this.m_that.ClassName; }
         }
 
+        public MissleClass Missle
+        {
+            get { return Catalog.Instance.GetMissleClass(m_that.MissleName); }
+        }
+
+        public string MissleName
+        {
+            get { return this.m_that.MissleName; }
+        }
+
+        public int Missles
+        {
+            get { return m_that.MissleNumber; }
+        }
+
         public double Heading
         {
             get { return this.m_that.Heading; }

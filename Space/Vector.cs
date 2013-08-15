@@ -58,6 +58,18 @@ namespace SF.Space
             }
         }
 
+        [XmlIgnore]
+        public double Argument
+        {
+            get
+            {
+                // this order, see Direction
+                if (Length <= MathUtils.Epsilon)
+                    return 0;
+                return Math.Atan2(X, Y);
+            }
+        }
+
         public Vector Rotate(double theta)
         {
             return new Vector

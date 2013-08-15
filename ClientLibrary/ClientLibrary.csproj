@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteHelm.cs" />
-    <Compile Include="RemoteMissle.cs" />
+    <Compile Include="RemoteMissile.cs" />
     <Compile Include="RemoteShip.cs" />
     <Compile Include="SpaceClient.cs" />
   </ItemGroup>
