@@ -171,7 +171,7 @@ namespace SF.ServerLibrary
                         ((Ship)helm.Ship).Dynamics.UpdateTime(t);
                     foreach (Missile missile in m_missiles)
                         missile.UpdateTime(t);
-                    var deleted = m_missiles.Where(missile => missile.IsDead);
+                    var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
                     foreach (var missile in deleted)
                         m_missiles.Remove(missile);
                 }

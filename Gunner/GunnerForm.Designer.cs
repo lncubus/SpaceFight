@@ -32,9 +32,13 @@
             System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.panelFire = new System.Windows.Forms.Panel();
+            this.checkBoxFriendlyFire = new System.Windows.Forms.CheckBox();
+            this.buttonFire = new System.Windows.Forms.Button();
             this.spaceGridControl = new SF.Controls.SpaceGridControl();
             this.scaleControl = new SF.Controls.ScaleControl();
             this.tableLayoutPanel.SuspendLayout();
+            this.panelFire.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerUpdate
@@ -49,6 +53,7 @@
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel.Controls.Add(this.spaceGridControl, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.scaleControl, 1, 0);
+            this.tableLayoutPanel.Controls.Add(this.panelFire, 1, 1);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -57,6 +62,43 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(792, 573);
             this.tableLayoutPanel.TabIndex = 0;
+            // 
+            // panelFire
+            // 
+            this.panelFire.Controls.Add(this.buttonFire);
+            this.panelFire.Controls.Add(this.checkBoxFriendlyFire);
+            this.panelFire.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelFire.Location = new System.Drawing.Point(540, 38);
+            this.panelFire.Name = "panelFire";
+            this.panelFire.Size = new System.Drawing.Size(249, 532);
+            this.panelFire.TabIndex = 4;
+            // 
+            // checkBoxFriendlyFire
+            // 
+            this.checkBoxFriendlyFire.AutoSize = true;
+            this.checkBoxFriendlyFire.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBoxFriendlyFire.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxFriendlyFire.Name = "checkBoxFriendlyFire";
+            this.checkBoxFriendlyFire.Size = new System.Drawing.Size(249, 17);
+            this.checkBoxFriendlyFire.TabIndex = 0;
+            this.checkBoxFriendlyFire.Text = "Разрешить огонь по своим";
+            this.checkBoxFriendlyFire.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBoxFriendlyFire.UseVisualStyleBackColor = true;
+            this.checkBoxFriendlyFire.CheckedChanged += new System.EventHandler(this.checkBoxFriendlyFire_CheckedChanged);
+            // 
+            // buttonFire
+            // 
+            this.buttonFire.BackColor = System.Drawing.Color.Maroon;
+            this.buttonFire.Dock = System.Windows.Forms.DockStyle.Top;
+            this.buttonFire.Enabled = false;
+            this.buttonFire.ForeColor = System.Drawing.Color.White;
+            this.buttonFire.Location = new System.Drawing.Point(0, 17);
+            this.buttonFire.Name = "buttonFire";
+            this.buttonFire.Size = new System.Drawing.Size(249, 23);
+            this.buttonFire.TabIndex = 1;
+            this.buttonFire.Text = "Залп";
+            this.buttonFire.UseVisualStyleBackColor = false;
+            this.buttonFire.Click += new System.EventHandler(this.buttonFire_Click);
             // 
             // spaceGridControl
             // 
@@ -73,9 +115,13 @@
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
             this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 2);
+            this.spaceGridControl.SelectedShip = null;
             this.spaceGridControl.Size = new System.Drawing.Size(531, 567);
+            this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 1;
             this.spaceGridControl.WorldScale = 2000000D;
+            this.spaceGridControl.Click += new System.EventHandler(this.spaceGridControl_Click);
+            this.spaceGridControl.DoubleClick += new System.EventHandler(this.spaceGridControl_DoubleClick);
             // 
             // scaleControl
             // 
@@ -100,6 +146,8 @@
             this.Name = "GunnerForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tableLayoutPanel.ResumeLayout(false);
+            this.panelFire.ResumeLayout(false);
+            this.panelFire.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -110,6 +158,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private SF.Controls.SpaceGridControl spaceGridControl;
         private SF.Controls.ScaleControl scaleControl;
+        private System.Windows.Forms.Panel panelFire;
+        private System.Windows.Forms.Button buttonFire;
+        private System.Windows.Forms.CheckBox checkBoxFriendlyFire;
     }
 }
 

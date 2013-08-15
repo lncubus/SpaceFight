@@ -14,6 +14,7 @@ namespace SF.ClientLibrary
         private readonly ChannelFactory<IServer> Factory;
         private IDictionary<string, RemoteShip> Ships;
         private RemoteHelm Helm;
+        private IList<RemoteMissile> Missiles;
 
         public SpaceClient()
         {
@@ -28,6 +29,7 @@ namespace SF.ClientLibrary
                 this.Client.Logout();
             this.Factory.Close();
             this.Ships = null;
+            this.Missiles = null;
             this.Helm = null;
         }
 
@@ -58,6 +60,11 @@ namespace SF.ClientLibrary
             return this.Ships.Values;
         }
 
+        public IEnumerable<IMissile> GetVisibleMissiles()
+        {
+            return this.Missiles;
+        }
+
         public void Update()
         {
             var view = this.Client.GetView();
@@ -67,6 +74,12 @@ namespace SF.ClientLibrary
                     this.Ships[ship.ShipName].Update(ship);
                 else
                     this.Ships.Add(ship.ShipName, new RemoteShip(ship));
+            Missiles = view.Missiles.Select(def => new RemoteMissile(def)).ToList();
+        }
+
+        public void Fire(IShip ship)
+        {
+            Client.Fire(true, ship.Name, 1);
         }
     }
 }

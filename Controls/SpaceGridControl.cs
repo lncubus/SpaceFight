@@ -121,6 +121,7 @@ namespace SF.Controls
 
         public IShip OwnShip;
         public ICollection<IShip> Ships;
+        public ICollection<IMissile> Missiles;
 
         public class Curve : List<Vector>
         {
@@ -283,6 +284,9 @@ namespace SF.Controls
             DrawGridLines(e.Graphics);
             foreach (var c in Curves)
                 DrawCurve(e.Graphics, c);
+            if (Missiles != null && Missiles.Count > 0)
+                foreach (var missile in Missiles)
+                    DrawMissile(e.Graphics, missile);
             if (Ships != null && Ships.Count > 0)
                 foreach (var ship in Ships)
                     DrawShip(e.Graphics, ship);
@@ -416,6 +420,28 @@ namespace SF.Controls
             if (!IsVisible(points))
                 return;
             graphics.DrawPolygon(pen, points);
+        }
+
+        private void DrawMissile(Graphics graphics, IMissile missile)
+        {
+            //const double alpha = Math.PI * 11 / 12;
+            double size = WorldScale / 6;// / 8;
+            var pen = SignalPen;
+                //OwnShip != null && missile.Nation == OwnShip.Nation ? ShipHulls.Friendly : ShipHulls.Hostile;
+            var a = missile.A;
+            if (a.Length > MathUtils.Epsilon)
+                a.Length = size;
+            var points = new[]
+                {
+                    WorldToDevice(graphics, missile.S),
+                    WorldToDevice(graphics, missile.S + a),
+                    WorldToDevice(graphics, missile.S + a.Rotate(Math.PI/2) / 3),
+                    WorldToDevice(graphics, missile.S - a.Rotate(Math.PI/2) / 3),
+                };
+            if (!IsVisible(points))
+                return;
+            graphics.DrawLine(pen, points[0], points[1]);
+            graphics.DrawLine(pen, points[2], points[3]);
         }
 
         private void WorldDrawCircle(Graphics graphics, Pen pen, Vector origin, double radius)

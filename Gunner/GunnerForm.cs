@@ -68,12 +68,48 @@ namespace Gunner
             var s = helm.Ship.S;
             var h = helm.Ship.Heading;
             spaceGridControl.Origin = s;
-            spaceGridControl.Rotation = h; 
+            spaceGridControl.Rotation = h;
+            spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)
         {
             spaceGridControl.WorldScale = scaleControl.Value;
+        }
+
+        private void spaceGridControl_Click(object sender, EventArgs e)
+        {
+            CheckCanFire();
+        }
+
+        private void checkBoxFriendlyFire_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckCanFire();
+        }
+
+        private void buttonFire_Click(object sender, EventArgs e)
+        {
+            Fire();
+        }
+
+        private void spaceGridControl_DoubleClick(object sender, EventArgs e)
+        {
+            if (buttonFire.Enabled)
+                buttonFire.PerformClick();
+        }
+
+        private void CheckCanFire()
+        {
+            var ship = spaceGridControl.SelectedShip;
+            buttonFire.Enabled = ship != null && ship != helm.Ship &&
+                (ship.Nation != helm.Ship.Nation || checkBoxFriendlyFire.Checked);
+        }
+
+        private void Fire()
+        {
+            var ship = spaceGridControl.SelectedShip;
+            if (ship != null)
+                client.Fire(ship);
         }
     }
 }
