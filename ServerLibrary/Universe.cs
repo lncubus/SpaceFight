@@ -66,12 +66,6 @@ namespace SF.ServerLibrary
             Catalog.Create(catalogDefinition);
             var ships = File.ReadAllText("helms.xml");
             var helms = this.DeserializeCollection<HelmDefinition>(ships);
-            foreach (var h in helms)
-            {
-                h.MissileName = "Дротик";
-                h.MissileNumber = 6;
-            }
-            File.WriteAllText("helms2.xml", this.SerializeCollection<HelmDefinition, HelmDefinition>(helms));
             m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
             m_missiles = new List<IMissile>();
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
