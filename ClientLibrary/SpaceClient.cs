@@ -77,9 +77,9 @@ namespace SF.ClientLibrary
             Missiles = view.Missiles.Select(def => new RemoteMissile(def)).ToList();
         }
 
-        public void Fire(IShip ship)
+        public void Fire(IShip ship, bool left)
         {
-            Client.Fire(true, ship.Name, 1);
+            Client.Fire(left, ship.Name, 1);
         }
     }
 }
