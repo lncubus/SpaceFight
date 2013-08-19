@@ -41,7 +41,7 @@ namespace SF.Controls
         public CompassControl()
         {
             InitializeComponent();
-            SupportPen = Pens.DarkKhaki;
+            SupportPen = Pens.MediumSeaGreen;
         }
 
         private int Gold(int n)

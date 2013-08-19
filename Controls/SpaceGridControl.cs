@@ -42,6 +42,14 @@ namespace SF.Controls
                 Hostile = Pens.Firebrick,
             };
 
+        public readonly BrushSet ShipNames =
+            new BrushSet
+            {
+                My = Brushes.Black,
+                Friendly = Brushes.Navy,
+                Hostile = Brushes.Firebrick,
+            };
+
         /// <summary>
         /// Kilometers per inch
         /// </summary>
@@ -148,8 +156,6 @@ namespace SF.Controls
                     handler(this, EventArgs.Empty);
             }
         }
-
-
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
@@ -331,6 +337,11 @@ namespace SF.Controls
             }
         }
 
+        private bool IsVisible(PointF point)
+        {
+            return m_client.Contains((int)point.X, (int)point.Y);
+        }
+
         private bool IsVisible(PointF[] points)
         {
             return points.Any(p => m_client.Contains((int)p.X, (int)p.Y));
@@ -338,11 +349,13 @@ namespace SF.Controls
 
         private void DrawShip(Graphics graphics, IShip ship)
         {
-            DrawShipHull(graphics, ship);
-            if (ship.Board() > 0.5)
-                DrawMissileCircle(graphics, ship);
             DrawVulnerableSectors(graphics, ship);
             DrawShipWedge(graphics, ship);
+            if (ship.Board() > 0.5)
+                DrawMissileCircle(graphics, ship);
+            DrawShipHull(graphics, ship);
+            var brush = ShipNames.Select(OwnShip, ship);
+            WorldDrawText(graphics, brush, ship.S, ship.Name);
         }
 
         private void DrawVulnerableSectors(Graphics graphics, IShip ship)
@@ -449,6 +462,13 @@ namespace SF.Controls
             graphics.DrawLine(pen, points[2], points[3]);
         }
 
+        private void WorldDrawText(Graphics graphics, Brush brush, Vector origin, string text)
+        {
+            var p = WorldToDevice(graphics, origin);
+            if (IsVisible(p))
+            graphics.DrawString(text, Font, brush, p);
+        }
+
         private void WorldDrawCircle(Graphics graphics, Pen pen, Vector origin, double radius)
         {
             var rx = WorldToDevice(graphics.DpiX, radius);
@@ -496,6 +516,25 @@ namespace SF.Controls
         public Pen Hostile { get; set; }
 
         public Pen Select(IShip OwnShip, IShip ship)
+        {
+            if (ship == OwnShip)
+                return My;
+            if (OwnShip != null && ship.Nation == OwnShip.Nation)
+                return Friendly;
+            if (OwnShip != null && ship.Nation != OwnShip.Nation)
+                return Hostile;
+            return Default;
+        }
+    }
+
+    public class BrushSet
+    {
+        public Brush Default = Brushes.Black;
+        public Brush My { get; set; }
+        public Brush Friendly { get; set; }
+        public Brush Hostile { get; set; }
+
+        public Brush Select(IShip OwnShip, IShip ship)
         {
             if (ship == OwnShip)
                 return My;
