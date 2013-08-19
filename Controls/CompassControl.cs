@@ -12,9 +12,13 @@ namespace SF.Controls
     {
         private int m_heading;
         private int m_headingTo;
+        private int m_secondary;
 
         public event EventHandler OnHeadingChanged;
         public event EventHandler OnHeadingToChanged;
+        public event EventHandler OnSecondaryChanged;
+
+        public Pen SupportPen { get; set; }
 
         public int Heading
         {
@@ -28,9 +32,16 @@ namespace SF.Controls
 			set { ChangeValue(ref m_headingTo, Modulo(value, 360), OnHeadingToChanged); }
 		}
 
+        public int Secondary
+        {
+            get { return m_secondary; }
+            set { ChangeValue(ref m_secondary, value, OnSecondaryChanged); }
+        }
+
         public CompassControl()
         {
             InitializeComponent();
+            SupportPen = Pens.DarkKhaki;
         }
 
         private int Gold(int n)
@@ -80,6 +91,7 @@ namespace SF.Controls
             e.Graphics.DrawString("W", Font, BlackInk, GetXY(m_smallRadius, -90), CenteredLayout);
             e.Graphics.DrawString("S", Font, BlackInk, GetXY(m_smallRadius, 180), CenteredLayout);
             e.Graphics.DrawString("E", Font, BlackInk, GetXY(m_smallRadius, 90), CenteredLayout);
+            DrawArrow(e.Graphics, SupportPen, m_bigRadius, m_bigRadius, Secondary, 174);
             DrawArrow(e.Graphics, NavyPen, m_bigRadius, m_bigRadius, Heading, 170);
             DrawArrow(e.Graphics, SignalPen, m_bigRadius, m_halfSize, HeadingTo, 10);
         }

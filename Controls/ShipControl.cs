@@ -64,6 +64,10 @@ namespace SF.Controls
                     Ship.Class == null ? 0 : 
                         (int)MathUtils.LimitedLinear(accelerationProgressBar.Minimum, accelerationProgressBar.Maximum, Ship.Acceleration / Ship.Class.MaximumAcceleration);
                 headingControl.Heading = MathUtils.ToDegreesInt(Ship.Heading);
+                if (Ship.V.Length > MathUtils.Epsilon)
+                    headingControl.Secondary = MathUtils.ToDegreesInt(Ship.V.Argument);
+                else
+                    headingControl.Secondary = MathUtils.ToDegreesInt(Ship.Heading);
                 rollControl.Roll = MathUtils.ToDegreesInt(Ship.Roll);
             }
             else
