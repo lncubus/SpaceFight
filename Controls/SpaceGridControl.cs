@@ -130,6 +130,8 @@ namespace SF.Controls
 
         public readonly List<Curve> Curves = new List<Curve>();
 
+        public event EventHandler ShipSelected;
+
         private IShip m_selectedShip;
         public IShip SelectedShip
         {
@@ -139,12 +141,15 @@ namespace SF.Controls
             }
             set
             {
-                if (m_selectedShip == value)
-                    return;
                 m_selectedShip = value;
                 Invalidate();
+                var handler = ShipSelected;
+                if (handler != null)
+                    handler(this, EventArgs.Empty);
             }
         }
+
+
 
         protected override void OnMouseClick(MouseEventArgs e)
         {

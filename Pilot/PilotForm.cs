@@ -70,6 +70,7 @@ namespace Pilot
         private void GetData()
         {
             spaceGridControl.Ships = client.GetVisibleShips().ToList();
+            spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
             var s = helm.Ship.S;
             var v = helm.Ship.V;
             spaceGridControl.Origin = s;

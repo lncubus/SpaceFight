@@ -30,6 +30,7 @@ namespace Gunner
 
         private IHelm helm;
         private SF.ClientLibrary.SpaceClient client;
+        private bool m_left;
 
         private void Login()
         {
@@ -65,11 +66,11 @@ namespace Gunner
         private void GetData()
         {
             spaceGridControl.Ships = client.GetVisibleShips().ToList();
+            spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
             var s = helm.Ship.S;
             var h = helm.Ship.Heading;
             spaceGridControl.Origin = s;
             spaceGridControl.Rotation = h;
-            spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)
@@ -77,7 +78,7 @@ namespace Gunner
             spaceGridControl.WorldScale = scaleControl.Value;
         }
 
-        private void spaceGridControl_Click(object sender, EventArgs e)
+        private void spaceGridControl_ShipSelected(object sender, EventArgs e)
         {
             CheckCanFire();
         }
@@ -101,15 +102,20 @@ namespace Gunner
         private void CheckCanFire()
         {
             var ship = spaceGridControl.SelectedShip;
-            buttonFire.Enabled = ship != null && ship != helm.Ship &&
-                (ship.Nation != helm.Ship.Nation || checkBoxFriendlyFire.Checked);
+            bool okay = ship != null && ship != helm.Ship && (ship.Nation != helm.Ship.Nation || checkBoxFriendlyFire.Checked);
+            buttonFire.Enabled = okay;
+            labelBoard.Visible = okay;
+            if (!okay)
+                return;
+            m_left = Math.Sin((ship.S - helm.Ship.S).Argument - helm.Ship.Heading) < 0;
+            labelBoard.Text = m_left ? "Левый борт" : "Правый борт";
         }
 
         private void Fire()
         {
             var ship = spaceGridControl.SelectedShip;
             if (ship != null)
-                client.Fire(ship);
+                client.Fire(ship, m_left);
         }
     }
 }
