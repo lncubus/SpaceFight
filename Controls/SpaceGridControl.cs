@@ -18,6 +18,12 @@ namespace SF.Controls
         public const int IntegerMaxValue = (int.MaxValue / 8) * 7;
         public const int IntegerMinValue = (int.MinValue / 8) * 7;
 
+        public PointF TextMisplacement = new PointF
+        {
+            X = 1.0F/8,
+            Y = 1.0F/12,
+        };
+
         public readonly PenSet VulnerableSectors =
             new PenSet
             {
@@ -465,6 +471,11 @@ namespace SF.Controls
         private void WorldDrawText(Graphics graphics, Brush brush, Vector origin, string text)
         {
             var p = WorldToDevice(graphics, origin);
+            p = new PointF
+            {
+                X = p.X + TextMisplacement.X * graphics.DpiX,
+                Y = p.Y + TextMisplacement.Y * graphics.DpiY,
+            };
             if (IsVisible(p))
             graphics.DrawString(text, Font, brush, p);
         }
