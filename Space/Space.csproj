@@ -50,6 +50,7 @@
     <Compile Include="ShipDefinition.cs" />
     <Compile Include="SpaceExtensions.cs" />
     <Compile Include="HelmDefinition.cs" />
+    <Compile Include="Star.cs" />
     <Compile Include="Vector.cs" />
     <Compile Include="IShip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
