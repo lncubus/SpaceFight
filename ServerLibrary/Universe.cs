@@ -20,6 +20,7 @@ namespace SF.ServerLibrary
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
 
         private readonly IDictionary<string, IHelm> m_helms;
+        private readonly IDictionary<string, Star> m_stars;
         private readonly IList<IMissile> m_missiles;
         private readonly Thread m_backgroundWorker;
 
@@ -68,6 +69,28 @@ namespace SF.ServerLibrary
             var helms = this.DeserializeCollection<HelmDefinition>(ships);
             m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
             m_missiles = new List<IMissile>();
+            m_stars = new Dictionary<string, Star>();
+            for (int i = 0; i < 4; i++)
+            {
+                var r = (50 + 100 * Random.NextDouble());
+                var a = 2 * Math.PI * Random.NextDouble();
+                // r^3 ~ T^2  T = 2pi r / v  => r ~ v^-2 => v ~ (1/r)^2
+                // acc ~ (1/r)^2, acc = v^2 / r => v ~ (1/r)^2
+                var v = 30 / Math.Sqrt(r/150);
+                r *= 1E6;
+                var s = new Star
+                {
+                    Name = "Alessa-" + ('a' + i),
+                    Nation = null,
+                    Radius = (Random.NextDouble() + Random.NextDouble() + Random.NextDouble() + Random.NextDouble()) * 5000,
+                    Position = Vector.Direction(a) * r,
+                    Speed = Vector.Direction(a + Math.PI / 2) * v,
+                    StarClass = StarType.Planet,
+                };
+                m_stars.Add(s.Name, s);
+            }
+            var stars = SerializeCollection<Star, Star>(m_stars.Values);
+            File.WriteAllText("stars.xml", stars);
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 

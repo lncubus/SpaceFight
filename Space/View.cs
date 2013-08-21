@@ -20,5 +20,8 @@ namespace SF.Space
 
         [DataMember]
         public MissileDefinition[] Missiles { get; set; }
+
+        [DataMember]
+        public Star[] Stars { get; set; }
     }
 }

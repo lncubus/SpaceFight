@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfStar xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Star>
+    <Name>Алесса-a</Name>
+    <Radius>11200</Radius>
+    <Position X="110035169" Y="81783497" />
+    <Speed X="18.72" Y="-25.19" />
+    <StarClass>Planet</StarClass>
+  </Star>
+  <Star>
+    <Name>Алесса-b</Name>
+    <Radius>13000</Radius>
+    <Position X="4267778" Y="-54612995" />
+    <Speed X="-49.49" Y="-3.87" />
+    <StarClass>Planet</StarClass>
+  </Star>
+  <Star>
+    <Name>Алесса-с</Name>
+    <Radius>10400</Radius>
+    <Position X="-11622679" Y="131394698" />
+    <Speed X="31.87" Y="2.82" />
+    <StarClass>Planet</StarClass>
+  </Star>
+  <Star>
+    <Name>Алесса-d</Name>
+    <Radius>8800</Radius>
+    <Position X="-73806395" Y="101445189" />
+    <Speed X="26.53" Y="19.30" />
+    <StarClass>Planet</StarClass>
+  </Star>
+</ArrayOfStar>
