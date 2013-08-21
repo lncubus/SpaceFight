@@ -15,6 +15,7 @@ namespace SF.ClientLibrary
         private IDictionary<string, RemoteShip> Ships;
         private RemoteHelm Helm;
         private IList<RemoteMissile> Missiles;
+        private IDictionary<string, Star> Stars;
 
         public SpaceClient()
         {
@@ -48,6 +49,8 @@ namespace SF.ClientLibrary
             var view = this.Client.GetView();
             this.Helm = new RemoteHelm(this.Client, view.Helm);
             this.Ships = view.Ships.Select(def => new RemoteShip(def)).ToDictionary(s => s.Name);
+            this.Missiles = view.Missiles.Select(def => new RemoteMissile(def)).ToList();
+            this.Stars = view.Stars.ToDictionary(s => s.Name);
         }
 
         public IHelm GetHelm()
@@ -58,6 +61,11 @@ namespace SF.ClientLibrary
         public IEnumerable<IShip> GetVisibleShips()
         {
             return this.Ships.Values;
+        }
+
+        public IEnumerable<Star> GetStars()
+        {
+            return this.Stars.Values;
         }
 
         public IEnumerable<IMissile> GetVisibleMissiles()
@@ -75,6 +83,7 @@ namespace SF.ClientLibrary
                 else
                     this.Ships.Add(ship.ShipName, new RemoteShip(ship));
             Missiles = view.Missiles.Select(def => new RemoteMissile(def)).ToList();
+            Stars = view.Stars.ToDictionary(s => s.Name);
         }
 
         public void Fire(IShip ship, bool left)

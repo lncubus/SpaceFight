@@ -136,6 +136,7 @@ namespace SF.Controls
         public IShip OwnShip;
         public ICollection<IShip> Ships;
         public ICollection<IMissile> Missiles;
+        public ICollection<Star> Stars;
 
         public class Curve : List<Vector>
         {
@@ -299,6 +300,8 @@ namespace SF.Controls
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             m_client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             DrawGridLines(e.Graphics);
+            foreach (var s in Stars)
+                this.DrawStar(e.Graphics, s);
             foreach (var c in Curves)
                 DrawCurve(e.Graphics, c);
             if (Missiles != null && Missiles.Count > 0)
@@ -351,6 +354,18 @@ namespace SF.Controls
         private bool IsVisible(PointF[] points)
         {
             return points.Any(p => m_client.Contains((int)p.X, (int)p.Y));
+        }
+
+        private void DrawStar(Graphics graphics, Star star)
+        {
+            var pen = SignalPen;
+            var brush = BlackInk;
+            var rx = Math.Max(WorldToDevice(graphics.DpiX, star.Radius), graphics.DpiX / 32);
+            var ry = Math.Max(WorldToDevice(graphics.DpiY, star.Radius), graphics.DpiY / 32);
+            var p = WorldToDevice(graphics, star.Position);
+            var rect = new RectangleF(p.X - rx, p.Y - ry, 2 * rx, 2 * ry);
+            graphics.DrawEllipse(pen, rect);
+            WorldDrawText(graphics, brush, star.Position, star.Name);
         }
 
         private void DrawShip(Graphics graphics, IShip ship)

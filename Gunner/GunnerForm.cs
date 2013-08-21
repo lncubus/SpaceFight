@@ -66,6 +66,7 @@ namespace Gunner
         private void GetData()
         {
             spaceGridControl.Ships = client.GetVisibleShips().ToList();
+            spaceGridControl.Stars = client.GetStars().ToList();
             spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
             var s = helm.Ship.S;
             var h = helm.Ship.Heading;

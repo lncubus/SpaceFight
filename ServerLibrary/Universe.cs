@@ -69,28 +69,8 @@ namespace SF.ServerLibrary
             var helms = this.DeserializeCollection<HelmDefinition>(ships);
             m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
             m_missiles = new List<IMissile>();
-            m_stars = new Dictionary<string, Star>();
-            for (int i = 0; i < 4; i++)
-            {
-                var r = (50 + 100 * Random.NextDouble());
-                var a = 2 * Math.PI * Random.NextDouble();
-                // r^3 ~ T^2  T = 2pi r / v  => r ~ v^-2 => v ~ (1/r)^2
-                // acc ~ (1/r)^2, acc = v^2 / r => v ~ (1/r)^2
-                var v = 30 / Math.Sqrt(r/150);
-                r *= 1E6;
-                var s = new Star
-                {
-                    Name = "Alessa-" + ('a' + i),
-                    Nation = null,
-                    Radius = (Random.NextDouble() + Random.NextDouble() + Random.NextDouble() + Random.NextDouble()) * 5000,
-                    Position = Vector.Direction(a) * r,
-                    Speed = Vector.Direction(a + Math.PI / 2) * v,
-                    StarClass = StarType.Planet,
-                };
-                m_stars.Add(s.Name, s);
-            }
-            var stars = SerializeCollection<Star, Star>(m_stars.Values);
-            File.WriteAllText("stars.xml", stars);
+            var stars = File.ReadAllText("stars.xml");
+            m_stars = this.DeserializeCollection<Star>(stars).ToDictionary(star => star.Name);
             this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
         }
 
@@ -154,6 +134,11 @@ namespace SF.ServerLibrary
         public IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
         {
             return this.m_missiles;
+        }
+
+        public IEnumerable<Star> GetStars()
+        {
+            return this.m_stars.Values;
         }
 
         public IEnumerable<string> GetNations()
