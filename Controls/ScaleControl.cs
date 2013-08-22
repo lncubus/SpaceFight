@@ -13,7 +13,7 @@ namespace SF.Controls
     public partial class ScaleControl : UserControl
     {
         public const double DefaultMinValue = 1000;
-        public const double DefaultMaxValue = 1000000000;
+        public const double DefaultMaxValue = 5000000000;
 
         private enum FirstDigit
         {

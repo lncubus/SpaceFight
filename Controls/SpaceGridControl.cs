@@ -131,7 +131,7 @@ namespace SF.Controls
 
         public SpaceGridOptions Options { get; set; }
 
-        private Rectangle m_client;
+        private RectangleF m_client;
 
         public IShip OwnShip;
         public ICollection<IShip> Ships;
@@ -228,9 +228,9 @@ namespace SF.Controls
 
         protected override void DrawBackgroound(PaintEventArgs e)
         {
-            m_client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
+            m_client = new RectangleF(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             e.Graphics.FillRectangle(WhitePaper, m_client);
-            e.Graphics.DrawRectangle(BlackPen, m_client);
+            e.Graphics.DrawRectangles(BlackPen, new[] { m_client });
         }
 
         private void DrawGridLines(Graphics graphics)
@@ -244,8 +244,8 @@ namespace SF.Controls
             if (Polar)
             {
                 var n = (int) (m_client.Width / (2.0 * dpiX) + m_client.Height / (2.0 * dpiY));
-                if (n <= 1)
-                    n = 1;
+                if (n < 2)
+                    n = 2;
                 for (var i = 1; i <= n; i++)
                     graphics.DrawEllipse(BlackPencil, m_center.X - i * dpiX, m_center.Y - i * dpiY, 2 * i * dpiX, 2 * i * dpiY);
                 const int N = 12;
@@ -280,13 +280,13 @@ namespace SF.Controls
                     center.X -= dx;
                     center.Y += dy;
                 }
-                var n = (int) (m_client.Width / (2 * dpiX));
+                var n = (int) (m_client.Width / (2 * dpiX)) + 1;
                 for (var i = -n; i <= n; i++)
                 {
                     var x = center.X + i * dpiX;
                     graphics.DrawLine(BlackPencil, x, m_client.Top, x, m_client.Bottom);
                 }
-                n = (int) (m_client.Height / (2 * dpiY));
+                n = (int) (m_client.Height / (2 * dpiY)) + 1;
                 for (var i = -n; i <= n; i++)
                 {
                     var y = center.Y + i * dpiY;
@@ -346,6 +346,11 @@ namespace SF.Controls
             }
         }
 
+        private bool IsVisible(RectangleF rect)
+        {
+            return m_client.IntersectsWith(rect);
+        }
+
         private bool IsVisible(PointF point)
         {
             return m_client.Contains((int)point.X, (int)point.Y);
@@ -364,7 +369,10 @@ namespace SF.Controls
             var ry = Math.Max(WorldToDevice(graphics.DpiY, star.Radius), graphics.DpiY / 32);
             var p = WorldToDevice(graphics, star.Position);
             var rect = new RectangleF(p.X - rx, p.Y - ry, 2 * rx, 2 * ry);
-            graphics.DrawEllipse(pen, rect);
+            if (IsVisible(rect))
+            {
+                graphics.DrawEllipse(pen, rect);
+            }
             WorldDrawText(graphics, brush, star.Position, star.Name);
         }
 
@@ -492,7 +500,7 @@ namespace SF.Controls
                 Y = p.Y + TextMisplacement.Y * graphics.DpiY,
             };
             if (IsVisible(p))
-            graphics.DrawString(text, Font, brush, p);
+                graphics.DrawString(text, Font, brush, p);
         }
 
         private void WorldDrawCircle(Graphics graphics, Pen pen, Vector origin, double radius)
@@ -503,7 +511,8 @@ namespace SF.Controls
             if (rx <= 0 || ry <= 0)
                 return;
             var rect = new RectangleF(p.X - rx, p.Y - ry, 2 * rx, 2 * ry);
-            graphics.DrawEllipse(pen, rect);
+            if (IsVisible(rect))
+                graphics.DrawEllipse(pen, rect);
         }
 
         private void WorldDrawPie(Graphics graphics, Pen pen, Vector origin, double radius, double medianAngle, double sweepAngle)
@@ -514,9 +523,10 @@ namespace SF.Controls
             if (rx <= 0 || ry <= 0)
                 return;
             var rect = new RectangleF(p.X - rx, p.Y - ry, 2 * rx, 2 * ry);
-            graphics.DrawPie(pen, rect,
-                (float)MathUtils.ToDegrees(medianAngle - sweepAngle/ 2 - Math.PI / 2 - Rotation),
-                (float)MathUtils.ToDegrees(sweepAngle));
+            if (IsVisible(rect))
+                graphics.DrawPie(pen, rect,
+                    (float)MathUtils.ToDegrees(medianAngle - sweepAngle/ 2 - Math.PI / 2 - Rotation),
+                    (float)MathUtils.ToDegrees(sweepAngle));
         }
     }
 

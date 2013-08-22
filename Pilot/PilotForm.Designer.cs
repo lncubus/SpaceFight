@@ -99,8 +99,8 @@
             this.scaleControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.scaleControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scaleControl.Location = new System.Drawing.Point(542, 3);
-            this.scaleControl.MaxValue = 1000000000D;
-            this.scaleControl.MinValue = 1000D;
+            this.scaleControl.MaxValue = 5000000000D;
+            this.scaleControl.MinValue = 500D;
             this.scaleControl.Name = "scaleControl";
             this.scaleControl.Size = new System.Drawing.Size(249, 29);
             this.scaleControl.TabIndex = 3;
