@@ -105,6 +105,10 @@ namespace SF.ServerLibrary
             var missileClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Missile);
             return new CatalogDefinition
             {
+                MaximumMissileRange = Catalog.Instance.MaximumMissileRange,
+                SkirtAngle = Catalog.Instance.SkirtAngle,
+                ThroatAngle = Catalog.Instance.ThroatAngle,
+                DefaultScale = Catalog.Instance.DefaultScale,
                 ShipClasses = shipClassesByNation.Union(shipClassesByShips).Distinct().ToArray(),
                 MissileClasses = missileClassesByNation.Union(missileClassesByShips).Distinct().ToArray(),
             };

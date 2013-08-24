@@ -43,9 +43,10 @@ namespace Gunner
                 client.Login(credentials.Nation, credentials.ShipName);
                 helm = client.GetHelm();
                 Text = helm.Ship.Name;
-                tableLayoutPanel.Visible = true;
                 spaceGridControl.OwnShip = helm.Ship;
-                spaceGridControl.WorldScale = scaleControl.Value;
+                spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
+                scaleControl.Value = Catalog.Instance.DefaultScale; ;
+                tableLayoutPanel.Visible = true;
                 timerUpdate.Enabled = true;
             }
         }

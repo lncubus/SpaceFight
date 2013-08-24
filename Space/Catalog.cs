@@ -11,6 +11,11 @@ namespace SF.Space
         public IDictionary<string, MissileClass> MissileClasses { get; private set; }
         public static Catalog Instance { get; private set; }
 
+        public double MaximumMissileRange { get; private set; }
+        public double ThroatAngle { get; private set; }
+        public double SkirtAngle { get; private set; }
+        public double DefaultScale { get; private set; }
+
         public ShipClass GetShipClass(string name)
         {
             ShipClass result;
@@ -25,6 +30,10 @@ namespace SF.Space
 
         private Catalog(CatalogDefinition def)
         {
+            MaximumMissileRange = def.MaximumMissileRange;
+            ThroatAngle = def.ThroatAngle;
+            SkirtAngle = def.SkirtAngle;
+            DefaultScale = def.DefaultScale;
             ShipClasses = (def.ShipClasses ?? new ShipClass[0]) .ToDictionary(c => c.Name);
             MissileClasses = (def.MissileClasses ?? new MissileClass[0]).ToDictionary(c => c.Name); 
         }

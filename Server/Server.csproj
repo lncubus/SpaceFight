@@ -82,6 +82,7 @@
   <ItemGroup>
     <Content Include="catalog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="helms.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -12,8 +12,6 @@ namespace SF.Controls
     public class SpaceGridControl : RoundControl
     {
         public const double DefaultScale = 1E6;
-        //public const double BoardMedianAngle = (Math.PI - SkirtAngle / 2  + ThroatAngle / 2) / 2;
-        //public const double BoardSweepAngle = (Math.PI - (SkirtAngle + ThroatAngle) / 2);
 
         public const int IntegerMaxValue = (int.MaxValue / 8) * 7;
         public const int IntegerMinValue = (int.MinValue / 8) * 7;
@@ -300,10 +298,12 @@ namespace SF.Controls
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             m_client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             DrawGridLines(e.Graphics);
-            foreach (var s in Stars)
-                this.DrawStar(e.Graphics, s);
-            foreach (var c in Curves)
-                DrawCurve(e.Graphics, c);
+            if (Stars != null && Stars.Count > 0)
+                foreach (var s in Stars)
+                    this.DrawStar(e.Graphics, s);
+            if (Curves != null && Curves.Count > 0)
+                foreach (var c in Curves)
+                    DrawCurve(e.Graphics, c);
             if (Missiles != null && Missiles.Count > 0)
                 foreach (var missile in Missiles)
                     DrawMissile(e.Graphics, missile);
@@ -394,15 +394,15 @@ namespace SF.Controls
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
             bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
             var range = (isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
-                SpaceExtensions.MaximumMissileRange : this.OwnShip.MissileRange();
+                Catalog.Instance.MaximumMissileRange : this.OwnShip.MissileRange();
             if (Options.HasFlag(SpaceGridOptions.FriendlySectorsByMyMissileRange) && OwnShip != null && OwnShip.Class != null)
                 range = OwnShip.MissileRange();
             if ((isMyShip && !Options.HasFlag(SpaceGridOptions.MyVulnerableSectors)) ||
                 (isFriendlyShip && !Options.HasFlag(SpaceGridOptions.FriendlyVulnerableSectors)) ||
                 (isHostileShip && !Options.HasFlag(SpaceGridOptions.HostileVulnerableSectors)))
                 return;
-            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading, SpaceExtensions.ThroatAngle);
-            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading - Math.PI, SpaceExtensions.SkirtAngle);
+            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading, Catalog.Instance.ThroatAngle);
+            WorldDrawPie(graphics, pen, ship.S, range, ship.Heading - Math.PI, Catalog.Instance.SkirtAngle);
         }
 
         private void DrawMissileCircle(Graphics graphics, IShip ship)
@@ -415,7 +415,7 @@ namespace SF.Controls
                 (isHostileShip && !Options.HasFlag(SpaceGridOptions.HostileMissileCircles)))
                 return;
             var pen = MissileCircles.Select(OwnShip, ship);
-            var range = (OwnShip != null && OwnShip.Nation != ship.Nation) ? SpaceExtensions.MaximumMissileRange : ship.MissileRange();
+            var range = (OwnShip != null && OwnShip.Nation != ship.Nation) ? Catalog.Instance.MaximumMissileRange : ship.MissileRange();
             WorldDrawCircle(graphics, pen, ship.S, range);
         }
 
