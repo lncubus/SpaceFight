@@ -62,5 +62,22 @@ namespace SF.Space
                 lambda = 1;
             return Linear(min, max, lambda);
         }
+
+        public static double NextAngle(this Random random)
+        {
+            return 2 * Math.PI * random.NextDouble();
+        }
+
+        public static Vector NextDirection(this Random random)
+        {
+            return Vector.Direction(random.NextAngle());
+        }
+
+        public static T RandomOf<T>(this ICollection<T> that, Random random)
+        {
+            var list = that.ToList();
+            var index = random.Next(list.Count);
+            return list[index];
+        }
     }
 }

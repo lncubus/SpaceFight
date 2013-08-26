@@ -65,5 +65,10 @@ namespace Server
                 return;
             propertyGrid.SelectedObject = node.Tag;
         }
+
+        private void toolStripButtonBang_Click(object sender, EventArgs e)
+        {
+            SpaceServer.Instance.BigBangTest();
+        }
     }
 }

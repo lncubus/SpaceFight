@@ -183,5 +183,43 @@ namespace SF.ServerLibrary
                 }
             }
         }
+
+        static int generation = 0;
+
+        public void BigBangTest()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                var h = Random.NextAngle();
+                var a = Random.NextDouble();
+                var classification = Catalog.Instance.ShipClasses.Values.First();
+                var missile = Catalog.Instance.MissileClasses.Values.First();
+                var helm = new HelmDefinition
+                {
+                    Acceleration = a * classification.MaximumAcceleration,
+                    AccelerateTo = a * classification.MaximumAcceleration,
+                    ClassName = classification.Name,
+                    Heading = h,
+                    HeadingTo = h,
+                    Nation = "Солярианская Лига",
+                    ShipName = "Бандит-" + (generation > 0 ? generation + "-" : "") + (i + 1),
+                    MissileNumber = 1,
+                    MissileName = missile.Name,
+                    Position = 300000000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
+                    Speed = 300000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
+                };
+                m_helms.Add(helm.ShipName, Helm.Load(helm));
+            }
+            for (int i = 0; i < 1000; i++)
+            {
+                var h = Random.NextAngle();
+                var classification = Catalog.Instance.MissileClasses.Values.First();
+                var from = m_helms.Values.RandomOf(Random);
+                var to = m_helms.Values.RandomOf(Random);
+                var missile = new Missile(from.Ship, true, to.Ship, 1, Time);
+                m_missiles.Add(missile);
+            }
+            generation++;
+        }
     }
 }

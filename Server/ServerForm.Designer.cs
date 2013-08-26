@@ -33,6 +33,8 @@
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.toolStripButtonBang = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -49,6 +51,8 @@
             // 
             // toolStrip
             // 
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonBang});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(511, 25);
@@ -91,6 +95,14 @@
             this.propertyGrid.Size = new System.Drawing.Size(257, 357);
             this.propertyGrid.TabIndex = 0;
             // 
+            // toolStripButtonBang
+            // 
+            this.toolStripButtonBang.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonBang.Name = "toolStripButtonBang";
+            this.toolStripButtonBang.Size = new System.Drawing.Size(39, 22);
+            this.toolStripButtonBang.Text = "Bang!";
+            this.toolStripButtonBang.Click += new System.EventHandler(this.toolStripButtonBang_Click);
+            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -104,6 +116,8 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerForm_FormClosing);
             this.Load += new System.EventHandler(this.ServerForm_Load);
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
@@ -120,6 +134,7 @@
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.PropertyGrid propertyGrid;
+        private System.Windows.Forms.ToolStripButton toolStripButtonBang;
 
     }
 }
