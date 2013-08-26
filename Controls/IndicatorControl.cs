@@ -47,11 +47,16 @@ namespace SF.Controls
 
         private void UpdateControl()
         {
-            labelSpeedX.Text = MathUtils.NumberToText(Speed.X, string.Empty);
-            labelSpeedY.Text = MathUtils.NumberToText(Speed.Y, string.Empty);
-            labelSpeedFull.Text = MathUtils.NumberToText(Speed.Length, string.Empty);
-            labelLocationX.Text = MathUtils.NumberToText(Position.X, string.Empty);
-            labelLocationY.Text = MathUtils.NumberToText(Position.Y, string.Empty);
+            textSpeedX.Text = MathUtils.NumberToText(Speed.X, string.Empty);
+            textSpeedX.SelectAll();
+            textSpeedY.Text = MathUtils.NumberToText(Speed.Y, string.Empty);
+            textSpeedY.SelectAll();
+            textSpeedFull.Text = MathUtils.NumberToText(Speed.Length, string.Empty);
+            textSpeedFull.SelectAll();
+            textLocationX.Text = MathUtils.NumberToText(Position.X, string.Empty);
+            textLocationX.SelectAll();
+            textLocationY.Text = MathUtils.NumberToText(Position.Y, string.Empty);
+            textLocationY.SelectAll();
         }
     }
 }

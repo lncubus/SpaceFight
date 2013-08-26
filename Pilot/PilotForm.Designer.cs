@@ -79,7 +79,9 @@
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
             this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 3);
+            this.spaceGridControl.SelectedShip = null;
             this.spaceGridControl.Size = new System.Drawing.Size(533, 595);
+            this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 0;
             this.spaceGridControl.WorldScale = 2000000D;
             // 
@@ -120,12 +122,13 @@
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(794, 578);
             this.Controls.Add(this.tableLayoutPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "PilotForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion
