@@ -95,7 +95,7 @@ namespace SF.Controls
             ZoomOut();
         }
 
-        private void ZoomIn()
+        public void ZoomIn()
         {
             double scale = Value;
             switch (m_first)
@@ -114,7 +114,7 @@ namespace SF.Controls
             Value = scale;
         }
 
-        private void ZoomOut()
+        public void ZoomOut()
         {
             double scale = Value;
             switch (m_first)

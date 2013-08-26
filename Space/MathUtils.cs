@@ -12,7 +12,7 @@ namespace SF.Space
 
         public static string NumberToText(double value, string unit)
         {
-            return value.ToString("N0") + " " + unit;
+            return value.ToString("N0") + (string.IsNullOrEmpty(unit) ? string.Empty : (" " + unit));
         }
 
         public static int Round(double a)

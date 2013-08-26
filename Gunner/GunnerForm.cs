@@ -69,10 +69,12 @@ namespace Gunner
             spaceGridControl.Ships = client.GetVisibleShips().ToList();
             spaceGridControl.Stars = client.GetStars().ToList();
             spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
-            var s = helm.Ship.S;
-            var h = helm.Ship.Heading;
-            spaceGridControl.Origin = s;
-            spaceGridControl.Rotation = h;
+            spaceGridControl.Origin = helm.Ship.S;
+            spaceGridControl.Rotation = helm.Ship.Heading;
+            var ship = spaceGridControl.SelectedShip ?? helm.Ship;
+            indicatorControl.Acceleration = ship.A;
+            indicatorControl.Speed = ship.V;
+            indicatorControl.Position = ship.S;
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)
@@ -118,6 +120,23 @@ namespace Gunner
             var ship = spaceGridControl.SelectedShip;
             if (ship != null)
                 client.Fire(ship, m_left);
+        }
+
+        private void GunnerForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+            switch (e.KeyChar)
+            {
+                case '+': case '=':
+                    scaleControl.ZoomIn();
+                    break;
+                case '-': case '_':
+                    scaleControl.ZoomOut();
+                    break;
+                default :
+                    e.Handled = false;
+                    break;
+            }
         }
     }
 }

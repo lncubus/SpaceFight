@@ -60,8 +60,8 @@
             this.tableLayoutPanel.RowCount = 3;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.Size = new System.Drawing.Size(794, 578);
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(794, 632);
             this.tableLayoutPanel.TabIndex = 2;
             // 
             // spaceGridControl
@@ -80,7 +80,7 @@
             this.spaceGridControl.Rotation = 0D;
             this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 3);
             this.spaceGridControl.SelectedShip = null;
-            this.spaceGridControl.Size = new System.Drawing.Size(533, 595);
+            this.spaceGridControl.Size = new System.Drawing.Size(533, 626);
             this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 0;
             this.spaceGridControl.WorldScale = 2000000D;
@@ -113,18 +113,20 @@
             // 
             this.indicatorControl.Location = new System.Drawing.Point(542, 459);
             this.indicatorControl.Name = "indicatorControl";
-            this.indicatorControl.Size = new System.Drawing.Size(249, 119);
+            this.indicatorControl.Size = new System.Drawing.Size(249, 170);
             this.indicatorControl.TabIndex = 4;
             // 
             // PilotForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.AliceBlue;
-            this.ClientSize = new System.Drawing.Size(794, 578);
+            this.ClientSize = new System.Drawing.Size(794, 632);
             this.Controls.Add(this.tableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.KeyPreview = true;
             this.Name = "PilotForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PilotForm_KeyPress);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);

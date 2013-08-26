@@ -73,20 +73,39 @@ namespace Pilot
             spaceGridControl.Ships = client.GetVisibleShips().ToList();
             spaceGridControl.Stars = client.GetStars().ToList();
             spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
-            var s = helm.Ship.S;
-            var v = helm.Ship.V;
-            spaceGridControl.Origin = s;
-            if (Trajectory.Count == 0 || Trajectory[Trajectory.Count - 1] != s)
-                Trajectory.Add(s);
+            spaceGridControl.Origin = helm.Ship.S;
+            if (Trajectory.Count == 0 || Trajectory[Trajectory.Count - 1] != helm.Ship.S)
+                Trajectory.Add(helm.Ship.S);
             if (Trajectory.Count > TrajectorySize)
                 Trajectory.RemoveRange(0, Trajectory.Count - TrajectorySize);
-            indicatorControl.Speed = v;
-            indicatorControl.Position = s;
+            var ship = spaceGridControl.SelectedShip ?? helm.Ship;
+            indicatorControl.Acceleration = ship.A;
+            indicatorControl.Speed = ship.V;
+            indicatorControl.Position = ship.S;
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)
         {
             spaceGridControl.WorldScale = scaleControl.Value;
+        }
+
+        private void PilotForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+            switch (e.KeyChar)
+            {
+                case '+':
+                case '=':
+                    scaleControl.ZoomIn();
+                    break;
+                case '-':
+                case '_':
+                    scaleControl.ZoomOut();
+                    break;
+                default:
+                    e.Handled = false;
+                    break;
+            }
         }
     }
 }

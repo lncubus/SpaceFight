@@ -17,13 +17,26 @@ namespace SF.Controls
             InitializeComponent();
             labelLocationTitle.Text += ", " + LocationUnit;
             labelSpeedTitle.Text += ", " + SpeedUnit;
+            labelAccelerationTitle.Text += ", " + AccelerationUnit;
             UpdateControl();
         }
 
+        private Vector m_acceleration;
         private Vector m_speed;
         private Vector m_position;
+        public const string AccelerationUnit = "км/с²";
         public const string SpeedUnit = "км/с";
         public const string LocationUnit = "км";
+
+        public Vector Acceleration
+        {
+            get { return m_acceleration; }
+            set
+            {
+                m_acceleration = value;
+                UpdateControl();
+            }
+        }
 
         public Vector Speed
         {
@@ -47,6 +60,12 @@ namespace SF.Controls
 
         private void UpdateControl()
         {
+            textAccelerationX.Text = MathUtils.NumberToText(Acceleration.X, string.Empty);
+            textAccelerationX.SelectAll();
+            textAccelerationY.Text = MathUtils.NumberToText(Acceleration.Y, string.Empty);
+            textAccelerationY.SelectAll();
+            textAccelerationFull.Text = MathUtils.NumberToText(Acceleration.Length, string.Empty);
+            textAccelerationFull.SelectAll();
             textSpeedX.Text = MathUtils.NumberToText(Speed.X, string.Empty);
             textSpeedX.SelectAll();
             textSpeedY.Text = MathUtils.NumberToText(Speed.Y, string.Empty);

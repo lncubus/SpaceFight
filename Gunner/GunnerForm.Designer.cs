@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
+            System.Drawing.StringFormat stringFormat2 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.spaceGridControl = new SF.Controls.SpaceGridControl();
@@ -38,6 +38,7 @@
             this.labelBoard = new System.Windows.Forms.Label();
             this.buttonFire = new System.Windows.Forms.Button();
             this.checkBoxFriendlyFire = new System.Windows.Forms.CheckBox();
+            this.indicatorControl = new SF.Controls.IndicatorControl();
             this.tableLayoutPanel.SuspendLayout();
             this.panelFire.SuspendLayout();
             this.SuspendLayout();
@@ -52,13 +53,15 @@
             this.tableLayoutPanel.ColumnCount = 2;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel.Controls.Add(this.indicatorControl, 0, 2);
             this.tableLayoutPanel.Controls.Add(this.spaceGridControl, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.scaleControl, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.panelFire, 1, 1);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 2;
+            this.tableLayoutPanel.RowCount = 3;
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(792, 573);
@@ -66,11 +69,11 @@
             // 
             // spaceGridControl
             // 
-            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
-            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
-            this.spaceGridControl.CenteredLayout = stringFormat1;
+            stringFormat2.Alignment = System.Drawing.StringAlignment.Center;
+            stringFormat2.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
+            stringFormat2.LineAlignment = System.Drawing.StringAlignment.Center;
+            stringFormat2.Trimming = System.Drawing.StringTrimming.None;
+            this.spaceGridControl.CenteredLayout = stringFormat2;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
             this.spaceGridControl.Name = "spaceGridControl";
@@ -78,7 +81,7 @@
             this.spaceGridControl.Polar = true;
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
-            this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 2);
+            this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 3);
             this.spaceGridControl.SelectedShip = null;
             this.spaceGridControl.Size = new System.Drawing.Size(531, 567);
             this.spaceGridControl.StaticGrid = true;
@@ -105,10 +108,10 @@
             this.panelFire.Controls.Add(this.labelBoard);
             this.panelFire.Controls.Add(this.buttonFire);
             this.panelFire.Controls.Add(this.checkBoxFriendlyFire);
-            this.panelFire.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelFire.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFire.Location = new System.Drawing.Point(540, 38);
             this.panelFire.Name = "panelFire";
-            this.panelFire.Size = new System.Drawing.Size(249, 532);
+            this.panelFire.Size = new System.Drawing.Size(249, 44);
             this.panelFire.TabIndex = 4;
             // 
             // labelBoard
@@ -148,6 +151,13 @@
             this.checkBoxFriendlyFire.UseVisualStyleBackColor = true;
             this.checkBoxFriendlyFire.CheckedChanged += new System.EventHandler(this.checkBoxFriendlyFire_CheckedChanged);
             // 
+            // indicatorControl
+            // 
+            this.indicatorControl.Location = new System.Drawing.Point(540, 88);
+            this.indicatorControl.Name = "indicatorControl";
+            this.indicatorControl.Size = new System.Drawing.Size(249, 170);
+            this.indicatorControl.TabIndex = 5;
+            // 
             // GunnerForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -155,8 +165,10 @@
             this.ClientSize = new System.Drawing.Size(792, 573);
             this.Controls.Add(this.tableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.KeyPreview = true;
             this.Name = "GunnerForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GunnerForm_KeyPress);
             this.tableLayoutPanel.ResumeLayout(false);
             this.panelFire.ResumeLayout(false);
             this.panelFire.PerformLayout();
@@ -174,6 +186,7 @@
         private System.Windows.Forms.Button buttonFire;
         private System.Windows.Forms.CheckBox checkBoxFriendlyFire;
         private System.Windows.Forms.Label labelBoard;
+        private SF.Controls.IndicatorControl indicatorControl;
     }
 }
 
