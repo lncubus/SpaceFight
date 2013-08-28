@@ -32,60 +32,60 @@ namespace SF.ServerLibrary
 
             public bool WillReset(double t)
             {
-                if (double.IsInfinity(this.m_toTime) || double.IsNaN(this.m_toTime))
+                if (double.IsInfinity(m_toTime) || double.IsNaN(m_toTime))
                     return false;
-                if (t + TimeEpsilon >= this.m_toTime)
+                if (t + TimeEpsilon >= m_toTime)
                     return true;
                 return false;
             }
 
             public double Get(double t)
             {
-                if (double.IsInfinity(this.m_toTime) || double.IsNaN(this.m_toTime))
-                    return this.ToValue;
-                if (this.WillReset(t))
+                if (double.IsInfinity(m_toTime) || double.IsNaN(m_toTime))
+                    return ToValue;
+                if (WillReset(t))
                 {
-                    this.Reset(t, this.ToValue);
-                    return this.ToValue;
+                    Reset(t, ToValue);
+                    return ToValue;
                 }
-                return this.FromValue + this.Direction * this.Speed * (t - this.m_fromTime);
+                return FromValue + Direction * Speed * (t - m_fromTime);
             }
 
             public void Set(double t, double goesTo)
             {
-                double currentValue = this.Get(t);
+                double currentValue = Get(t);
                 double diff = goesTo - currentValue;
-                this.Direction = diff < 0 ? -1 : 1;
+                Direction = diff < 0 ? -1 : 1;
                 diff = Math.Abs(diff);
-                if (this.Modulo > 0)
+                if (Modulo > 0)
                 {
-                    if (diff > this.Modulo)
-                        diff -= Math.Floor(diff / this.Modulo) * this.Modulo;
-                    if (diff > this.Modulo / 2)
+                    if (diff > Modulo)
+                        diff -= Math.Floor(diff / Modulo) * Modulo;
+                    if (diff > Modulo / 2)
                     {
-                        diff = this.Modulo - diff;
-                        this.Direction = -this.Direction;
+                        diff = Modulo - diff;
+                        Direction = -Direction;
                     }
                 }
-                double tau = diff / this.Speed;
+                double tau = diff / Speed;
                 if (tau <= TimeEpsilon)
-                    this.Reset(t, goesTo);
+                    Reset(t, goesTo);
                 else
                 {
-                    this.m_fromTime = t;
-                    this.FromValue = currentValue;
-                    this.m_toTime = t + tau;
-                    this.ToValue = goesTo;
+                    m_fromTime = t;
+                    FromValue = currentValue;
+                    m_toTime = t + tau;
+                    ToValue = goesTo;
                 }
             }
 
             private void Reset(double t, double val)
             {
-                this.Direction = 0;
-                this.m_fromTime = t;
-                this.FromValue = val;
-                this.m_toTime = double.PositiveInfinity;
-                this.ToValue = val;
+                Direction = 0;
+                m_fromTime = t;
+                FromValue = val;
+                m_toTime = double.PositiveInfinity;
+                ToValue = val;
             }
         }
 
@@ -124,20 +124,20 @@ namespace SF.ServerLibrary
 
         public double HeadingTo
         {
-            get { return this.headingTo ?? this.Heading.ToValue; }
-            set { this.headingTo = value; }
+            get { return headingTo ?? Heading.ToValue; }
+            set { headingTo = value; }
         }
 
         public double AccelerateTo
         {
-            get { return this.accelerateTo ?? this.Acceleration.ToValue; }
-            set { this.accelerateTo = value; }
+            get { return accelerateTo ?? Acceleration.ToValue; }
+            set { accelerateTo = value; }
         }
 
         public double RollTo
         {
-            get { return this.rollTo ?? this.Roll.ToValue; }
-            set { this.rollTo = value; }
+            get { return rollTo ?? Roll.ToValue; }
+            set { rollTo = value; }
         }
 
         public double AccelerationValue { get; private set; }
@@ -148,7 +148,7 @@ namespace SF.ServerLibrary
         {
             get
             {
-                return this.AccelerationValue * Vector.Direction(this.HeadingValue);
+                return AccelerationValue * Vector.Direction(HeadingValue);
             }
         }
 
@@ -158,47 +158,47 @@ namespace SF.ServerLibrary
 
         public Dynamics(ShipClass Class, HelmDefinition Def, TimeSpan time)
         {
-            this.t1 = this.t0 = time.TotalSeconds;
-            this.S = Def.Position;
-            this.V = this.v0 = Def.Speed;
-            this.Roll = new LinearValue(this.t0, Def.Roll, Def.RollTo, 2 * Math.PI / Class.RoundRollTime, 2 * Math.PI);
-            this.Heading = new LinearValue(this.t0, Def.Heading, Def.HeadingTo, 2 * Math.PI / Class.FullTurnTime, 2 * Math.PI);
-            this.Acceleration = new LinearValue(this.t0, Def.Acceleration, Def.AccelerateTo, Class.MaximumAcceleration / Class.FullAccelerationTime, 0);
-            this.AccelerationValue = this.Acceleration.FromValue;
-            this.HeadingValue = this.Heading.FromValue;
-            this.RollValue = this.Roll.FromValue;
+            t1 = t0 = time.TotalSeconds;
+            S = Def.Position;
+            V = v0 = Def.Speed;
+            Roll = new LinearValue(t0, Def.Roll, Def.RollTo, 2 * Math.PI / Class.RoundRollTime, 2 * Math.PI);
+            Heading = new LinearValue(t0, Def.Heading, Def.HeadingTo, 2 * Math.PI / Class.FullTurnTime, 2 * Math.PI);
+            Acceleration = new LinearValue(t0, Def.Thrust, Def.ThrustTo, Class.MaximumAcceleration / Class.FullAccelerationTime, 0);
+            AccelerationValue = Acceleration.FromValue;
+            HeadingValue = Heading.FromValue;
+            RollValue = Roll.FromValue;
         }
 
         public void UpdateTime(double time)
         {
-            if (this.rollTo.HasValue)
+            if (rollTo.HasValue)
             {
-                this.Roll.Set(time, this.rollTo.Value);
-                this.rollTo = null;
+                Roll.Set(time, rollTo.Value);
+                rollTo = null;
             }
-            this.RollValue = this.Roll.Get(time);
+            RollValue = Roll.Get(time);
 
-            var t = time - this.t0;
+            var t = time - t0;
             var t2 = t*t / 2;
-            var a = this.Acceleration.FromValue;
-            var phi = this.Heading.FromValue;
-            var AS = this.Acceleration.Direction * this.Acceleration.Speed;
-            var omega = this.Heading.Direction * this.Heading.Speed;
+            var a = Acceleration.FromValue;
+            var phi = Heading.FromValue;
+            var AS = Acceleration.Direction * Acceleration.Speed;
+            var omega = Heading.Direction * Heading.Speed;
             var om2 = omega * omega;
             var a1 = a + AS * t;
             var phi1 = phi + omega * t;
-            var v1 = this.V;
-            if (this.Heading.Direction == 0)
+            var v1 = V;
+            if (Heading.Direction == 0)
             {
                 // no rotation, linear acceleration
                 // a = a_0 + A*t
-                this.V = this.v0 + (a * t + AS * t2) *  Vector.Direction(phi);
+                V = v0 + (a * t + AS * t2) *  Vector.Direction(phi);
             }
-            else if (this.Acceleration.Direction == 0)
+            else if (Acceleration.Direction == 0)
             {
                 // constant acceleration, rotating ship
                 // integrated by Wolfram Aloha
-                this.V = this.v0 + (a / omega) * new Vector(Math.Cos(phi) - Math.Cos(phi1), -Math.Sin(phi) + Math.Sin(phi1));
+                V = v0 + (a / omega) * new Vector(Math.Cos(phi) - Math.Cos(phi1), -Math.Sin(phi) + Math.Sin(phi1));
             }
             else
             {
@@ -207,26 +207,26 @@ namespace SF.ServerLibrary
                 // integrated by Wolfram Aloha
                 var dVx = (-a1 * Math.Cos(phi1) + a * Math.Cos(phi)) / omega + AS * (Math.Sin(phi1) - Math.Sin(phi)) / om2;
                 var dVy = (a1 * Math.Sin(phi1) - a * Math.Sin(phi)) / omega  + AS * (Math.Cos(phi1) - Math.Cos(phi)) / om2;
-                this.V = this.v0 + new Vector(dVx, dVy);
+                V = v0 + new Vector(dVx, dVy);
             }
             // I failed to integrate position properly
             // so we'll use trapezium rule
-            var dt = time - this.t1;
-            this.S = this.S + (this.V + v1) * (dt / 2);
-            this.t1 = time;
+            var dt = time - t1;
+            S = S + (V + v1) * (dt / 2);
+            t1 = time;
             // end of the current arc
-            bool changed = (this.headingTo.HasValue || this.accelerateTo.HasValue || this.Acceleration.WillReset(time) || this.Heading.WillReset(time));
+            bool changed = (headingTo.HasValue || accelerateTo.HasValue || Acceleration.WillReset(time) || Heading.WillReset(time));
             if (changed)
             {
-                this.v0 = this.V;
-                this.t0 = time;
-                this.Heading.Set(time, this.HeadingTo);
-                this.Acceleration.Set(time, this.AccelerateTo);
-                this.headingTo = null;
-                this.accelerateTo = null;
+                v0 = V;
+                t0 = time;
+                Heading.Set(time, HeadingTo);
+                Acceleration.Set(time, AccelerateTo);
+                headingTo = null;
+                accelerateTo = null;
             }
-            this.AccelerationValue = a1;
-            this.HeadingValue = phi1;
+            AccelerationValue = a1;
+            HeadingValue = phi1;
         }
     }
 }

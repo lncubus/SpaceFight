@@ -1,15 +1,9 @@
 ﻿namespace SF.Space
 {
-    public interface IMissile
+    public interface IMissile : IParticle
     {
         MissileClass Class { get; }
-        string Nation { get; }
         string ClassName { get; }
         bool IsDead { get; }
-
-        Vector S { get; }
-        Vector V { get; }
-        Vector A { get; }
-
     }
 }

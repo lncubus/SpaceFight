@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            this.Name = "RollControl";
-            this.ResumeLayout(false);
+            Name = "RollControl";
+            ResumeLayout(false);
         }
 
         #endregion

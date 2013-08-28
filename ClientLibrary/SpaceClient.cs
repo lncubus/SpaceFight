@@ -12,77 +12,73 @@ namespace SF.ClientLibrary
         public static string Password = string.Empty;
         private readonly IServer Client;
         private readonly ChannelFactory<IServer> Factory;
-        private IDictionary<string, RemoteShip> Ships;
+        private IDictionary<string, IShip> Ships;
         private RemoteHelm Helm;
-        private IList<RemoteMissile> Missiles;
+        private IList<IMissile> Missiles;
         private IDictionary<string, Star> Stars;
 
         public SpaceClient()
         {
-            this.Factory = new ChannelFactory<IServer>(this.GetType().FullName);
-            this.Client = this.Factory.CreateChannel();
-            this.Client.Connect(Password);
+            Factory = new ChannelFactory<IServer>(GetType().FullName);
+            Client = Factory.CreateChannel();
+            Client.Connect(Password);
         }
 
         public void Dispose()
         {
-            if (this.Client != null)
-                this.Client.Logout();
-            this.Factory.Close();
-            this.Ships = null;
-            this.Missiles = null;
-            this.Helm = null;
+            if (Client != null)
+                Client.Logout();
+            Factory.Close();
+            Ships = null;
+            Missiles = null;
+            Helm = null;
         }
 
         public IDictionary<string, string[]> GetShipNames()
         {
             var result = new SortedDictionary<string, string[]>();
-            foreach (var pair in this.Client.GetShipNames())
+            foreach (var pair in Client.GetShipNames())
                 result.Add(pair.Key, pair.Value);
             return result;
         }
 
         public void Login(string nation, string name)
         {
-            this.Client.Login(nation, name);
-            Catalog.Create(this.Client.GetCatalog());
-            var view = this.Client.GetView();
-            this.Helm = new RemoteHelm(this.Client, view.Helm);
-            this.Ships = view.Ships.Select(def => new RemoteShip(def)).ToDictionary(s => s.Name);
-            this.Missiles = view.Missiles.Select(def => new RemoteMissile(def)).ToList();
-            this.Stars = view.Stars.ToDictionary(s => s.Name);
+            Client.Login(nation, name);
+            Catalog.Create(Client.GetCatalog());
+            var view = Client.GetView();
+            Helm = new RemoteHelm(Client, view.Helm);
+            Ships = view.Ships.OfType<IShip>().ToDictionary(s => s.Name);
+            Missiles = view.Missiles.OfType<IMissile>().ToList();
+            Stars = view.Stars.ToDictionary(s => s.Name);
         }
 
         public IHelm GetHelm()
         {
-            return this.Helm;
+            return Helm;
         }
 
-        public IEnumerable<IShip> GetVisibleShips()
+        public ICollection<IShip> GetVisibleShips()
         {
-            return this.Ships.Values;
+            return Ships.Values;
         }
 
-        public IEnumerable<Star> GetStars()
+        public ICollection<Star> GetStars()
         {
-            return this.Stars.Values;
+            return Stars.Values;
         }
 
-        public IEnumerable<IMissile> GetVisibleMissiles()
+        public ICollection<IMissile> GetVisibleMissiles()
         {
-            return this.Missiles;
+            return Missiles;
         }
 
         public void Update()
         {
-            var view = this.Client.GetView();
-            this.Helm.Update(view.Helm);
-            foreach (var ship in view.Ships)
-                if (this.Ships.ContainsKey(ship.ShipName))
-                    this.Ships[ship.ShipName].Update(ship);
-                else
-                    this.Ships.Add(ship.ShipName, new RemoteShip(ship));
-            Missiles = view.Missiles.Select(def => new RemoteMissile(def)).ToList();
+            var view = Client.GetView();
+            Helm.Update(view.Helm);
+            Ships = view.Ships.OfType<IShip>().ToDictionary(s => s.Name);
+            Missiles = view.Missiles.OfType<IMissile>().ToList();
             Stars = view.Stars.ToDictionary(s => s.Name);
         }
 

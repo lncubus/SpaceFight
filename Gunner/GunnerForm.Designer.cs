@@ -84,17 +84,15 @@
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
             this.spaceGridControl.Name = "spaceGridControl";
-            this.spaceGridControl.Options = SF.Controls.SpaceGridOptions.None;
             this.spaceGridControl.Polar = true;
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
             this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 3);
-            this.spaceGridControl.SelectedShip = null;
             this.spaceGridControl.Size = new System.Drawing.Size(531, 567);
             this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 1;
             this.spaceGridControl.WorldScale = 2000000D;
-            this.spaceGridControl.ShipSelected += new System.EventHandler(this.spaceGridControl_ShipSelected);
+            this.spaceGridControl.ParticleSelected += new System.EventHandler(this.spaceGridControl_ParticleSelected);
             this.spaceGridControl.DoubleClick += new System.EventHandler(this.spaceGridControl_DoubleClick);
             // 
             // scaleControl
@@ -123,11 +121,10 @@
             // 
             // labelBoard
             // 
-            this.labelBoard.AutoSize = true;
             this.labelBoard.Dock = System.Windows.Forms.DockStyle.Top;
             this.labelBoard.Location = new System.Drawing.Point(0, 40);
             this.labelBoard.Name = "labelBoard";
-            this.labelBoard.Size = new System.Drawing.Size(0, 13);
+            this.labelBoard.Size = new System.Drawing.Size(249, 13);
             this.labelBoard.TabIndex = 2;
             this.labelBoard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 

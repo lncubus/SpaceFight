@@ -1,40 +1,52 @@
-﻿using SF.Space;
+﻿using System;
+using SF.Space;
 
 namespace SF.ServerLibrary
 {
+
     internal class Ship : IShip
     {
+        public Guid Id { get; set; }
         public string Nation { get; set; }
         public string Name { get; set; }
         public Dynamics Dynamics;
-        public double Heading { get { return this.Dynamics.HeadingValue; } }
-        public double Roll { get { return this.Dynamics.RollValue; } }
-        public double Acceleration { get { return this.Dynamics.AccelerationValue; } }
+        public double Heading { get { return Dynamics.HeadingValue; } }
+        public double Roll { get { return Dynamics.RollValue; } }
+        public double Thrust { get { return Dynamics.AccelerationValue; } }
 
         public ShipClass Class { get; set; }
         public string ClassName
         {
-            get { return this.Class.Name; }
+            get { return Class.Name; }
         }
 
         public MissileClass Missile { get; set; }
         public int Missiles { get; set; }
         public string MissileName
         {
-            get { return this.Missile.Name; }
+            get { return Missile.Name; }
         }
 
-        public Vector S
+        public Vector Position
         {
-            get { return this.Dynamics.S; }
+            get { return Dynamics.S; }
         }
-        public Vector V
+        public Vector Speed
         {
-            get { return this.Dynamics.V; }
+            get { return Dynamics.V; }
         }
-        public Vector A
+        public Vector Acceleration
         {
-            get { return this.Dynamics.A; }
+            get { return Dynamics.A; }
+        }
+
+        public double Weight
+        {
+            get { return Class.Weight; }
+        }
+        public double Radius
+        {
+            get { return Class.Wedge; }
         }
     }
 }

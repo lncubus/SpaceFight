@@ -1,22 +1,33 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace SF.Space
 {
     [DataContract]
-    public class Star
+    public class Star : IParticle
     {
         [DataMember]
-        public string Nation;
+        public Guid Id { get; set; }
         [DataMember]
-        public string Name;
+        public StarType StarClass { get; set; }
         [DataMember]
-        public double Radius;
+        public string Nation { get; set; }
         [DataMember]
-        public Vector Position;
+        public string Name { get; set; }
         [DataMember]
-        public Vector Speed;
+        public double Radius { get; set; }
         [DataMember]
-        public StarType StarClass;
+        public Vector Position { get; set; }
+        [DataMember]
+        public double Weight { get; set; }
+        public Vector Speed
+        {
+            get { return Vector.Zero; }
+        }
+        public Vector Acceleration
+        {
+            get { return Vector.Zero; }
+        }
     }
 
     public enum StarType

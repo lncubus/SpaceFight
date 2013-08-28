@@ -28,184 +28,184 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.textLocationX = new System.Windows.Forms.TextBox();
-            this.textLocationY = new System.Windows.Forms.TextBox();
-            this.textSpeedY = new System.Windows.Forms.TextBox();
-            this.textSpeedFull = new System.Windows.Forms.TextBox();
-            this.labelSpeedTitle = new System.Windows.Forms.Label();
-            this.textSpeedX = new System.Windows.Forms.TextBox();
-            this.labelLocationTitle = new System.Windows.Forms.Label();
-            this.labelAccelerationTitle = new System.Windows.Forms.Label();
-            this.textAccelerationFull = new System.Windows.Forms.TextBox();
-            this.textAccelerationX = new System.Windows.Forms.TextBox();
-            this.textAccelerationY = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel.SuspendLayout();
-            this.SuspendLayout();
+            tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            textLocationX = new System.Windows.Forms.TextBox();
+            textLocationY = new System.Windows.Forms.TextBox();
+            textSpeedY = new System.Windows.Forms.TextBox();
+            textSpeedFull = new System.Windows.Forms.TextBox();
+            labelSpeedTitle = new System.Windows.Forms.Label();
+            textSpeedX = new System.Windows.Forms.TextBox();
+            labelLocationTitle = new System.Windows.Forms.Label();
+            labelAccelerationTitle = new System.Windows.Forms.Label();
+            textAccelerationFull = new System.Windows.Forms.TextBox();
+            textAccelerationX = new System.Windows.Forms.TextBox();
+            textAccelerationY = new System.Windows.Forms.TextBox();
+            tableLayoutPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // tableLayoutPanel
             // 
-            this.tableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel.ColumnCount = 2;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.Controls.Add(this.textLocationX, 0, 7);
-            this.tableLayoutPanel.Controls.Add(this.textLocationY, 1, 7);
-            this.tableLayoutPanel.Controls.Add(this.textSpeedY, 1, 5);
-            this.tableLayoutPanel.Controls.Add(this.textSpeedFull, 0, 4);
-            this.tableLayoutPanel.Controls.Add(this.labelSpeedTitle, 0, 3);
-            this.tableLayoutPanel.Controls.Add(this.textSpeedX, 0, 5);
-            this.tableLayoutPanel.Controls.Add(this.labelLocationTitle, 0, 6);
-            this.tableLayoutPanel.Controls.Add(this.labelAccelerationTitle, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.textAccelerationFull, 0, 1);
-            this.tableLayoutPanel.Controls.Add(this.textAccelerationX, 0, 2);
-            this.tableLayoutPanel.Controls.Add(this.textAccelerationY, 1, 2);
-            this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 8;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.Size = new System.Drawing.Size(344, 170);
-            this.tableLayoutPanel.TabIndex = 0;
+            tableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel.ColumnCount = 2;
+            tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel.Controls.Add(textLocationX, 0, 7);
+            tableLayoutPanel.Controls.Add(textLocationY, 1, 7);
+            tableLayoutPanel.Controls.Add(textSpeedY, 1, 5);
+            tableLayoutPanel.Controls.Add(textSpeedFull, 0, 4);
+            tableLayoutPanel.Controls.Add(labelSpeedTitle, 0, 3);
+            tableLayoutPanel.Controls.Add(textSpeedX, 0, 5);
+            tableLayoutPanel.Controls.Add(labelLocationTitle, 0, 6);
+            tableLayoutPanel.Controls.Add(labelAccelerationTitle, 0, 0);
+            tableLayoutPanel.Controls.Add(textAccelerationFull, 0, 1);
+            tableLayoutPanel.Controls.Add(textAccelerationX, 0, 2);
+            tableLayoutPanel.Controls.Add(textAccelerationY, 1, 2);
+            tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 8;
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel.Size = new System.Drawing.Size(344, 170);
+            tableLayoutPanel.TabIndex = 0;
             // 
             // textLocationX
             // 
-            this.textLocationX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textLocationX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.textLocationX.Location = new System.Drawing.Point(3, 146);
-            this.textLocationX.Name = "textLocationX";
-            this.textLocationX.ReadOnly = true;
-            this.textLocationX.Size = new System.Drawing.Size(166, 20);
-            this.textLocationX.TabIndex = 9;
+            textLocationX.Location = new System.Drawing.Point(3, 146);
+            textLocationX.Name = "textLocationX";
+            textLocationX.ReadOnly = true;
+            textLocationX.Size = new System.Drawing.Size(166, 20);
+            textLocationX.TabIndex = 9;
             // 
             // textLocationY
             // 
-            this.textLocationY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textLocationY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.textLocationY.Location = new System.Drawing.Point(175, 146);
-            this.textLocationY.Name = "textLocationY";
-            this.textLocationY.ReadOnly = true;
-            this.textLocationY.Size = new System.Drawing.Size(166, 20);
-            this.textLocationY.TabIndex = 10;
+            textLocationY.Location = new System.Drawing.Point(175, 146);
+            textLocationY.Name = "textLocationY";
+            textLocationY.ReadOnly = true;
+            textLocationY.Size = new System.Drawing.Size(166, 20);
+            textLocationY.TabIndex = 10;
             // 
             // textSpeedY
             // 
-            this.textSpeedY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textSpeedY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.textSpeedY.Location = new System.Drawing.Point(175, 107);
-            this.textSpeedY.Name = "textSpeedY";
-            this.textSpeedY.ReadOnly = true;
-            this.textSpeedY.Size = new System.Drawing.Size(166, 20);
-            this.textSpeedY.TabIndex = 7;
+            textSpeedY.Location = new System.Drawing.Point(175, 107);
+            textSpeedY.Name = "textSpeedY";
+            textSpeedY.ReadOnly = true;
+            textSpeedY.Size = new System.Drawing.Size(166, 20);
+            textSpeedY.TabIndex = 7;
             // 
             // textSpeedFull
             // 
-            this.textSpeedFull.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textSpeedFull.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel.SetColumnSpan(this.textSpeedFull, 2);
-            this.textSpeedFull.Location = new System.Drawing.Point(3, 81);
-            this.textSpeedFull.Name = "textSpeedFull";
-            this.textSpeedFull.ReadOnly = true;
-            this.textSpeedFull.Size = new System.Drawing.Size(338, 20);
-            this.textSpeedFull.TabIndex = 5;
+            tableLayoutPanel.SetColumnSpan(textSpeedFull, 2);
+            textSpeedFull.Location = new System.Drawing.Point(3, 81);
+            textSpeedFull.Name = "textSpeedFull";
+            textSpeedFull.ReadOnly = true;
+            textSpeedFull.Size = new System.Drawing.Size(338, 20);
+            textSpeedFull.TabIndex = 5;
             // 
             // labelSpeedTitle
             // 
-            this.labelSpeedTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            labelSpeedTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelSpeedTitle.AutoSize = true;
-            this.tableLayoutPanel.SetColumnSpan(this.labelSpeedTitle, 2);
-            this.labelSpeedTitle.Location = new System.Drawing.Point(3, 65);
-            this.labelSpeedTitle.Name = "labelSpeedTitle";
-            this.labelSpeedTitle.Size = new System.Drawing.Size(338, 13);
-            this.labelSpeedTitle.TabIndex = 4;
-            this.labelSpeedTitle.Text = "Скорость";
-            this.labelSpeedTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            labelSpeedTitle.AutoSize = true;
+            tableLayoutPanel.SetColumnSpan(labelSpeedTitle, 2);
+            labelSpeedTitle.Location = new System.Drawing.Point(3, 65);
+            labelSpeedTitle.Name = "labelSpeedTitle";
+            labelSpeedTitle.Size = new System.Drawing.Size(338, 13);
+            labelSpeedTitle.TabIndex = 4;
+            labelSpeedTitle.Text = "Скорость";
+            labelSpeedTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textSpeedX
             // 
-            this.textSpeedX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textSpeedX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.textSpeedX.Location = new System.Drawing.Point(3, 107);
-            this.textSpeedX.Name = "textSpeedX";
-            this.textSpeedX.ReadOnly = true;
-            this.textSpeedX.Size = new System.Drawing.Size(166, 20);
-            this.textSpeedX.TabIndex = 6;
+            textSpeedX.Location = new System.Drawing.Point(3, 107);
+            textSpeedX.Name = "textSpeedX";
+            textSpeedX.ReadOnly = true;
+            textSpeedX.Size = new System.Drawing.Size(166, 20);
+            textSpeedX.TabIndex = 6;
             // 
             // labelLocationTitle
             // 
-            this.labelLocationTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            labelLocationTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelLocationTitle.AutoSize = true;
-            this.tableLayoutPanel.SetColumnSpan(this.labelLocationTitle, 2);
-            this.labelLocationTitle.Location = new System.Drawing.Point(3, 130);
-            this.labelLocationTitle.Name = "labelLocationTitle";
-            this.labelLocationTitle.Size = new System.Drawing.Size(338, 13);
-            this.labelLocationTitle.TabIndex = 8;
-            this.labelLocationTitle.Text = "Положение";
-            this.labelLocationTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            labelLocationTitle.AutoSize = true;
+            tableLayoutPanel.SetColumnSpan(labelLocationTitle, 2);
+            labelLocationTitle.Location = new System.Drawing.Point(3, 130);
+            labelLocationTitle.Name = "labelLocationTitle";
+            labelLocationTitle.Size = new System.Drawing.Size(338, 13);
+            labelLocationTitle.TabIndex = 8;
+            labelLocationTitle.Text = "Положение";
+            labelLocationTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelAccelerationTitle
             // 
-            this.labelAccelerationTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            labelAccelerationTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelAccelerationTitle.AutoSize = true;
-            this.tableLayoutPanel.SetColumnSpan(this.labelAccelerationTitle, 2);
-            this.labelAccelerationTitle.Location = new System.Drawing.Point(3, 0);
-            this.labelAccelerationTitle.Name = "labelAccelerationTitle";
-            this.labelAccelerationTitle.Size = new System.Drawing.Size(338, 13);
-            this.labelAccelerationTitle.TabIndex = 0;
-            this.labelAccelerationTitle.Text = "Ускорение";
-            this.labelAccelerationTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            labelAccelerationTitle.AutoSize = true;
+            tableLayoutPanel.SetColumnSpan(labelAccelerationTitle, 2);
+            labelAccelerationTitle.Location = new System.Drawing.Point(3, 0);
+            labelAccelerationTitle.Name = "labelAccelerationTitle";
+            labelAccelerationTitle.Size = new System.Drawing.Size(338, 13);
+            labelAccelerationTitle.TabIndex = 0;
+            labelAccelerationTitle.Text = "Ускорение";
+            labelAccelerationTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textAccelerationFull
             // 
-            this.textAccelerationFull.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textAccelerationFull.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel.SetColumnSpan(this.textAccelerationFull, 2);
-            this.textAccelerationFull.Location = new System.Drawing.Point(3, 16);
-            this.textAccelerationFull.Name = "textAccelerationFull";
-            this.textAccelerationFull.ReadOnly = true;
-            this.textAccelerationFull.Size = new System.Drawing.Size(338, 20);
-            this.textAccelerationFull.TabIndex = 1;
+            tableLayoutPanel.SetColumnSpan(textAccelerationFull, 2);
+            textAccelerationFull.Location = new System.Drawing.Point(3, 16);
+            textAccelerationFull.Name = "textAccelerationFull";
+            textAccelerationFull.ReadOnly = true;
+            textAccelerationFull.Size = new System.Drawing.Size(338, 20);
+            textAccelerationFull.TabIndex = 1;
             // 
             // textAccelerationX
             // 
-            this.textAccelerationX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textAccelerationX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.textAccelerationX.Location = new System.Drawing.Point(3, 42);
-            this.textAccelerationX.Name = "textAccelerationX";
-            this.textAccelerationX.ReadOnly = true;
-            this.textAccelerationX.Size = new System.Drawing.Size(166, 20);
-            this.textAccelerationX.TabIndex = 2;
+            textAccelerationX.Location = new System.Drawing.Point(3, 42);
+            textAccelerationX.Name = "textAccelerationX";
+            textAccelerationX.ReadOnly = true;
+            textAccelerationX.Size = new System.Drawing.Size(166, 20);
+            textAccelerationX.TabIndex = 2;
             // 
             // textAccelerationY
             // 
-            this.textAccelerationY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            textAccelerationY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.textAccelerationY.Location = new System.Drawing.Point(175, 42);
-            this.textAccelerationY.Name = "textAccelerationY";
-            this.textAccelerationY.ReadOnly = true;
-            this.textAccelerationY.Size = new System.Drawing.Size(166, 20);
-            this.textAccelerationY.TabIndex = 3;
+            textAccelerationY.Location = new System.Drawing.Point(175, 42);
+            textAccelerationY.Name = "textAccelerationY";
+            textAccelerationY.ReadOnly = true;
+            textAccelerationY.Size = new System.Drawing.Size(166, 20);
+            textAccelerationY.TabIndex = 3;
             // 
             // IndicatorControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tableLayoutPanel);
-            this.Name = "IndicatorControl";
-            this.Size = new System.Drawing.Size(344, 170);
-            this.tableLayoutPanel.ResumeLayout(false);
-            this.tableLayoutPanel.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(tableLayoutPanel);
+            Name = "IndicatorControl";
+            Size = new System.Drawing.Size(344, 170);
+            tableLayoutPanel.ResumeLayout(false);
+            tableLayoutPanel.PerformLayout();
+            ResumeLayout(false);
 
         }
 

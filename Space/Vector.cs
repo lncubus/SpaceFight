@@ -74,8 +74,8 @@ namespace SF.Space
         {
             return new Vector
             {
-                X =  this.X * Math.Cos(theta) + this.Y * Math.Sin(theta),
-                Y = -this.X * Math.Sin(theta) + this.Y * Math.Cos(theta)
+                X =  X * Math.Cos(theta) + Y * Math.Sin(theta),
+                Y = -X * Math.Sin(theta) + Y * Math.Cos(theta)
             };
         }
 

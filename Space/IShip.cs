@@ -1,11 +1,9 @@
 ﻿
 namespace SF.Space
 {
-    public interface IShip
+    public interface IShip : IParticle
     {
         ShipClass Class { get; }
-        string Nation { get; }
-        string Name { get; }
         string ClassName { get; }
 
         MissileClass Missile { get; }
@@ -14,10 +12,6 @@ namespace SF.Space
 
         double Heading { get; }
         double Roll { get; }
-        double Acceleration { get; }
-
-        Vector S { get; }
-        Vector V { get; }
-        Vector A { get; }
+        double Thrust { get; }
     }
 }

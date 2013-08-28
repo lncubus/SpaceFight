@@ -28,102 +28,102 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.treeView = new System.Windows.Forms.TreeView();
-            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.toolStripButtonBang = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
-            this.splitContainer.Panel1.SuspendLayout();
-            this.splitContainer.Panel2.SuspendLayout();
-            this.splitContainer.SuspendLayout();
-            this.SuspendLayout();
+            statusStrip = new System.Windows.Forms.StatusStrip();
+            toolStrip = new System.Windows.Forms.ToolStrip();
+            splitContainer = new System.Windows.Forms.SplitContainer();
+            treeView = new System.Windows.Forms.TreeView();
+            propertyGrid = new System.Windows.Forms.PropertyGrid();
+            toolStripButtonBang = new System.Windows.Forms.ToolStripButton();
+            toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(splitContainer)).BeginInit();
+            splitContainer.Panel1.SuspendLayout();
+            splitContainer.Panel2.SuspendLayout();
+            splitContainer.SuspendLayout();
+            SuspendLayout();
             // 
             // statusStrip
             // 
-            this.statusStrip.Location = new System.Drawing.Point(0, 382);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(511, 22);
-            this.statusStrip.TabIndex = 2;
-            this.statusStrip.Text = "statusStrip1";
+            statusStrip.Location = new System.Drawing.Point(0, 382);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new System.Drawing.Size(511, 22);
+            statusStrip.TabIndex = 2;
+            statusStrip.Text = "statusStrip1";
             // 
             // toolStrip
             // 
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonBang});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(511, 25);
-            this.toolStrip.TabIndex = 3;
-            this.toolStrip.Text = "toolStrip1";
+            toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            toolStripButtonBang});
+            toolStrip.Location = new System.Drawing.Point(0, 0);
+            toolStrip.Name = "toolStrip";
+            toolStrip.Size = new System.Drawing.Size(511, 25);
+            toolStrip.TabIndex = 3;
+            toolStrip.Text = "toolStrip1";
             // 
             // splitContainer
             // 
-            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer.Location = new System.Drawing.Point(0, 25);
-            this.splitContainer.Name = "splitContainer";
+            splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer.Location = new System.Drawing.Point(0, 25);
+            splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.treeView);
+            splitContainer.Panel1.Controls.Add(treeView);
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.Controls.Add(this.propertyGrid);
-            this.splitContainer.Size = new System.Drawing.Size(511, 357);
-            this.splitContainer.SplitterDistance = 250;
-            this.splitContainer.TabIndex = 4;
+            splitContainer.Panel2.Controls.Add(propertyGrid);
+            splitContainer.Size = new System.Drawing.Size(511, 357);
+            splitContainer.SplitterDistance = 250;
+            splitContainer.TabIndex = 4;
             // 
             // treeView
             // 
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.HideSelection = false;
-            this.treeView.Location = new System.Drawing.Point(0, 0);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(250, 357);
-            this.treeView.TabIndex = 1;
-            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            treeView.HideSelection = false;
+            treeView.Location = new System.Drawing.Point(0, 0);
+            treeView.Name = "treeView";
+            treeView.Size = new System.Drawing.Size(250, 357);
+            treeView.TabIndex = 1;
+            treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(treeView_AfterSelect);
             // 
             // propertyGrid
             // 
-            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid.HelpVisible = false;
-            this.propertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(257, 357);
-            this.propertyGrid.TabIndex = 0;
+            propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            propertyGrid.HelpVisible = false;
+            propertyGrid.Location = new System.Drawing.Point(0, 0);
+            propertyGrid.Name = "propertyGrid";
+            propertyGrid.Size = new System.Drawing.Size(257, 357);
+            propertyGrid.TabIndex = 0;
             // 
             // toolStripButtonBang
             // 
-            this.toolStripButtonBang.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonBang.Name = "toolStripButtonBang";
-            this.toolStripButtonBang.Size = new System.Drawing.Size(39, 22);
-            this.toolStripButtonBang.Text = "Bang!";
-            this.toolStripButtonBang.Click += new System.EventHandler(this.toolStripButtonBang_Click);
+            toolStripButtonBang.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButtonBang.Name = "toolStripButtonBang";
+            toolStripButtonBang.Size = new System.Drawing.Size(39, 22);
+            toolStripButtonBang.Text = "Bang!";
+            toolStripButtonBang.Click += new System.EventHandler(toolStripButtonBang_Click);
             // 
             // ServerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(511, 404);
-            this.Controls.Add(this.splitContainer);
-            this.Controls.Add(this.toolStrip);
-            this.Controls.Add(this.statusStrip);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Name = "ServerForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerForm_FormClosing);
-            this.Load += new System.EventHandler(this.ServerForm_Load);
-            this.toolStrip.ResumeLayout(false);
-            this.toolStrip.PerformLayout();
-            this.splitContainer.Panel1.ResumeLayout(false);
-            this.splitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
-            this.splitContainer.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(511, 404);
+            Controls.Add(splitContainer);
+            Controls.Add(toolStrip);
+            Controls.Add(statusStrip);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            Name = "ServerForm";
+            WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            FormClosing += new System.Windows.Forms.FormClosingEventHandler(ServerForm_FormClosing);
+            Load += new System.EventHandler(ServerForm_Load);
+            toolStrip.ResumeLayout(false);
+            toolStrip.PerformLayout();
+            splitContainer.Panel1.ResumeLayout(false);
+            splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(splitContainer)).EndInit();
+            splitContainer.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

@@ -4,14 +4,11 @@ using SF.Space;
 
 namespace SF.ServerLibrary
 {
-    internal class Helm : IHelm
+    internal class Helm : Ship, IHelm
     {
-        protected Dynamics Dynamics { get { return ((Ship)this.Ship).Dynamics; } }
-
-        public double RollTo { get { return this.Dynamics.RollTo; } set { this.Dynamics.RollTo = value; } }
-        public double HeadingTo { get { return this.Dynamics.HeadingTo; } set { this.Dynamics.HeadingTo = value; } }
-        public double AccelerateTo { get { return this.Dynamics.AccelerateTo; } set { this.Dynamics.AccelerateTo = value; } }
-        public IShip Ship { get; private set; }
+        public double RollTo { get { return Dynamics.RollTo; } set { Dynamics.RollTo = value; } }
+        public double HeadingTo { get { return Dynamics.HeadingTo; } set { Dynamics.HeadingTo = value; } }
+        public double ThrustTo { get { return Dynamics.AccelerateTo; } set { Dynamics.AccelerateTo = value; } }
 
         public static IHelm Load(HelmDefinition that)
         {
@@ -28,15 +25,13 @@ namespace SF.ServerLibrary
             var shipDynamics = new Dynamics(shipClass, that, TimeSpan.Zero);
             return new Helm
             {
-                Ship = new Ship
-                {
-                    Name = that.ShipName,
-                    Class = shipClass,
-                    Nation = that.Nation,
-                    Dynamics = shipDynamics,
-                    Missile = missileClass,
-                    Missiles = that.MissileNumber,
-                },
+                Id = that.Id == Guid.Empty ? Guid.NewGuid() : that.Id,
+                Class = shipClass,
+                Name = that.Name,
+                Nation = that.Nation,
+                Dynamics = shipDynamics,
+                Missile = missileClass,
+                Missiles = that.Missiles,
             };
         }
     }

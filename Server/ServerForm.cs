@@ -23,20 +23,20 @@ namespace Server
 
         private void ServerForm_Load(object sender, EventArgs e)
         {
-            this.Host = new ServiceHost(typeof(SpaceServer));
-            this.Host.Open();
+            Host = new ServiceHost(typeof(SpaceServer));
+            Host.Open();
             if (SpaceServer.Instance == null)
                 Close();
             else
             {
-                this.ShowNode(SpaceServer.Instance);
+                ShowNode(SpaceServer.Instance);
             }
         }
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.Host != null)
-                this.Host.Close();
+            if (Host != null)
+                Host.Close();
         }
 
         private TreeNode ShowNode(object thing, TreeNode parentNode = null)

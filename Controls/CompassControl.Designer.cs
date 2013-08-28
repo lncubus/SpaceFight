@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // CompassControl
             // 
-            this.Name = "CompassControl";
-            this.ResumeLayout(false);
+            Name = "CompassControl";
+            ResumeLayout(false);
         }
 
         #endregion

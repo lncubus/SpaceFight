@@ -6,14 +6,16 @@ namespace SF.ServerLibrary
 
     public class Missile : IMissile
     {
+        public Guid Id { get; set; }
+
         public MissileClass Class { get; set; }
         public string Nation { get; set; }
 
         private string m_className;
         public string ClassName
         {
-            get { return this.Class == null ? this.m_className : this.Class.Name; }
-            set { this.m_className = value; }
+            get { return Class == null ? m_className : Class.Name; }
+            set { m_className = value; }
         }
 
         public IShip Target { get; set; }
@@ -31,15 +33,12 @@ namespace SF.ServerLibrary
             }
         }
 
-        public Vector S { get; private set; }
-        public Vector V { get; private set; }
+        public Vector Position { get; private set; }
+        public Vector Speed { get; private set; }
 
-        public Vector A
+        public Vector Acceleration
         {
-            get
-            {
-                return this.Class.Acceleration * Vector.Direction(heading);
-            }
+            get { return Class.Acceleration * Vector.Direction(heading); }
         }
 
         public readonly double Started;
@@ -51,55 +50,66 @@ namespace SF.ServerLibrary
 
         public Missile(IShip from, bool left, IShip to, int number, TimeSpan time)
         {
-            this.Class = from.Missile;
-            this.s0 = this.S = from.S;
-            this.v0 = this.V = from.V;
-            this.t0 = this.Started = time.TotalSeconds;
-            this.Number = Math.Min(number, from.Missiles);
-            this.heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
+            Id = Guid.NewGuid();
+            Class = from.Missile;
+            s0 = Position = from.Position;
+            v0 = Speed = from.Speed;
+            t0 = Started = time.TotalSeconds;
+            Number = Math.Min(number, from.Missiles);
+            heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;
         }
 
         public void UpdateTime(double time)
         {
-            if (time - this.Started > this.Class.FlyTime)
+            if (time - Started > Class.FlyTime)
             {
                 Exhausted = true;
                 return;
             }
-            var t = time - this.t0;
+            var t = time - t0;
             var t2 = t * t / 2;
-            this.V = this.v0 + A * t;
-            this.S = this.s0 + this.v0 * t + this.A * t2;
-            var s = Target.S - this.S;
-            var v = Target.V - this.V;
-            if (s.Length < Class.HitDistance)
-            {
-                Exploded = true;
+            Speed = v0 + Acceleration * t;
+            Position = s0 + v0 * t + Acceleration * t2;
+            var s = Target.Position - Position;
+            var v = Target.Speed - Speed;
+            if (t < Class.Targeting)
                 return;
-            }
-            if (t < this.Class.Targeting)
-                return;
-            this.v0 = this.V;
-            this.s0 = this.S;
-            this.t0 = time;
-            this.heading = s.Argument;
-            //if (MathUtils.NearlyEqual(h, this.heading))
+            v0 = Speed;
+            s0 = Position;
+            t0 = time;
+            heading = s.Argument;
+            //if (MathUtils.NearlyEqual(h, heading))
             //    return;
-            //var diff = this.heading - h;
+            //var diff = heading - h;
             //// end of the current arc
-            //bool changed = (this.headingTo.HasValue || this.accelerateTo.HasValue || this.Acceleration.WillReset(time) || this.Heading.WillReset(time));
+            //bool changed = (headingTo.HasValue || accelerateTo.HasValue || Acceleration.WillReset(time) || Heading.WillReset(time));
             //if (changed)
             //{
-            //    this.v0 = this.V;
-            //    this.t0 = time;
-            //    this.Heading.Set(time, this.HeadingTo);
-            //    this.Acceleration.Set(time, this.AccelerateTo);
-            //    this.headingTo = null;
-            //    this.accelerateTo = null;
+            //    v0 = V;
+            //    t0 = time;
+            //    Heading.Set(time, HeadingTo);
+            //    Acceleration.Set(time, AccelerateTo);
+            //    headingTo = null;
+            //    accelerateTo = null;
             //}
-            //this.AccelerationValue = a1;
-            //this.HeadingValue = phi1;
+            //AccelerationValue = a1;
+            //HeadingValue = phi1;
+        }
+
+        public string Name
+        {
+            get { return ClassName; }
+        }
+
+        public double Weight
+        {
+            get { return Class.Weight; }
+        }
+
+        public double Radius
+        {
+            get { return Class.HitDistance; }
         }
     }
 }

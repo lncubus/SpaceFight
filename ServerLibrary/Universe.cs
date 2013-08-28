@@ -63,38 +63,38 @@ namespace SF.ServerLibrary
         public Universe()
         {
             var catalog = File.ReadAllText("catalog.xml");
-            var catalogDefinition = this.DeserializeObject<CatalogDefinition>(catalog);
+            var catalogDefinition = DeserializeObject<CatalogDefinition>(catalog);
             Catalog.Create(catalogDefinition);
             var ships = File.ReadAllText("helms.xml");
-            var helms = this.DeserializeCollection<HelmDefinition>(ships);
-            m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Ship.Name);
+            var helms = DeserializeCollection<HelmDefinition>(ships);
+            m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Name);
             m_missiles = new List<IMissile>();
             var stars = File.ReadAllText("stars.xml");
-            m_stars = this.DeserializeCollection<Star>(stars).ToDictionary(star => star.Name);
-            this.m_backgroundWorker = new Thread(this.TimingThreadStart) { IsBackground = true };
+            m_stars = DeserializeCollection<Star>(stars).ToDictionary(star => star.Name);
+            m_backgroundWorker = new Thread(TimingThreadStart) { IsBackground = true };
         }
 
         public bool IsRunning
         {
-            get { return this.m_stopWatch.IsRunning; }
+            get { return m_stopWatch.IsRunning; }
             set
             {
-                if (this.m_stopWatch.IsRunning == value)
+                if (m_stopWatch.IsRunning == value)
                     return;
                 if (value)
                 {
-                    this.m_stopWatch.Start();
-                    if (!this.m_backgroundWorker.IsAlive)
-                        this.m_backgroundWorker.Start();
+                    m_stopWatch.Start();
+                    if (!m_backgroundWorker.IsAlive)
+                        m_backgroundWorker.Start();
                 }
                 else
-                    this.m_stopWatch.Stop();
+                    m_stopWatch.Stop();
             }
         }
 
         public TimeSpan Time
         {
-            get { return this.m_stopWatch.Elapsed; }
+            get { return m_stopWatch.Elapsed; }
         }
 
         public View GetView(IHelm m_helm)
@@ -117,9 +117,9 @@ namespace SF.ServerLibrary
             lock (m_locker)
             {
                 var shipClassesByNation = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
-                var shipClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
+                var shipClassesByShips = m_helms.Where(i => i.Value.Nation == nation).Select(i => i.Value.Class);
                 var missileClassesByNation = Catalog.Instance.MissileClasses.Values.Where(c => c.Nation == nation);
-                var missileClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Missile);
+                var missileClassesByShips = m_helms.Where(i => i.Value.Nation == nation).Select(i => i.Value.Missile);
                 return new CatalogDefinition
                 {
                     MaximumMissileRange = Catalog.Instance.MaximumMissileRange,
@@ -137,7 +137,7 @@ namespace SF.ServerLibrary
             lock (m_locker)
             {
                 var helm = GetHelm(name);
-                if (helm.Ship.Nation != nation)
+                if (helm.Nation != nation)
                     return null;
                 return helm;
             }
@@ -151,7 +151,7 @@ namespace SF.ServerLibrary
                 var target = GetHelm(to);
                 if (from.Missile == null || target == null || number <= 0)
                     return;
-                var result = new Missile(from, left, target.Ship, number, Time);
+                var result = new Missile(from, left, target, number, Time);
                 m_missiles.Add(result);
             }
         }
@@ -166,31 +166,31 @@ namespace SF.ServerLibrary
 
         private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            return this.m_helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
+            return m_helms.Values.Where(i => i != me); 
         }
 
         private IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
         {
-            return this.m_missiles;
+            return m_missiles;
         }
 
         private IEnumerable<Star> GetStars()
         {
-            return this.m_stars.Values;
+            return m_stars.Values;
         }
 
         public KeyValuePair<string, string[]>[] GetShipNames()
         {
             lock (m_locker)
             {
-                var nations = m_helms.Select(i => i.Value.Ship.Nation).Distinct().ToList();
+                var nations = m_helms.Select(i => i.Value.Nation).Distinct().ToList();
                 nations.Sort();
                 int n = nations.Count;
                 var result = new KeyValuePair<string, string[]>[n];
                 for (int i = 0; i < n; i++)
                 {
                     var nation = nations[i];
-                    var ships = m_helms.Where(h => h.Value.Ship.Nation == nation).Select(h => h.Value.Ship.Name).Distinct().ToList();
+                    var ships = m_helms.Where(p => p.Value.Nation == nation).Select(p => p.Key).Distinct().ToList();
                     ships.Sort();
                     result[i] = new KeyValuePair<string, string[]>(nation, ships.ToArray());
                 }
@@ -207,9 +207,9 @@ namespace SF.ServerLibrary
                     continue;
                 lock (m_locker)
                 {
-                    double t = this.Time.TotalSeconds;
-                    foreach (var helm in m_helms.Values)
-                        ((Ship)helm.Ship).Dynamics.UpdateTime(t);
+                    double t = Time.TotalSeconds;
+                    foreach (Ship helm in m_helms.Values)
+                        helm.Dynamics.UpdateTime(t);
                     foreach (Missile missile in m_missiles)
                         missile.UpdateTime(t);
                     var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
@@ -233,27 +233,25 @@ namespace SF.ServerLibrary
                     var missile = Catalog.Instance.MissileClasses.Values.First();
                     var helm = new HelmDefinition
                                {
-                                   Acceleration = a * classification.MaximumAcceleration,
-                                   AccelerateTo = a * classification.MaximumAcceleration,
+                                   Thrust = a * classification.MaximumAcceleration,
+                                   ThrustTo = a * classification.MaximumAcceleration,
                                    ClassName = classification.Name,
                                    Heading = h,
                                    HeadingTo = h,
                                    Nation = "Солярианская Лига",
-                                   ShipName = "Бандит-" + (generation > 0 ? generation + "-" : "") + (i + 1),
-                                   MissileNumber = 1,
+                                   Name = "Бандит-" + (generation > 0 ? generation + "-" : "") + (i + 1),
+                                   Missiles = 1,
                                    MissileName = missile.Name,
                                    Position = 300000000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
                                    Speed = 300000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
                                };
-                    m_helms.Add(helm.ShipName, Helm.Load(helm));
+                    m_helms.Add(helm.Name, Helm.Load(helm));
                 }
                 for (int i = 0; i < 1000; i++)
                 {
-                    var h = Random.NextAngle();
-                    var classification = Catalog.Instance.MissileClasses.Values.First();
                     var from = m_helms.Values.RandomOf(Random);
                     var to = m_helms.Values.RandomOf(Random);
-                    var missile = new Missile(from.Ship, true, to.Ship, 1, Time);
+                    var missile = new Missile(from, true, to, 1, Time);
                     m_missiles.Add(missile);
                 }
                 generation++;

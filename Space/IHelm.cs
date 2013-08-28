@@ -1,10 +1,9 @@
 ﻿namespace SF.Space
 {
-    public interface IHelm
+    public interface IHelm : IShip
     {
-        IShip Ship { get; }
         double HeadingTo { get; set; }
         double RollTo { get; set; }
-        double AccelerateTo { get; set; }
+        double ThrustTo { get; set; }
     }
 }

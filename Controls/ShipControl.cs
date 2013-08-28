@@ -25,7 +25,7 @@ namespace SF.Controls
 
         public IShip Ship
         {
-            get { return m_helm == null ? null : m_helm.Ship; }
+            get { return m_helm; }
         }
 
         public IHelm Helm
@@ -62,10 +62,10 @@ namespace SF.Controls
             {
                 accelerationProgressBar.Value =
                     Ship.Class == null ? 0 : 
-                        (int)MathUtils.LimitedLinear(accelerationProgressBar.Minimum, accelerationProgressBar.Maximum, Ship.Acceleration / Ship.Class.MaximumAcceleration);
+                        (int)MathUtils.LimitedLinear(accelerationProgressBar.Minimum, accelerationProgressBar.Maximum, Ship.Thrust / Ship.Class.MaximumAcceleration);
                 headingControl.Heading = MathUtils.ToDegreesInt(Ship.Heading);
-                if (Ship.V.Length > MathUtils.Epsilon)
-                    headingControl.Secondary = MathUtils.ToDegreesInt(Ship.V.Argument);
+                if (Ship.Speed.Length > MathUtils.Epsilon)
+                    headingControl.Secondary = MathUtils.ToDegreesInt(Ship.Speed.Argument);
                 else
                     headingControl.Secondary = MathUtils.ToDegreesInt(Ship.Heading);
                 rollControl.Roll = MathUtils.ToDegreesInt(Ship.Roll);
@@ -76,11 +76,11 @@ namespace SF.Controls
                 rollControl.Roll = 0;
                 accelerationProgressBar.Value = 0;
             }
-            if (Helm != null)
+            if (Helm != null && Ship != null)
             {
                 accelerationTrackBar.Value =
                     Ship.Class == null ? 0 :
-                        (int)MathUtils.LimitedLinear(accelerationTrackBar.Minimum, accelerationTrackBar.Maximum, Helm.AccelerateTo / Ship.Class.MaximumAcceleration);
+                        (int)MathUtils.LimitedLinear(accelerationTrackBar.Minimum, accelerationTrackBar.Maximum, Helm.ThrustTo / Ship.Class.MaximumAcceleration);
                 headingControl.HeadingTo = MathUtils.ToDegreesInt(Helm.HeadingTo);
                 rollControl.RollTo = MathUtils.ToDegreesInt(Helm.RollTo);
             }
@@ -96,7 +96,7 @@ namespace SF.Controls
         {
             if (Helm == null || Updating > 0)
                 return;
-            Helm.AccelerateTo = accelerationTrackBar.Value * Ship.Class.MaximumAcceleration / accelerationTrackBar.Maximum;
+            Helm.ThrustTo = accelerationTrackBar.Value * Ship.Class.MaximumAcceleration / accelerationTrackBar.Maximum;
         }
 
         private void headingControl_OnHeadingToChanged(object sender, EventArgs e)

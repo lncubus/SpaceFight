@@ -1,41 +1,35 @@
-﻿using SF.Space;
+﻿using System;
+using SF.Space;
 
 namespace SF.ClientLibrary
 {
+
     internal class RemoteHelm : IHelm
     {
         private readonly IServer m_client;
-        private readonly RemoteShip m_ship;
         private HelmDefinition m_that;
 
         public RemoteHelm(IServer client, HelmDefinition def)
         {
-            this.m_that = def;
-            this.m_client = client;
-            this.m_ship = new RemoteShip(def);
-        }
-
-        public IShip Ship
-        {
-            get { return this.m_ship; }
+            m_that = def;
+            m_client = client;
         }
 
         public void Update(HelmDefinition def)
         {
-            this.m_ship.Update(def);
-            this.m_that = def;
+            m_that = def;
         }
 
         public double HeadingTo
         {
             get
             {
-                return this.m_that.HeadingTo;
+                return m_that.HeadingTo;
             }
             set
             {
-                this.m_that.HeadingTo = value;
-                this.m_client.SetHeadingTo(value);
+                m_that.HeadingTo = value;
+                m_client.SetHeadingTo(value);
             }
         }
 
@@ -43,26 +37,106 @@ namespace SF.ClientLibrary
         {
             get
             {
-                return this.m_that.RollTo;
+                return m_that.RollTo;
             }
             set
             {
-                this.m_that.RollTo = value;
-                this.m_client.SetRollTo(value);
+                m_that.RollTo = value;
+                m_client.SetRollTo(value);
             }
         }
 
-        public double AccelerateTo
+        public double ThrustTo
         {
             get
             {
-                return this.m_that.AccelerateTo;
+                return m_that.ThrustTo;
             }
             set
             {
-                this.m_that.AccelerateTo = value;
-                this.m_client.SetAccelerateTo(value);
+                m_that.ThrustTo = value;
+                m_client.SetThrustTo(value);
             }
+        }
+
+        public Guid Id
+        {
+            get { return m_that.Id; }
+        }
+
+        public string Nation
+        {
+            get { return m_that.Nation; }
+        }
+
+        public string Name
+        {
+            get { return m_that.Name; }
+        }
+
+        public double Weight
+        {
+            get { return m_that.Weight; }
+        }
+
+        public double Radius
+        {
+            get { return m_that.Radius; }
+        }
+
+        public Vector Position
+        {
+            get { return m_that.Position; }
+        }
+
+        public Vector Speed
+        {
+            get { return m_that.Speed; }
+        }
+
+        public Vector Acceleration
+        {
+            get { return m_that.Acceleration; }
+        }
+
+        public ShipClass Class
+        {
+            get { return m_that.Class; }
+        }
+
+        public string ClassName
+        {
+            get { return m_that.ClassName; }
+        }
+
+        public MissileClass Missile
+        {
+            get { return m_that.Missile; }
+        }
+
+        public string MissileName
+        {
+            get { return m_that.MissileName; }
+        }
+
+        public int Missiles
+        {
+            get { return m_that.Missiles; }
+        }
+
+        public double Heading
+        {
+            get { return m_that.Heading; }
+        }
+
+        public double Roll
+        {
+            get { return m_that.Roll; }
+        }
+
+        public double Thrust
+        {
+            get { return m_that.Thrust; }
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SF.Space
 {
+
     public static class SpaceExtensions
     {
         /// <summary>
@@ -22,6 +25,13 @@ namespace SF.Space
                 return Catalog.Instance.MaximumMissileRange;
             var t = ship.Missile.FlyTime;
             return ship.Missile.Acceleration * t * t / 2;
+        }
+
+        public static T ById<T>(this IEnumerable<T> particles, Guid id) where T : IParticle
+        {
+            if (id == Guid.Empty)
+                return default(T);
+            return particles.FirstOrDefault(i => i.Id == id);
         }
     }
 }

@@ -17,5 +17,9 @@ namespace SF.Space
         public double RoundRollTime { get; set; }
         [DataMember]
         public double FullTurnTime { get; set; }
+        [DataMember]
+        public double Weight { get; set; }
+        [DataMember]
+        public double Wedge { get; set; }
     }
 }

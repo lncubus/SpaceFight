@@ -16,18 +16,18 @@ namespace SF.ServerLibrary
 
         public bool Login(string nation, string ship)
         {
-            this.m_helm = Instance.GetHelm(nation, ship);
-            return this.m_helm != null;
+            m_helm = Instance.GetHelm(nation, ship);
+            return m_helm != null;
         }
 
         public void Logout()
         {
-            this.m_helm = null;
+            m_helm = null;
         }
 
         public void Connect(string password)
         {
-            this.m_helm = null;
+            m_helm = null;
         }
 
         public KeyValuePair<string, string[]>[] GetShipNames()
@@ -37,7 +37,7 @@ namespace SF.ServerLibrary
 
         public CatalogDefinition GetCatalog()
         {
-            return Instance.GetCatalog(m_helm.Ship.Nation);
+            return Instance.GetCatalog(m_helm.Nation);
         }
 
         public View GetView()
@@ -47,26 +47,26 @@ namespace SF.ServerLibrary
 
         public void SetHeadingTo(double value)
         {
-            this.m_helm.HeadingTo = value;
+            m_helm.HeadingTo = value;
         }
 
         public void SetRollTo(double value)
         {
-            this.m_helm.RollTo = value;
+            m_helm.RollTo = value;
         }
 
-        public void SetAccelerateTo(double value)
+        public void SetThrustTo(double value)
         {
             if (value < 0)
                 value = 0;
-            if (value > this.m_helm.Ship.Class.MaximumAcceleration)
-                value = this.m_helm.Ship.Class.MaximumAcceleration;
-            this.m_helm.AccelerateTo = value;
+            if (value > m_helm.Class.MaximumAcceleration)
+                value = m_helm.Class.MaximumAcceleration;
+            m_helm.ThrustTo = value;
         }
 
         public void Fire(bool left, string to, int number)
         {
-            Instance.Fire(m_helm.Ship, left, to, number);
+            Instance.Fire(m_helm, left, to, number);
         }
     }
 }

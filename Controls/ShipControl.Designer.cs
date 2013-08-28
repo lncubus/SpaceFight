@@ -30,114 +30,114 @@
         {
             System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             System.Drawing.StringFormat stringFormat2 = new System.Drawing.StringFormat();
-            this.mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanelAcceleration = new System.Windows.Forms.TableLayoutPanel();
-            this.accelerationProgressBar = new SF.Controls.VerticalProgressBar();
-            this.accelerationTrackBar = new System.Windows.Forms.TrackBar();
-            this.labelAcceleration = new System.Windows.Forms.Label();
-            this.flowLayoutPanelRoll = new System.Windows.Forms.FlowLayoutPanel();
-            this.labelRoll = new System.Windows.Forms.Label();
-            this.rollControl = new SF.Controls.RollControl();
-            this.flowLayoutPanelHeading = new System.Windows.Forms.FlowLayoutPanel();
-            this.labelHeading = new System.Windows.Forms.Label();
-            this.headingControl = new SF.Controls.CompassControl();
-            this.mainTableLayoutPanel.SuspendLayout();
-            this.tableLayoutPanelAcceleration.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.accelerationTrackBar)).BeginInit();
-            this.flowLayoutPanelRoll.SuspendLayout();
-            this.flowLayoutPanelHeading.SuspendLayout();
-            this.SuspendLayout();
+            mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            tableLayoutPanelAcceleration = new System.Windows.Forms.TableLayoutPanel();
+            accelerationProgressBar = new SF.Controls.VerticalProgressBar();
+            accelerationTrackBar = new System.Windows.Forms.TrackBar();
+            labelAcceleration = new System.Windows.Forms.Label();
+            flowLayoutPanelRoll = new System.Windows.Forms.FlowLayoutPanel();
+            labelRoll = new System.Windows.Forms.Label();
+            rollControl = new SF.Controls.RollControl();
+            flowLayoutPanelHeading = new System.Windows.Forms.FlowLayoutPanel();
+            labelHeading = new System.Windows.Forms.Label();
+            headingControl = new SF.Controls.CompassControl();
+            mainTableLayoutPanel.SuspendLayout();
+            tableLayoutPanelAcceleration.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(accelerationTrackBar)).BeginInit();
+            flowLayoutPanelRoll.SuspendLayout();
+            flowLayoutPanelHeading.SuspendLayout();
+            SuspendLayout();
             // 
             // mainTableLayoutPanel
             // 
-            this.mainTableLayoutPanel.AutoSize = true;
-            this.mainTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.mainTableLayoutPanel.ColumnCount = 2;
-            this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.mainTableLayoutPanel.Controls.Add(this.tableLayoutPanelAcceleration, 1, 1);
-            this.mainTableLayoutPanel.Controls.Add(this.flowLayoutPanelRoll, 0, 1);
-            this.mainTableLayoutPanel.Controls.Add(this.flowLayoutPanelHeading, 0, 0);
-            this.mainTableLayoutPanel.Location = new System.Drawing.Point(8, 0);
-            this.mainTableLayoutPanel.Name = "mainTableLayoutPanel";
-            this.mainTableLayoutPanel.RowCount = 2;
-            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.mainTableLayoutPanel.Size = new System.Drawing.Size(238, 412);
-            this.mainTableLayoutPanel.TabIndex = 25;
+            mainTableLayoutPanel.AutoSize = true;
+            mainTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            mainTableLayoutPanel.ColumnCount = 2;
+            mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            mainTableLayoutPanel.Controls.Add(tableLayoutPanelAcceleration, 1, 1);
+            mainTableLayoutPanel.Controls.Add(flowLayoutPanelRoll, 0, 1);
+            mainTableLayoutPanel.Controls.Add(flowLayoutPanelHeading, 0, 0);
+            mainTableLayoutPanel.Location = new System.Drawing.Point(8, 0);
+            mainTableLayoutPanel.Name = "mainTableLayoutPanel";
+            mainTableLayoutPanel.RowCount = 2;
+            mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            mainTableLayoutPanel.Size = new System.Drawing.Size(238, 412);
+            mainTableLayoutPanel.TabIndex = 25;
             // 
             // tableLayoutPanelAcceleration
             // 
-            this.tableLayoutPanelAcceleration.AutoSize = true;
-            this.tableLayoutPanelAcceleration.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanelAcceleration.ColumnCount = 2;
-            this.tableLayoutPanelAcceleration.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelAcceleration.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelAcceleration.Controls.Add(this.accelerationProgressBar, 1, 1);
-            this.tableLayoutPanelAcceleration.Controls.Add(this.accelerationTrackBar, 0, 1);
-            this.tableLayoutPanelAcceleration.Controls.Add(this.labelAcceleration, 0, 0);
-            this.tableLayoutPanelAcceleration.Location = new System.Drawing.Point(139, 259);
-            this.tableLayoutPanelAcceleration.Name = "tableLayoutPanelAcceleration";
-            this.tableLayoutPanelAcceleration.RowCount = 2;
-            this.tableLayoutPanelAcceleration.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelAcceleration.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelAcceleration.Size = new System.Drawing.Size(96, 150);
-            this.tableLayoutPanelAcceleration.TabIndex = 25;
+            tableLayoutPanelAcceleration.AutoSize = true;
+            tableLayoutPanelAcceleration.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            tableLayoutPanelAcceleration.ColumnCount = 2;
+            tableLayoutPanelAcceleration.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanelAcceleration.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanelAcceleration.Controls.Add(accelerationProgressBar, 1, 1);
+            tableLayoutPanelAcceleration.Controls.Add(accelerationTrackBar, 0, 1);
+            tableLayoutPanelAcceleration.Controls.Add(labelAcceleration, 0, 0);
+            tableLayoutPanelAcceleration.Location = new System.Drawing.Point(139, 259);
+            tableLayoutPanelAcceleration.Name = "tableLayoutPanelAcceleration";
+            tableLayoutPanelAcceleration.RowCount = 2;
+            tableLayoutPanelAcceleration.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanelAcceleration.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanelAcceleration.Size = new System.Drawing.Size(96, 150);
+            tableLayoutPanelAcceleration.TabIndex = 25;
             // 
             // accelerationProgressBar
             // 
-            this.accelerationProgressBar.ForeColor = System.Drawing.Color.DarkGreen;
-            this.accelerationProgressBar.Location = new System.Drawing.Point(51, 33);
-            this.accelerationProgressBar.Margin = new System.Windows.Forms.Padding(3, 13, 3, 13);
-            this.accelerationProgressBar.Maximum = 1000;
-            this.accelerationProgressBar.Name = "accelerationProgressBar";
-            this.accelerationProgressBar.Size = new System.Drawing.Size(32, 104);
-            this.accelerationProgressBar.Step = 100;
-            this.accelerationProgressBar.TabIndex = 2;
+            accelerationProgressBar.ForeColor = System.Drawing.Color.DarkGreen;
+            accelerationProgressBar.Location = new System.Drawing.Point(51, 33);
+            accelerationProgressBar.Margin = new System.Windows.Forms.Padding(3, 13, 3, 13);
+            accelerationProgressBar.Maximum = 1000;
+            accelerationProgressBar.Name = "accelerationProgressBar";
+            accelerationProgressBar.Size = new System.Drawing.Size(32, 104);
+            accelerationProgressBar.Step = 100;
+            accelerationProgressBar.TabIndex = 2;
             // 
             // accelerationTrackBar
             // 
-            this.accelerationTrackBar.LargeChange = 100;
-            this.accelerationTrackBar.Location = new System.Drawing.Point(3, 23);
-            this.accelerationTrackBar.Maximum = 1000;
-            this.accelerationTrackBar.Name = "accelerationTrackBar";
-            this.accelerationTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.accelerationTrackBar.Size = new System.Drawing.Size(42, 124);
-            this.accelerationTrackBar.TabIndex = 1;
-            this.accelerationTrackBar.TickFrequency = 100;
-            this.accelerationTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.accelerationTrackBar.ValueChanged += new System.EventHandler(this.accelerationTrackBar_ValueChanged);
+            accelerationTrackBar.LargeChange = 100;
+            accelerationTrackBar.Location = new System.Drawing.Point(3, 23);
+            accelerationTrackBar.Maximum = 1000;
+            accelerationTrackBar.Name = "accelerationTrackBar";
+            accelerationTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            accelerationTrackBar.Size = new System.Drawing.Size(42, 124);
+            accelerationTrackBar.TabIndex = 1;
+            accelerationTrackBar.TickFrequency = 100;
+            accelerationTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
+            accelerationTrackBar.ValueChanged += new System.EventHandler(accelerationTrackBar_ValueChanged);
             // 
             // labelAcceleration
             // 
-            this.tableLayoutPanelAcceleration.SetColumnSpan(this.labelAcceleration, 2);
-            this.labelAcceleration.Location = new System.Drawing.Point(3, 0);
-            this.labelAcceleration.Name = "labelAcceleration";
-            this.labelAcceleration.Size = new System.Drawing.Size(84, 20);
-            this.labelAcceleration.TabIndex = 0;
-            this.labelAcceleration.Text = "Ускорение";
-            this.labelAcceleration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            tableLayoutPanelAcceleration.SetColumnSpan(labelAcceleration, 2);
+            labelAcceleration.Location = new System.Drawing.Point(3, 0);
+            labelAcceleration.Name = "labelAcceleration";
+            labelAcceleration.Size = new System.Drawing.Size(84, 20);
+            labelAcceleration.TabIndex = 0;
+            labelAcceleration.Text = "Ускорение";
+            labelAcceleration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // flowLayoutPanelRoll
             // 
-            this.flowLayoutPanelRoll.AutoSize = true;
-            this.flowLayoutPanelRoll.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanelRoll.Controls.Add(this.labelRoll);
-            this.flowLayoutPanelRoll.Controls.Add(this.rollControl);
-            this.flowLayoutPanelRoll.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelRoll.Location = new System.Drawing.Point(3, 259);
-            this.flowLayoutPanelRoll.Name = "flowLayoutPanelRoll";
-            this.flowLayoutPanelRoll.Size = new System.Drawing.Size(130, 150);
-            this.flowLayoutPanelRoll.TabIndex = 24;
+            flowLayoutPanelRoll.AutoSize = true;
+            flowLayoutPanelRoll.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            flowLayoutPanelRoll.Controls.Add(labelRoll);
+            flowLayoutPanelRoll.Controls.Add(rollControl);
+            flowLayoutPanelRoll.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            flowLayoutPanelRoll.Location = new System.Drawing.Point(3, 259);
+            flowLayoutPanelRoll.Name = "flowLayoutPanelRoll";
+            flowLayoutPanelRoll.Size = new System.Drawing.Size(130, 150);
+            flowLayoutPanelRoll.TabIndex = 24;
             // 
             // labelRoll
             // 
-            this.labelRoll.Location = new System.Drawing.Point(3, 0);
-            this.labelRoll.Name = "labelRoll";
-            this.labelRoll.Size = new System.Drawing.Size(123, 20);
-            this.labelRoll.TabIndex = 0;
-            this.labelRoll.Text = "Перекат";
-            this.labelRoll.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            labelRoll.Location = new System.Drawing.Point(3, 0);
+            labelRoll.Name = "labelRoll";
+            labelRoll.Size = new System.Drawing.Size(123, 20);
+            labelRoll.TabIndex = 0;
+            labelRoll.Text = "Перекат";
+            labelRoll.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // rollControl
             // 
@@ -145,72 +145,72 @@
             stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
             stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
             stringFormat1.Trimming = System.Drawing.StringTrimming.None;
-            this.rollControl.CenteredLayout = stringFormat1;
-            this.rollControl.Location = new System.Drawing.Point(3, 23);
-            this.rollControl.Name = "rollControl";
-            this.rollControl.ReadOnly = false;
-            this.rollControl.Roll = 0;
-            this.rollControl.RollTo = 0;
-            this.rollControl.Size = new System.Drawing.Size(124, 124);
-            this.rollControl.TabIndex = 1;
-            this.rollControl.OnRollToChanged += new System.EventHandler(this.rollControl_OnRollToChanged);
+            rollControl.CenteredLayout = stringFormat1;
+            rollControl.Location = new System.Drawing.Point(3, 23);
+            rollControl.Name = "rollControl";
+            rollControl.ReadOnly = false;
+            rollControl.Roll = 0;
+            rollControl.RollTo = 0;
+            rollControl.Size = new System.Drawing.Size(124, 124);
+            rollControl.TabIndex = 1;
+            rollControl.OnRollToChanged += new System.EventHandler(rollControl_OnRollToChanged);
             // 
             // flowLayoutPanelHeading
             // 
-            this.flowLayoutPanelHeading.AutoSize = true;
-            this.flowLayoutPanelHeading.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.mainTableLayoutPanel.SetColumnSpan(this.flowLayoutPanelHeading, 2);
-            this.flowLayoutPanelHeading.Controls.Add(this.labelHeading);
-            this.flowLayoutPanelHeading.Controls.Add(this.headingControl);
-            this.flowLayoutPanelHeading.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelHeading.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanelHeading.Name = "flowLayoutPanelHeading";
-            this.flowLayoutPanelHeading.Size = new System.Drawing.Size(230, 250);
-            this.flowLayoutPanelHeading.TabIndex = 23;
+            flowLayoutPanelHeading.AutoSize = true;
+            flowLayoutPanelHeading.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            mainTableLayoutPanel.SetColumnSpan(flowLayoutPanelHeading, 2);
+            flowLayoutPanelHeading.Controls.Add(labelHeading);
+            flowLayoutPanelHeading.Controls.Add(headingControl);
+            flowLayoutPanelHeading.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            flowLayoutPanelHeading.Location = new System.Drawing.Point(3, 3);
+            flowLayoutPanelHeading.Name = "flowLayoutPanelHeading";
+            flowLayoutPanelHeading.Size = new System.Drawing.Size(230, 250);
+            flowLayoutPanelHeading.TabIndex = 23;
             // 
             // labelHeading
             // 
-            this.labelHeading.Location = new System.Drawing.Point(3, 0);
-            this.labelHeading.Name = "labelHeading";
-            this.labelHeading.Size = new System.Drawing.Size(224, 20);
-            this.labelHeading.TabIndex = 0;
-            this.labelHeading.Text = "Курс";
-            this.labelHeading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            labelHeading.Location = new System.Drawing.Point(3, 0);
+            labelHeading.Name = "labelHeading";
+            labelHeading.Size = new System.Drawing.Size(224, 20);
+            labelHeading.TabIndex = 0;
+            labelHeading.Text = "Курс";
+            labelHeading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // headingControl
             // 
-            this.headingControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            headingControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             stringFormat2.Alignment = System.Drawing.StringAlignment.Center;
             stringFormat2.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
             stringFormat2.LineAlignment = System.Drawing.StringAlignment.Center;
             stringFormat2.Trimming = System.Drawing.StringTrimming.None;
-            this.headingControl.CenteredLayout = stringFormat2;
-            this.headingControl.Heading = 0;
-            this.headingControl.HeadingTo = 0;
-            this.headingControl.Location = new System.Drawing.Point(3, 23);
-            this.headingControl.Name = "headingControl";
-            this.headingControl.ReadOnly = false;
-            this.headingControl.Size = new System.Drawing.Size(224, 224);
-            this.headingControl.TabIndex = 1;
-            this.headingControl.OnHeadingToChanged += new System.EventHandler(this.headingControl_OnHeadingToChanged);
+            headingControl.CenteredLayout = stringFormat2;
+            headingControl.Heading = 0;
+            headingControl.HeadingTo = 0;
+            headingControl.Location = new System.Drawing.Point(3, 23);
+            headingControl.Name = "headingControl";
+            headingControl.ReadOnly = false;
+            headingControl.Size = new System.Drawing.Size(224, 224);
+            headingControl.TabIndex = 1;
+            headingControl.OnHeadingToChanged += new System.EventHandler(headingControl_OnHeadingToChanged);
             // 
             // ShipControl
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.mainTableLayoutPanel);
-            this.Name = "ShipControl";
-            this.Size = new System.Drawing.Size(249, 415);
-            this.mainTableLayoutPanel.ResumeLayout(false);
-            this.mainTableLayoutPanel.PerformLayout();
-            this.tableLayoutPanelAcceleration.ResumeLayout(false);
-            this.tableLayoutPanelAcceleration.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.accelerationTrackBar)).EndInit();
-            this.flowLayoutPanelRoll.ResumeLayout(false);
-            this.flowLayoutPanelHeading.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            AutoSize = true;
+            AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            Controls.Add(mainTableLayoutPanel);
+            Name = "ShipControl";
+            Size = new System.Drawing.Size(249, 415);
+            mainTableLayoutPanel.ResumeLayout(false);
+            mainTableLayoutPanel.PerformLayout();
+            tableLayoutPanelAcceleration.ResumeLayout(false);
+            tableLayoutPanelAcceleration.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(accelerationTrackBar)).EndInit();
+            flowLayoutPanelRoll.ResumeLayout(false);
+            flowLayoutPanelHeading.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

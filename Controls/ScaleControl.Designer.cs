@@ -28,59 +28,59 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelScale = new System.Windows.Forms.Label();
-            this.buttonZoomOut = new System.Windows.Forms.Button();
-            this.buttonZoomIn = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            labelScale = new System.Windows.Forms.Label();
+            buttonZoomOut = new System.Windows.Forms.Button();
+            buttonZoomIn = new System.Windows.Forms.Button();
+            SuspendLayout();
             // 
             // labelScale
             // 
-            this.labelScale.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelScale.Location = new System.Drawing.Point(0, 0);
-            this.labelScale.Name = "labelScale";
-            this.labelScale.Size = new System.Drawing.Size(191, 29);
-            this.labelScale.TabIndex = 5;
-            this.labelScale.Text = "0 км";
-            this.labelScale.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            labelScale.Dock = System.Windows.Forms.DockStyle.Fill;
+            labelScale.Location = new System.Drawing.Point(0, 0);
+            labelScale.Name = "labelScale";
+            labelScale.Size = new System.Drawing.Size(191, 29);
+            labelScale.TabIndex = 5;
+            labelScale.Text = "0 км";
+            labelScale.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonZoomOut
             // 
-            this.buttonZoomOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonZoomOut.BackColor = System.Drawing.Color.White;
-            this.buttonZoomOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonZoomOut.Location = new System.Drawing.Point(165, 3);
-            this.buttonZoomOut.Name = "buttonZoomOut";
-            this.buttonZoomOut.Size = new System.Drawing.Size(23, 23);
-            this.buttonZoomOut.TabIndex = 4;
-            this.buttonZoomOut.TabStop = false;
-            this.buttonZoomOut.Text = "-";
-            this.buttonZoomOut.UseVisualStyleBackColor = false;
-            this.buttonZoomOut.Click += new System.EventHandler(this.buttonZoomOut_Click);
+            buttonZoomOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonZoomOut.BackColor = System.Drawing.Color.White;
+            buttonZoomOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonZoomOut.Location = new System.Drawing.Point(165, 3);
+            buttonZoomOut.Name = "buttonZoomOut";
+            buttonZoomOut.Size = new System.Drawing.Size(23, 23);
+            buttonZoomOut.TabIndex = 4;
+            buttonZoomOut.TabStop = false;
+            buttonZoomOut.Text = "-";
+            buttonZoomOut.UseVisualStyleBackColor = false;
+            buttonZoomOut.Click += new System.EventHandler(buttonZoomOut_Click);
             // 
             // buttonZoomIn
             // 
-            this.buttonZoomIn.BackColor = System.Drawing.Color.White;
-            this.buttonZoomIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonZoomIn.Location = new System.Drawing.Point(3, 3);
-            this.buttonZoomIn.Name = "buttonZoomIn";
-            this.buttonZoomIn.Size = new System.Drawing.Size(23, 23);
-            this.buttonZoomIn.TabIndex = 3;
-            this.buttonZoomIn.TabStop = false;
-            this.buttonZoomIn.Text = "+";
-            this.buttonZoomIn.UseVisualStyleBackColor = false;
-            this.buttonZoomIn.Click += new System.EventHandler(this.buttonZoomIn_Click);
+            buttonZoomIn.BackColor = System.Drawing.Color.White;
+            buttonZoomIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonZoomIn.Location = new System.Drawing.Point(3, 3);
+            buttonZoomIn.Name = "buttonZoomIn";
+            buttonZoomIn.Size = new System.Drawing.Size(23, 23);
+            buttonZoomIn.TabIndex = 3;
+            buttonZoomIn.TabStop = false;
+            buttonZoomIn.Text = "+";
+            buttonZoomIn.UseVisualStyleBackColor = false;
+            buttonZoomIn.Click += new System.EventHandler(buttonZoomIn_Click);
             // 
             // ScaleControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.buttonZoomOut);
-            this.Controls.Add(this.buttonZoomIn);
-            this.Controls.Add(this.labelScale);
-            this.Name = "ScaleControl";
-            this.Size = new System.Drawing.Size(191, 29);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            Controls.Add(buttonZoomOut);
+            Controls.Add(buttonZoomIn);
+            Controls.Add(labelScale);
+            Name = "ScaleControl";
+            Size = new System.Drawing.Size(191, 29);
+            ResumeLayout(false);
 
         }
 

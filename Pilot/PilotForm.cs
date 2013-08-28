@@ -20,9 +20,13 @@ namespace Pilot
             timerUpdate.Enabled = true;
             scaleControl.OnValueChanged += scaleControl_ValueChanged;
             spaceGridControl.Options = 
-                SpaceGridOptions.FriendlyMissileCircles | SpaceGridOptions.FriendlyVulnerableSectors |
-                SpaceGridOptions.HostileVulnerableSectors |
-                SpaceGridOptions.MyMissileCircles | SpaceGridOptions.MyVulnerableSectors;
+                SpaceGridControl.DrawingOptions.FriendlyMissileCircles | SpaceGridControl.DrawingOptions.FriendlyVulnerableSectors |
+                SpaceGridControl.DrawingOptions.HostileVulnerableSectors |
+                SpaceGridControl.DrawingOptions.MyMissileCircles | SpaceGridControl.DrawingOptions.MyVulnerableSectors;
+            spaceGridControl.Selectable =
+                SpaceGridControl.SelectableObjects.Missiles | 
+                SpaceGridControl.SelectableObjects.Stars |
+                SpaceGridControl.SelectableObjects.Ships;
         }
 
         private IHelm helm;
@@ -44,8 +48,8 @@ namespace Pilot
             {
                 client.Login(credentials.Nation, credentials.ShipName);
                 shipControl.Helm = helm = client.GetHelm();
-                Text = helm.Ship.Name;
-                spaceGridControl.OwnShip = helm.Ship;
+                Text = helm.Name;
+                spaceGridControl.OwnShip = helm;
                 spaceGridControl.Curves.Add(Trajectory);
                 spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
                 scaleControl.Value = Catalog.Instance.DefaultScale; ;
@@ -70,18 +74,18 @@ namespace Pilot
 
         private void GetData()
         {
-            spaceGridControl.Ships = client.GetVisibleShips().ToList();
-            spaceGridControl.Stars = client.GetStars().ToList();
-            spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
-            spaceGridControl.Origin = helm.Ship.S;
-            if (Trajectory.Count == 0 || Trajectory[Trajectory.Count - 1] != helm.Ship.S)
-                Trajectory.Add(helm.Ship.S);
+            spaceGridControl.Ships = client.GetVisibleShips();
+            spaceGridControl.Stars = client.GetStars();
+            spaceGridControl.Missiles = client.GetVisibleMissiles();
+            spaceGridControl.Origin = helm.Position;
+            if (Trajectory.Count == 0 || Trajectory[Trajectory.Count - 1] != helm.Position)
+                Trajectory.Add(helm.Position);
             if (Trajectory.Count > TrajectorySize)
                 Trajectory.RemoveRange(0, Trajectory.Count - TrajectorySize);
-            var ship = spaceGridControl.SelectedShip ?? helm.Ship;
-            indicatorControl.Acceleration = ship.A;
-            indicatorControl.Speed = ship.V;
-            indicatorControl.Position = ship.S;
+            var ship = spaceGridControl.Selected ?? helm;
+            indicatorControl.Acceleration = ship.Acceleration;
+            indicatorControl.Speed = ship.Speed;
+            indicatorControl.Position = ship.Position;
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)

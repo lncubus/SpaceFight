@@ -42,6 +42,7 @@
     <Compile Include="CatalogDefinition.cs" />
     <Compile Include="IHelm.cs" />
     <Compile Include="IMissile.cs" />
+    <Compile Include="IParticle.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="MissleClass.cs" />

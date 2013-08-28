@@ -22,10 +22,13 @@ namespace Gunner
             spaceGridControl.VulnerableSectors.Hostile = Pens.Black;
             spaceGridControl.VulnerableSectors.Friendly = Pens.Black;
             spaceGridControl.Options =
-                SpaceGridOptions.FriendlyVulnerableSectors |
-                SpaceGridOptions.HostileVulnerableSectors |
-                SpaceGridOptions.MyMissileCircles |
-                SpaceGridOptions.FriendlySectorsByMyMissileRange;
+                SpaceGridControl.DrawingOptions.FriendlyVulnerableSectors |
+                SpaceGridControl.DrawingOptions.HostileVulnerableSectors |
+                SpaceGridControl.DrawingOptions.MyMissileCircles |
+                SpaceGridControl.DrawingOptions.FriendlySectorsByMyMissileRange;
+            spaceGridControl.Selectable =
+                SpaceGridControl.SelectableObjects.Stars |
+                SpaceGridControl.SelectableObjects.Ships;
         }
 
         private IHelm helm;
@@ -42,8 +45,8 @@ namespace Gunner
             {
                 client.Login(credentials.Nation, credentials.ShipName);
                 helm = client.GetHelm();
-                Text = helm.Ship.Name;
-                spaceGridControl.OwnShip = helm.Ship;
+                Text = helm.Name;
+                spaceGridControl.OwnShip = helm;
                 spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
                 scaleControl.Value = Catalog.Instance.DefaultScale; ;
                 tableLayoutPanel.Visible = true;
@@ -66,15 +69,15 @@ namespace Gunner
 
         private void GetData()
         {
-            spaceGridControl.Ships = client.GetVisibleShips().ToList();
-            spaceGridControl.Stars = client.GetStars().ToList();
-            spaceGridControl.Missiles = client.GetVisibleMissiles().ToList();
-            spaceGridControl.Origin = helm.Ship.S;
-            spaceGridControl.Rotation = helm.Ship.Heading;
-            var ship = spaceGridControl.SelectedShip ?? helm.Ship;
-            indicatorControl.Acceleration = ship.A;
-            indicatorControl.Speed = ship.V;
-            indicatorControl.Position = ship.S;
+            spaceGridControl.Ships = client.GetVisibleShips();
+            spaceGridControl.Stars = client.GetStars();
+            spaceGridControl.Missiles = client.GetVisibleMissiles();
+            spaceGridControl.Origin = helm.Position;
+            spaceGridControl.Rotation = helm.Heading;
+            var ship = spaceGridControl.Selected ?? helm;
+            indicatorControl.Acceleration = ship.Acceleration;
+            indicatorControl.Speed = ship.Speed;
+            indicatorControl.Position = ship.Position;
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)
@@ -82,7 +85,7 @@ namespace Gunner
             spaceGridControl.WorldScale = scaleControl.Value;
         }
 
-        private void spaceGridControl_ShipSelected(object sender, EventArgs e)
+        private void spaceGridControl_ParticleSelected(object sender, EventArgs e)
         {
             CheckCanFire();
         }
@@ -105,21 +108,23 @@ namespace Gunner
 
         private void CheckCanFire()
         {
-            var ship = spaceGridControl.SelectedShip;
-            bool okay = ship != null && ship != helm.Ship && (ship.Nation != helm.Ship.Nation || checkBoxFriendlyFire.Checked);
+            var ship = spaceGridControl.Selected;
+            bool okay = ship != null && ship != helm && (ship.Nation != helm.Nation || checkBoxFriendlyFire.Checked);
             buttonFire.Enabled = okay;
             labelBoard.Visible = okay;
             if (!okay)
                 return;
-            m_left = Math.Sin((ship.S - helm.Ship.S).Argument - helm.Ship.Heading) < 0;
+            m_left = (Math.Sin((ship.Position - helm.Position).Argument - helm.Heading) < 0);
+            if (Math.Sin(helm.Roll) < 0)
+                m_left = !m_left;
             labelBoard.Text = m_left ? "Левый борт" : "Правый борт";
         }
 
         private void Fire()
         {
-            var ship = spaceGridControl.SelectedShip;
-            if (ship != null)
-                client.Fire(ship, m_left);
+            var ship = spaceGridControl.Selected;
+            if (ship is IShip)
+                client.Fire((IShip)ship, m_left);
         }
 
         private void GunnerForm_KeyPress(object sender, KeyPressEventArgs e)
