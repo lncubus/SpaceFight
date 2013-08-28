@@ -573,6 +573,11 @@ namespace SF.Controls
             var p = WorldToDevice(graphics, origin);
             if (rx <= 0 || ry <= 0)
                 return;
+            var max = 2 * (m_client.Width + m_client.Height);
+            if (IsVisible(p) && (rx + ry > max))
+            {
+                rx = ry = max;
+            }
             var rect = new RectangleF(p.X - rx, p.Y - ry, 2 * rx, 2 * ry);
             if (IsVisible(rect))
                 graphics.DrawPie(pen, rect,

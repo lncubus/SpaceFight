@@ -38,6 +38,9 @@ namespace SF.Space
         [DataMember]
         public Vector Speed { get; set; }
 
+        [DataMember]
+        public ShipState State { get; set; }
+
         public Vector Acceleration
         {
             get { return Thrust*Vector.Direction(Heading); }
@@ -69,6 +72,16 @@ namespace SF.Space
                 MissileName = ship.MissileName,
                 Missiles = ship.Missiles
             };
+        }
+
+        public enum ShipState
+        {
+            Normal = 0,
+            Drifting,
+            Sail,
+            Hyperspace,
+            Junk,
+            Annihilated,
         }
     }
 }
