@@ -32,18 +32,7 @@ namespace SF.ServerLibrary
 
         public KeyValuePair<string, string[]>[] GetShipNames()
         {
-            var nations = Instance.GetNations().ToList();
-            nations.Sort();
-            int n = nations.Count;
-            var result = new KeyValuePair<string, string[]>[n];
-            for (int i = 0; i < n; i++)
-            {
-                var nation = nations[i];
-                var ships = Instance.GetShipNames(nation).ToList();
-                ships.Sort();
-                result[i] = new KeyValuePair<string, string[]>(nation, ships.ToArray());
-            }
-            return result;
+            return Instance.GetShipNames();
         }
 
         public CatalogDefinition GetCatalog()
@@ -53,14 +42,7 @@ namespace SF.ServerLibrary
 
         public View GetView()
         {
-            return new View
-            {
-                Time = Instance.Time,
-                Helm = HelmDefinition.Store(this.m_helm),
-                Ships = Instance.GetVisibleShips(this.m_helm).Select(ShipDefinition.Store).ToArray(),
-                Missiles = Instance.GetVisibleMissiles(this.m_helm).Select(MissileDefinition.Store).ToArray(),
-                Stars = Instance.GetStars().ToArray(),
-            };
+            return Instance.GetView(m_helm);
         }
 
         public void SetHeadingTo(double value)

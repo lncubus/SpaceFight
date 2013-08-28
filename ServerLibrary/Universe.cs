@@ -12,8 +12,8 @@ namespace SF.ServerLibrary
     public sealed class Universe
     {
         private static readonly Random Random = new Random();
-
         private static readonly SynchronizationContext Context = SynchronizationContext.Current;
+        private object m_locker = new object();
 
         public const int SmallDelay = 100;
 
@@ -97,24 +97,66 @@ namespace SF.ServerLibrary
             get { return this.m_stopWatch.Elapsed; }
         }
 
-        public CatalogDefinition GetCatalog(string nation)
+        public View GetView(IHelm m_helm)
         {
-            var shipClassesByNation = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
-            var shipClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
-            var missileClassesByNation = Catalog.Instance.MissileClasses.Values.Where(c => c.Nation == nation);
-            var missileClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Missile);
-            return new CatalogDefinition
+            lock (m_locker)
             {
-                MaximumMissileRange = Catalog.Instance.MaximumMissileRange,
-                SkirtAngle = Catalog.Instance.SkirtAngle,
-                ThroatAngle = Catalog.Instance.ThroatAngle,
-                DefaultScale = Catalog.Instance.DefaultScale,
-                ShipClasses = shipClassesByNation.Union(shipClassesByShips).Distinct().ToArray(),
-                MissileClasses = missileClassesByNation.Union(missileClassesByShips).Distinct().ToArray(),
-            };
+                return new View
+                {
+                    Time = Time,
+                    Helm = HelmDefinition.Store(m_helm),
+                    Ships = GetVisibleShips(m_helm).Select(ShipDefinition.Store).ToArray(),
+                    Missiles = GetVisibleMissiles(m_helm).Select(MissileDefinition.Store).ToArray(),
+                    Stars = GetStars().ToArray(),
+                };
+            }
         }
 
-        public IHelm GetHelm(string name)
+        public CatalogDefinition GetCatalog(string nation)
+        {
+            lock (m_locker)
+            {
+                var shipClassesByNation = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
+                var shipClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Class);
+                var missileClassesByNation = Catalog.Instance.MissileClasses.Values.Where(c => c.Nation == nation);
+                var missileClassesByShips = this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Missile);
+                return new CatalogDefinition
+                {
+                    MaximumMissileRange = Catalog.Instance.MaximumMissileRange,
+                    SkirtAngle = Catalog.Instance.SkirtAngle,
+                    ThroatAngle = Catalog.Instance.ThroatAngle,
+                    DefaultScale = Catalog.Instance.DefaultScale,
+                    ShipClasses = shipClassesByNation.Union(shipClassesByShips).Distinct().ToArray(),
+                    MissileClasses = missileClassesByNation.Union(missileClassesByShips).Distinct().ToArray(),
+                };
+            }
+        }
+
+        public IHelm GetHelm(string nation, string name)
+        {
+            lock (m_locker)
+            {
+                var helm = GetHelm(name);
+                if (helm.Ship.Nation != nation)
+                    return null;
+                return helm;
+            }
+        }
+
+        public void Fire(IShip from, bool left, string to, int number)
+        {
+            lock (m_locker)
+            {
+                number = Math.Min(number, from.Missiles);
+                var target = GetHelm(to);
+                if (from.Missile == null || target == null || number <= 0)
+                    return;
+                var result = new Missile(from, left, target.Ship, number, Time);
+                m_missiles.Add(result);
+            }
+        }
+
+        private IHelm GetHelm(string name)
         {
             IHelm result;
             if (!m_helms.TryGetValue(name, out result))
@@ -122,47 +164,38 @@ namespace SF.ServerLibrary
             return result;
         }
 
-        public IHelm GetHelm(string nation, string name)
-        {
-            var helm = GetHelm(name);
-            if (helm.Ship.Nation != nation)
-                return null;
-            return helm;
-        }
-
-        public IEnumerable<IShip> GetVisibleShips(IHelm me)
+        private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
             return this.m_helms.Where(i => i.Value != me).Select(i => i.Value.Ship); 
         }
 
-        public IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
+        private IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
         {
             return this.m_missiles;
         }
 
-        public IEnumerable<Star> GetStars()
+        private IEnumerable<Star> GetStars()
         {
             return this.m_stars.Values;
         }
 
-        public IEnumerable<string> GetNations()
+        public KeyValuePair<string, string[]>[] GetShipNames()
         {
-            return this.m_helms.Select(i => i.Value.Ship.Nation).Distinct();
-        }
-
-        public IEnumerable<string> GetShipNames(string nation)
-        {
-            return this.m_helms.Where(i => i.Value.Ship.Nation == nation).Select(i => i.Value.Ship.Name).Distinct();
-        }
-
-        public void Fire(IShip from, bool left, string to, int number)
-        {
-            number = Math.Min(number, from.Missiles);
-            var target = GetHelm(to);
-            if (from.Missile == null || target == null || number <= 0)
-                return;
-            var result = new Missile(from, left, target.Ship, number, Time);
-            m_missiles.Add(result);
+            lock (m_locker)
+            {
+                var nations = m_helms.Select(i => i.Value.Ship.Nation).Distinct().ToList();
+                nations.Sort();
+                int n = nations.Count;
+                var result = new KeyValuePair<string, string[]>[n];
+                for (int i = 0; i < n; i++)
+                {
+                    var nation = nations[i];
+                    var ships = m_helms.Where(h => h.Value.Ship.Nation == nation).Select(h => h.Value.Ship.Name).Distinct().ToList();
+                    ships.Sort();
+                    result[i] = new KeyValuePair<string, string[]>(nation, ships.ToArray());
+                }
+                return result;
+            }
         }
 
         private void TimingThreadStart()
@@ -170,7 +203,9 @@ namespace SF.ServerLibrary
             while (true)
             {
                 Thread.Sleep(SmallDelay);
-                if (this.m_stopWatch.IsRunning)
+                if (!m_stopWatch.IsRunning)
+                    continue;
+                lock (m_locker)
                 {
                     double t = this.Time.TotalSeconds;
                     foreach (var helm in m_helms.Values)
@@ -188,38 +223,41 @@ namespace SF.ServerLibrary
 
         public void BigBangTest()
         {
-            for (int i = 0; i < 100; i++)
+            lock (m_locker)
             {
-                var h = Random.NextAngle();
-                var a = Random.NextDouble();
-                var classification = Catalog.Instance.ShipClasses.Values.First();
-                var missile = Catalog.Instance.MissileClasses.Values.First();
-                var helm = new HelmDefinition
+                for (int i = 0; i < 100; i++)
                 {
-                    Acceleration = a * classification.MaximumAcceleration,
-                    AccelerateTo = a * classification.MaximumAcceleration,
-                    ClassName = classification.Name,
-                    Heading = h,
-                    HeadingTo = h,
-                    Nation = "Солярианская Лига",
-                    ShipName = "Бандит-" + (generation > 0 ? generation + "-" : "") + (i + 1),
-                    MissileNumber = 1,
-                    MissileName = missile.Name,
-                    Position = 300000000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
-                    Speed = 300000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
-                };
-                m_helms.Add(helm.ShipName, Helm.Load(helm));
+                    var h = Random.NextAngle();
+                    var a = Random.NextDouble();
+                    var classification = Catalog.Instance.ShipClasses.Values.First();
+                    var missile = Catalog.Instance.MissileClasses.Values.First();
+                    var helm = new HelmDefinition
+                               {
+                                   Acceleration = a * classification.MaximumAcceleration,
+                                   AccelerateTo = a * classification.MaximumAcceleration,
+                                   ClassName = classification.Name,
+                                   Heading = h,
+                                   HeadingTo = h,
+                                   Nation = "Солярианская Лига",
+                                   ShipName = "Бандит-" + (generation > 0 ? generation + "-" : "") + (i + 1),
+                                   MissileNumber = 1,
+                                   MissileName = missile.Name,
+                                   Position = 300000000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
+                                   Speed = 300000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
+                               };
+                    m_helms.Add(helm.ShipName, Helm.Load(helm));
+                }
+                for (int i = 0; i < 1000; i++)
+                {
+                    var h = Random.NextAngle();
+                    var classification = Catalog.Instance.MissileClasses.Values.First();
+                    var from = m_helms.Values.RandomOf(Random);
+                    var to = m_helms.Values.RandomOf(Random);
+                    var missile = new Missile(from.Ship, true, to.Ship, 1, Time);
+                    m_missiles.Add(missile);
+                }
+                generation++;
             }
-            for (int i = 0; i < 1000; i++)
-            {
-                var h = Random.NextAngle();
-                var classification = Catalog.Instance.MissileClasses.Values.First();
-                var from = m_helms.Values.RandomOf(Random);
-                var to = m_helms.Values.RandomOf(Random);
-                var missile = new Missile(from.Ship, true, to.Ship, 1, Time);
-                m_missiles.Add(missile);
-            }
-            generation++;
         }
     }
 }
