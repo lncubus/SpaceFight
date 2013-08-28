@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Drawing.StringFormat stringFormat2 = new System.Drawing.StringFormat();
+            System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.indicatorControl = new SF.Controls.IndicatorControl();
             this.spaceGridControl = new SF.Controls.SpaceGridControl();
             this.scaleControl = new SF.Controls.ScaleControl();
             this.panelFire = new System.Windows.Forms.Panel();
             this.labelBoard = new System.Windows.Forms.Label();
             this.buttonFire = new System.Windows.Forms.Button();
             this.checkBoxFriendlyFire = new System.Windows.Forms.CheckBox();
-            this.indicatorControl = new SF.Controls.IndicatorControl();
             this.tableLayoutPanel.SuspendLayout();
             this.panelFire.SuspendLayout();
             this.SuspendLayout();
@@ -67,13 +67,20 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(792, 573);
             this.tableLayoutPanel.TabIndex = 0;
             // 
+            // indicatorControl
+            // 
+            this.indicatorControl.Location = new System.Drawing.Point(540, 88);
+            this.indicatorControl.Name = "indicatorControl";
+            this.indicatorControl.Size = new System.Drawing.Size(249, 170);
+            this.indicatorControl.TabIndex = 5;
+            // 
             // spaceGridControl
             // 
-            stringFormat2.Alignment = System.Drawing.StringAlignment.Center;
-            stringFormat2.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
-            stringFormat2.LineAlignment = System.Drawing.StringAlignment.Center;
-            stringFormat2.Trimming = System.Drawing.StringTrimming.None;
-            this.spaceGridControl.CenteredLayout = stringFormat2;
+            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
+            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
+            this.spaceGridControl.CenteredLayout = stringFormat1;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
             this.spaceGridControl.Name = "spaceGridControl";
@@ -150,13 +157,6 @@
             this.checkBoxFriendlyFire.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.checkBoxFriendlyFire.UseVisualStyleBackColor = true;
             this.checkBoxFriendlyFire.CheckedChanged += new System.EventHandler(this.checkBoxFriendlyFire_CheckedChanged);
-            // 
-            // indicatorControl
-            // 
-            this.indicatorControl.Location = new System.Drawing.Point(540, 88);
-            this.indicatorControl.Name = "indicatorControl";
-            this.indicatorControl.Size = new System.Drawing.Size(249, 170);
-            this.indicatorControl.TabIndex = 5;
             // 
             // GunnerForm
             // 
