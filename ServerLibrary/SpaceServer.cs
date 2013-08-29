@@ -10,7 +10,7 @@ namespace SF.ServerLibrary
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class SpaceServer : IServer
     {
-        public static readonly Universe Instance = new Universe();
+        public static readonly Universe Instance = new Universe("universe.xml");
 
         private IHelm m_helm;
 

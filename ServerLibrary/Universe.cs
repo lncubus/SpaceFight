@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Xml;
 using System.Xml.Serialization;
 
 using SF.Space;
@@ -53,6 +54,16 @@ namespace SF.ServerLibrary
             writer.Close();
             return writer.ToString();
         }
+        private void SerializeCollection<T, U>(IEnumerable<T> collection, XmlDocument doc) where U : T
+        {
+            var nav = doc.CreateNavigator();
+            using (XmlWriter writer = nav.AppendChild())
+            {
+                var list = collection.Cast<U>().ToArray();
+                var serializer = new XmlSerializer(list.GetType());
+                serializer.Serialize(writer, list);
+            }
+        }
 
         private U[] DeserializeCollection<U>(string source)
         {
@@ -62,18 +73,43 @@ namespace SF.ServerLibrary
             return read;
         }
 
-        public Universe()
+        public Universe(string fileName)
         {
             var catalog = File.ReadAllText("catalog.xml");
             var catalogDefinition = DeserializeObject<CatalogDefinition>(catalog);
             Catalog.Create(catalogDefinition);
-            var ships = File.ReadAllText("helms.xml");
-            var helms = DeserializeCollection<HelmDefinition>(ships);
+
+            XmlReader starsReader = XmlReader.Create(new StringReader(File.ReadAllText(fileName)));
+            starsReader.ReadToDescendant("ArrayOfStar");
+            var stars = DeserializeCollection<Star>(starsReader.ReadOuterXml());
+
+            XmlReader helmsReader = XmlReader.Create(new StringReader(File.ReadAllText(fileName)));
+            helmsReader.ReadToDescendant("ArrayOfHelmDefinition");
+            var helms = DeserializeCollection<HelmDefinition>(helmsReader.ReadOuterXml());
+
             m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Name);
+            m_stars = stars.ToDictionary(star => star.Name);
             m_missiles = new List<IMissile>();
-            var stars = File.ReadAllText("stars.xml");
-            m_stars = DeserializeCollection<Star>(stars).ToDictionary(star => star.Name);
+
             m_backgroundWorker = new Thread(TimingThreadStart) { IsBackground = true };
+        }
+
+        public void Save()
+        {
+            var fileName = DateTime.Now.ToString("s").Replace(":", "_");
+            XmlDocument starsDoc = new XmlDocument();
+            XmlDocument helmsDoc = new XmlDocument();
+            lock (m_locker)
+            {
+                SerializeCollection<Star, Star>(m_stars.Values, starsDoc);
+                SerializeCollection<HelmDefinition, HelmDefinition>(m_helms.Values.Select(x => (x as Helm).Definition), helmsDoc);
+            }
+            XmlDocument doc = new XmlDocument();
+            var root = doc.CreateElement("Universe");
+            root.AppendChild(doc.ImportNode(starsDoc.FirstChild, true)); // only one child for sure
+            root.AppendChild(doc.ImportNode(helmsDoc.FirstChild, true)); // only one child for sure
+            doc.AppendChild(root);
+            doc.Save(fileName);
         }
 
         public bool IsRunning
