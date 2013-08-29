@@ -286,10 +286,8 @@ namespace SF.Controls
         { 
             if (Options.HasFlag(DrawingOptions.NoGrid))
                 return;
-            var logScale = Math.Log10(WorldScale);
-            float scale = (float)Math.Pow(10, Math.Ceiling(logScale) - logScale);
-            float dpiX = scale * graphics.DpiX;
-            float dpiY = scale * graphics.DpiY;
+            float dpiX = graphics.DpiX;
+            float dpiY = graphics.DpiY;
             if (Polar)
             {
                 var n = (int) (m_client.Width / (2.0 * dpiX) + m_client.Height / (2.0 * dpiY));
@@ -324,8 +322,8 @@ namespace SF.Controls
                 PointF center = m_center;
                 if (StaticGrid)
                 {
-                    var dx = (float)(graphics.DpiX * Math.IEEERemainder(Origin.X, WorldScale * scale) / WorldScale);
-                    var dy = (float)(graphics.DpiY * Math.IEEERemainder(Origin.Y, WorldScale * scale) / WorldScale);
+                    var dx = (float)(graphics.DpiX * Math.IEEERemainder(Origin.X, WorldScale) / WorldScale);
+                    var dy = (float)(graphics.DpiY * Math.IEEERemainder(Origin.Y, WorldScale) / WorldScale);
                     center.X -= dx;
                     center.Y += dy;
                 }
