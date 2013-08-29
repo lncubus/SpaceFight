@@ -27,6 +27,8 @@ namespace SF.ServerLibrary
             get { return Missile.Name; }
         }
 
+        public ShipState State { get; set; }
+
         public Vector Position
         {
             get { return Dynamics.S; }

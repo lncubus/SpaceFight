@@ -10,8 +10,20 @@ namespace SF.Space
         string MissileName { get; }
         int Missiles { get; }
 
+        ShipState State { get; }
+
         double Heading { get; }
         double Roll { get; }
         double Thrust { get; }
+    }
+
+    public enum ShipState
+    {
+        Normal = 0,
+        Drifting,
+        Sailing,
+        Hyperspace,
+        Junk,
+        Annihilated,
     }
 }

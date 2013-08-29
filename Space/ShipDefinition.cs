@@ -70,18 +70,9 @@ namespace SF.Space
                 Position = ship.Position,
                 Speed = ship.Speed,
                 MissileName = ship.MissileName,
-                Missiles = ship.Missiles
+                Missiles = ship.Missiles,
+                State = ship.State,
             };
-        }
-
-        public enum ShipState
-        {
-            Normal = 0,
-            Drifting,
-            Sail,
-            Hyperspace,
-            Junk,
-            Annihilated,
         }
     }
 }

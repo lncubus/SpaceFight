@@ -32,6 +32,7 @@ namespace SF.Space
                 Missiles = helm.Missiles,
                 Radius = helm.Radius,
                 Weight = helm.Weight,
+                State = helm.State,
             };
         }
     }

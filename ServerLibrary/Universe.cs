@@ -15,6 +15,8 @@ namespace SF.ServerLibrary
         private static readonly SynchronizationContext Context = SynchronizationContext.Current;
         private object m_locker = new object();
 
+        private Collider m_collider = new Collider();
+
         public const int SmallDelay = 100;
 
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
@@ -166,6 +168,8 @@ namespace SF.ServerLibrary
 
         private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
+            if (me.State == ShipState.Annihilated || me.State == ShipState.Junk || me.State == ShipState.Hyperspace)
+                return new IShip[0];
             return m_helms.Values.Where(i => i != me); 
         }
 
@@ -197,9 +201,10 @@ namespace SF.ServerLibrary
                 return result;
             }
         }
-
+        
         private void TimingThreadStart()
         {
+            var tPrev = Time.TotalSeconds;
             while (true)
             {
                 Thread.Sleep(SmallDelay);
@@ -212,11 +217,47 @@ namespace SF.ServerLibrary
                         helm.Dynamics.UpdateTime(t);
                     foreach (Missile missile in m_missiles)
                         missile.UpdateTime(t);
+                    var dt = t - tPrev;
+                    CheckCollisions(dt);
+                    tPrev = t;
                     var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
                     foreach (var missile in deleted)
                         m_missiles.Remove(missile);
                 }
             }
+        }
+
+        private void CheckCollisions(double dt)
+        {
+            if (dt < MathUtils.Epsilon)
+                return;
+            foreach (Ship helm in m_helms.Values)
+                foreach (var star in m_stars.Values)
+                    if (m_collider.HaveCollision(helm, star, dt))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format(
+                            "Корабль {0} врезался в планету {1}, оценка энергии взрыва {2}.",
+                            helm.Name, star.Name, MathUtils.NumberToText(m_collider.PowerOfCollision(helm, star), "Мт")));
+                        helm.State = ShipState.Annihilated;
+                    }
+            foreach (Missile missile in m_missiles)
+                foreach (Star star in m_stars.Values)
+                    if (m_collider.HaveCollision(missile, star, dt))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format(
+                            "Ракета врезалась в планету {0}, оценка энергии взрыва {1}.",
+                            star.Name, MathUtils.NumberToText(m_collider.PowerOfCollision(missile, star), "Мт")));
+                        missile.Exploded = true;
+                    }
+            foreach (Missile missile in m_missiles)
+                foreach (Ship helm in m_helms.Values)
+                    if (m_collider.HaveCollision(missile, helm, dt, missile.Class.HitDistance))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format(
+                            "Ракета поразила корабль {0}, энергия поражения {1}, кинетическая энергия {2}.",
+                            helm.Name, missile.Class.Damage, MathUtils.NumberToText(m_collider.PowerOfCollision(missile, helm), "Мт")));
+                        missile.Exploded = true;
+                    }
         }
 
         static int generation = 0;

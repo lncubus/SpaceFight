@@ -22,8 +22,8 @@ namespace SF.ServerLibrary
 
         public int Number { get; set; }
 
-        public bool Exploded { get; private set; }
-        public bool Exhausted { get; private set; }
+        public bool Exploded { get; set; }
+        public bool Exhausted { get; set; }
 
         public bool IsDead
         {
@@ -109,7 +109,7 @@ namespace SF.ServerLibrary
 
         public double Radius
         {
-            get { return Class.HitDistance; }
+            get { return 0; }
         }
     }
 }

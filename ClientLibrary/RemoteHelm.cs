@@ -138,5 +138,10 @@ namespace SF.ClientLibrary
         {
             get { return m_that.Thrust; }
         }
+
+        public ShipState State
+        {
+            get { return m_that.State; }
+        }
     }
 }
