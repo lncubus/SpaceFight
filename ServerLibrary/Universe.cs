@@ -135,16 +135,17 @@ namespace SF.ServerLibrary
             get { return m_stopWatch.Elapsed; }
         }
 
-        public View GetView(IHelm m_helm)
+        public View GetView(IHelm me)
         {
             lock (m_locker)
             {
+                bool blind = me.State == ShipState.Annihilated || me.State == ShipState.Junk || me.State == ShipState.Hyperspace;
                 return new View
                 {
                     Time = Time,
-                    Helm = HelmDefinition.Store(m_helm),
-                    Ships = GetVisibleShips(m_helm).Select(ShipDefinition.Store).ToArray(),
-                    Missiles = GetVisibleMissiles(m_helm).Select(MissileDefinition.Store).ToArray(),
+                    Helm = HelmDefinition.Store(me),
+                    Ships = blind ? new ShipDefinition[0] : GetVisibleShips(me).Select(ShipDefinition.Store).ToArray(),
+                    Missiles = blind ? new MissileDefinition[0] : GetVisibleMissiles(me).Select(MissileDefinition.Store).ToArray(),
                     Stars = GetStars().ToArray(),
                 };
             }
@@ -204,8 +205,6 @@ namespace SF.ServerLibrary
 
         private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            if (me.State == ShipState.Annihilated || me.State == ShipState.Junk || me.State == ShipState.Hyperspace)
-                return new IShip[0];
             return m_helms.Values.Where(i => i != me); 
         }
 

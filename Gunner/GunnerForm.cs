@@ -69,6 +69,8 @@ namespace Gunner
 
         private void GetData()
         {
+            if (helm.State == ShipState.Annihilated || helm.State == ShipState.Junk)
+                Die();
             spaceGridControl.Ships = client.GetVisibleShips();
             spaceGridControl.Stars = client.GetStars();
             spaceGridControl.Missiles = client.GetVisibleMissiles();
@@ -78,6 +80,15 @@ namespace Gunner
             indicatorControl.Acceleration = ship.Acceleration;
             indicatorControl.Speed = ship.Speed;
             indicatorControl.Position = ship.Position;
+        }
+
+
+        private void Die()
+        {
+            tableLayoutPanel.Hide();
+            BackColor = Color.Maroon;
+            timerUpdate.Enabled = false;
+            MessageBox.Show(this, CommonResources.DeadMessage);
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)
