@@ -365,7 +365,7 @@ namespace SF.Controls
                 DrawSelection(e.Graphics, Selected);
         }
 
-        private void DrawCurve(Graphics graphics, Curve curve)
+        protected void DrawCurve(Graphics graphics, Curve curve)
         {
             if (curve.Count == 0)
                 return;
@@ -581,6 +581,10 @@ namespace SF.Controls
                 graphics.DrawPie(pen, rect,
                     (float)MathUtils.ToDegrees(medianAngle - sweepAngle/ 2 - Math.PI / 2 - Rotation),
                     (float)MathUtils.ToDegrees(sweepAngle));
+        }
+
+        public SpaceGridControl()
+        {
         }
 
         [Flags]
