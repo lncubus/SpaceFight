@@ -102,7 +102,7 @@ namespace SF.ServerLibrary
             lock (m_locker)
             {
                 SerializeCollection<Star, Star>(m_stars.Values, starsDoc);
-                SerializeCollection<HelmDefinition, HelmDefinition>(m_helms.Values.Select(x => (x as Helm).Definition), helmsDoc);
+                //SerializeCollection<HelmDefinition, HelmDefinition>(m_helms.Values.Select(x => (x as Helm).Definition), helmsDoc);
             }
             XmlDocument doc = new XmlDocument();
             var root = doc.CreateElement("Universe");
