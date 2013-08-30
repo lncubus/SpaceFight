@@ -9,7 +9,6 @@ namespace SF.ServerLibrary
         public double RollTo { get { return Dynamics.RollTo; } set { Dynamics.RollTo = value; } }
         public double HeadingTo { get { return Dynamics.HeadingTo; } set { Dynamics.HeadingTo = value; } }
         public double ThrustTo { get { return Dynamics.AccelerateTo; } set { Dynamics.AccelerateTo = value; } }
-        public HelmDefinition Definition { get; private set;  }
 
         public static IHelm Load(HelmDefinition that)
         {
@@ -32,8 +31,7 @@ namespace SF.ServerLibrary
                 Nation = that.Nation,
                 Dynamics = shipDynamics,
                 Missile = missileClass,
-                Missiles = that.Missiles,
-                Definition = that
+                Missiles = that.Missiles
             };            
         }
     }
