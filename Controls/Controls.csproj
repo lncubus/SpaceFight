@@ -43,6 +43,9 @@
     <Compile Include="CompassControl.Designer.cs">
       <DependentUpon>CompassControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CurveEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="IndicatorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,6 +94,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CurveEditorControl.resx">
+      <DependentUpon>CurveEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IndicatorControl.resx">
       <DependentUpon>IndicatorControl.cs</DependentUpon>
     </EmbeddedResource>

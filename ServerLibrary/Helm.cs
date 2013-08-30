@@ -31,8 +31,8 @@ namespace SF.ServerLibrary
                 Nation = that.Nation,
                 Dynamics = shipDynamics,
                 Missile = missileClass,
-                Missiles = that.Missiles,
-            };
+                Missiles = that.Missiles
+            };            
         }
     }
 }
