@@ -1,4 +1,5 @@
-﻿using SF.Space;
+﻿using System.IO;
+using SF.Space;
 
 namespace SF.ServerLibrary
 {
@@ -18,7 +19,8 @@ namespace SF.ServerLibrary
             set { m_className = value; }
         }
 
-        public IShip Target { get; set; }
+        public IShip Target { get; private set; }
+        public IShip Launcher { get; private set; }
 
         public int Number { get; set; }
 
@@ -44,20 +46,21 @@ namespace SF.ServerLibrary
         public readonly double Started;
 
         private double t0;
-        private Vector v0;
-        private Vector s0;
         private double heading;
 
         public Missile(IShip from, bool left, IShip to, int number, TimeSpan time)
         {
             Id = Guid.NewGuid();
             Class = from.Missile;
-            s0 = Position = from.Position;
-            v0 = Speed = from.Speed;
+            //s0 = 
+            Position = from.Position;
+            //v0 =
+            Speed = from.Speed;
             t0 = Started = time.TotalSeconds;
             Number = Math.Min(number, from.Missiles);
             heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;
+            Launcher = from;
         }
 
         public void UpdateTime(double time)
@@ -68,33 +71,33 @@ namespace SF.ServerLibrary
                 return;
             }
             var t = time - t0;
-            var t2 = t * t / 2;
-            Speed = v0 + Acceleration * t;
-            Position = s0 + v0 * t + Acceleration * t2;
+            Speed += Acceleration * t;
+            Position += Speed*t + Acceleration*t*t/2;
+            t0 = time;
             var s = Target.Position - Position;
             var v = Target.Speed - Speed;
-            if (t < Class.Targeting)
-                return;
-            v0 = Speed;
-            s0 = Position;
-            t0 = time;
-            heading = s.Argument;
-            //if (MathUtils.NearlyEqual(h, heading))
-            //    return;
-            //var diff = heading - h;
-            //// end of the current arc
-            //bool changed = (headingTo.HasValue || accelerateTo.HasValue || Acceleration.WillReset(time) || Heading.WillReset(time));
-            //if (changed)
-            //{
-            //    v0 = V;
-            //    t0 = time;
-            //    Heading.Set(time, HeadingTo);
-            //    Acceleration.Set(time, AccelerateTo);
-            //    headingTo = null;
-            //    accelerateTo = null;
-            //}
-            //AccelerationValue = a1;
-            //HeadingValue = phi1;
+            var a = Target.Acceleration;
+            var h = s.Argument;
+            double eta = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                var h1 = Vector.Direction(h);
+                var a1 = a*h1 - Class.Acceleration;
+                // this can't happen
+                if (MathUtils.NearlyEqual(a1, 0))
+                    break;
+                var va1 = v*h1/a1;
+                var sa1 = s*h1/a1;
+                // t^2 + 2 va1 t + 2 sa1
+                var d = va1*va1 - 2*sa1;
+                if (d < 0)
+                    break;
+                d = Math.Sqrt(d);
+                eta = va1 >= d ? va1 - d : va1 + d;
+                var full = s + v*eta + a*eta*eta/2;
+                h = full.Argument;
+            }
+            heading = h;
         }
 
         public string Name

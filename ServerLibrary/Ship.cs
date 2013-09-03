@@ -46,6 +46,7 @@ namespace SF.ServerLibrary
         {
             get { return Class.Weight; }
         }
+
         public double Radius
         {
             get { return Class.Wedge; }
