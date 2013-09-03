@@ -30,9 +30,9 @@ namespace SF.Space
                 Speed = helm.Speed,
                 MissileName = helm.MissileName,
                 Missiles = helm.Missiles,
+                State = helm.State,
                 Radius = helm.Radius,
                 Weight = helm.Weight,
-                State = helm.State,
             };
         }
     }

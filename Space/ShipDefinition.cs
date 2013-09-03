@@ -72,6 +72,8 @@ namespace SF.Space
                 MissileName = ship.MissileName,
                 Missiles = ship.Missiles,
                 State = ship.State,
+                Radius = ship.Radius,
+                Weight = ship.Weight,
             };
         }
     }
