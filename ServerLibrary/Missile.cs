@@ -72,7 +72,7 @@ namespace SF.ServerLibrary
             }
             var t = time - t0;
             Speed = v0 + Acceleration*t;
-            Position = s0 + v0 * t + Acceleration*t*t/2;
+            Position = s0 + v0*t + Acceleration*t*t/2;
             if (t < Class.Targeting)
                 return;
             v0 = Speed;
@@ -83,24 +83,25 @@ namespace SF.ServerLibrary
             var v = Target.Speed - Speed;
             var a = Target.Acceleration;
             var h = s.Argument;
-            //double eta = 0;
+            double eta = 0;
+            var h1 = Vector.Direction(h);
+            var a1 = a*h1 - Class.Acceleration;
             //for (int i = 0; i < 3; i++)
             //{
-            //    var h1 = Vector.Direction(h);
-            //    var a1 = a*h1 - Class.Acceleration;
             //    // this can't happen
             //    if (MathUtils.NearlyEqual(a1, 0))
             //        break;
-            //    var va1 = v*h1/a1;
-            //    var sa1 = s*h1/a1;
+            var va1 = v*h1/a1;
+            var sa1 = s*h1/a1;
             //    // t^2 + 2 va1 t + 2 sa1
-            //    var d = va1*va1 - 2*sa1;
-            //    if (d < 0)
-            //        break;
-            //    d = Math.Sqrt(d);
-            //    eta = va1 >= d ? va1 - d : va1 + d;
-            //    var full = s + v*eta + a*eta*eta/2;
-            //    h = full.Argument;
+            var d = va1*va1 - 2*sa1;
+            if (d < 0)
+                return;
+            d = Math.Sqrt(d);
+            eta = va1 >= d ? va1 - d : va1 + d;
+            var h2 = h1.Rotate(Math.PI/2);
+            var full = s + (v*h2*eta + a*h2*eta*eta/2)*h2;
+            h = full.Argument;
             //}
             heading = h;
         }
