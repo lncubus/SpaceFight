@@ -145,7 +145,7 @@ namespace SF.Controls
                     id = m_selectedParticle.Id;
                 m_ships = value;
                 if (id != Guid.Empty)
-                    m_selectedParticle = m_ships.ById(id);
+                    m_selectedParticle = id == OwnShip.Id ? OwnShip : m_ships.ById(id);
                 Invalidate();
             }
         }
@@ -427,10 +427,13 @@ namespace SF.Controls
 
         private void DrawShip(Graphics graphics, IShip ship)
         {
-            DrawVulnerableSectors(graphics, ship);
-            DrawShipWedge(graphics, ship);
-            if (ship.Board() > 0.5)
-                DrawMissileCircle(graphics, ship);
+            if (!ship.IsDead())
+            {
+                DrawVulnerableSectors(graphics, ship);
+                DrawShipWedge(graphics, ship);
+                if (ship.Board() > 0.5)
+                    DrawMissileCircle(graphics, ship);
+            }
             DrawShipHull(graphics, ship);
             var brush = ShipNames.Select(OwnShip, ship);
             WorldDrawText(graphics, brush, ship.Position, ship.Name);
@@ -504,7 +507,7 @@ namespace SF.Controls
 
         private void DrawShipHull(Graphics graphics, IShip ship)
         {
-            const double alpha = Math.PI * 11 / 12;
+            var alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;
             var pen = ShipHulls.Select(OwnShip, ship);
             var points = new[]
@@ -516,6 +519,20 @@ namespace SF.Controls
             if (!IsVisible(points))
                 return;
             graphics.DrawPolygon(pen, points);
+            if (!ship.IsDead())
+                return;
+            alpha = Math.PI*1/3;
+            var beta = Math.PI*2/3;
+            pen = SignalPen;
+            points = new[]
+                {
+                    WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading + alpha) * size),
+                    WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading - beta) * size),
+                    WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading - alpha) * size),
+                    WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading + beta) * size),
+                };
+            graphics.DrawLine(pen, points[0], points[1]);
+            graphics.DrawLine(pen, points[2], points[3]);
         }
 
         private void DrawMissile(Graphics graphics, IMissile missile)

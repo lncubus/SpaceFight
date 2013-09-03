@@ -96,6 +96,7 @@ namespace Pilot
             BackColor = Color.Maroon;
             timerUpdate.Enabled = false;
             MessageBox.Show(this, CommonResources.DeadMessage);
+            Close();
         }
 
         private void scaleControl_ValueChanged(object sender, EventArgs e)
