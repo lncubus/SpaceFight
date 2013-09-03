@@ -28,6 +28,9 @@ namespace SF.ServerLibrary
         private readonly IList<IMissile> m_missiles;
         private readonly Thread m_backgroundWorker;
 
+        public static ServerDamageContract.ShipDamageService Service;
+
+
         private string SerializeObject<T>(T instance)
         {
             var serializer = new XmlSerializer(instance.GetType());
