@@ -50,10 +50,11 @@
     <Compile Include="Missile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerDamageContract\HonorInterfaces.cs" />
-    <Compile Include="ServerDamageContract\IShipDamageService.cs" />
+    <Compile Include="ServerDamageContract\IServerDamageContract.cs" />
     <Compile Include="ServerDamageContract\ShipDamageService.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="SpaceServer.cs" />
+    <Compile Include="UniverseSingleton.cs" />
     <Compile Include="Universe.cs" />
   </ItemGroup>
   <ItemGroup>
