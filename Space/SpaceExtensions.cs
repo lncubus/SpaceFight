@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace SF.Space
 {
-
     public static class SpaceExtensions
     {
         /// <summary>

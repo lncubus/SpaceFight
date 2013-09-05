@@ -26,8 +26,6 @@ namespace Server
         {
             Host = new ServiceHost(typeof(SpaceServer));
             Host.Open();
-            
-
             if (SpaceServer.Universe == null)
                 Close();
             else

@@ -22,13 +22,14 @@ namespace SF.ServerLibrary
 
         private readonly System.Diagnostics.Stopwatch m_stopWatch = new System.Diagnostics.Stopwatch();
 
-        private readonly IDictionary<string, IHelm> m_helms;
-        private readonly IDictionary<string, Star> m_stars;
+        public readonly IDictionary<string, IHelm> Helms;
+        public readonly IDictionary<string, Star> Stars;
         private readonly IList<IMissile> m_missiles;
         private readonly Thread m_backgroundWorker;
 
         public ServerDamageContract.IServerDamageCallbackContract DamageServiceCallback;
         public const byte BreakEverything = (byte)RanmaRepairSeverity.Hard * Subsytsem.Length;
+        public const byte SevereDamage = (byte)RanmaRepairSeverity.Hard * 2;
 
         private string SerializeObject<T>(T instance)
         {
@@ -91,8 +92,8 @@ namespace SF.ServerLibrary
             helmsReader.ReadToDescendant("ArrayOfHelmDefinition");
             var helms = DeserializeCollection<HelmDefinition>(helmsReader.ReadOuterXml());
 
-            m_helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Name);
-            m_stars = stars.ToDictionary(star => star.Name);
+            Helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Name);
+            Stars = stars.ToDictionary(star => star.Name);
             m_missiles = new List<IMissile>();
 
             m_backgroundWorker = new Thread(TimingThreadStart) { IsBackground = true };
@@ -105,8 +106,8 @@ namespace SF.ServerLibrary
             XmlDocument helmsDoc = new XmlDocument();
             lock (m_locker)
             {
-                SerializeCollection(m_stars.Values, starsDoc);
-                SerializeCollection(m_helms.Values.Select(HelmDefinition.Store), helmsDoc);
+                SerializeCollection(Stars.Values, starsDoc);
+                SerializeCollection(Helms.Values.Select(HelmDefinition.Store), helmsDoc);
             }
             XmlDocument doc = new XmlDocument();
             var root = doc.CreateElement("Universe");
@@ -160,9 +161,9 @@ namespace SF.ServerLibrary
             lock (m_locker)
             {
                 var shipClassesByNation = Catalog.Instance.ShipClasses.Values.Where(c => c.Nation == nation);
-                var shipClassesByShips = m_helms.Where(i => i.Value.Nation == nation).Select(i => i.Value.Class);
+                var shipClassesByShips = Helms.Where(i => i.Value.Nation == nation).Select(i => i.Value.Class);
                 var missileClassesByNation = Catalog.Instance.MissileClasses.Values.Where(c => c.Nation == nation);
-                var missileClassesByShips = m_helms.Where(i => i.Value.Nation == nation).Select(i => i.Value.Missile);
+                var missileClassesByShips = Helms.Where(i => i.Value.Nation == nation).Select(i => i.Value.Missile);
                 return new CatalogDefinition
                 {
                     MaximumMissileRange = Catalog.Instance.MaximumMissileRange,
@@ -204,14 +205,14 @@ namespace SF.ServerLibrary
         private IHelm GetHelm(string name)
         {
             IHelm result;
-            if (!m_helms.TryGetValue(name, out result))
+            if (!Helms.TryGetValue(name, out result))
                 return null;
             return result;
         }
 
         private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            return m_helms.Values.Where(i => i != me && i.InSpace()); 
+            return Helms.Values.Where(i => i != me && i.InSpace()); 
         }
 
         private IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
@@ -221,21 +222,21 @@ namespace SF.ServerLibrary
 
         private IEnumerable<Star> GetStars()
         {
-            return m_stars.Values;
+            return Stars.Values;
         }
 
         public KeyValuePair<string, string[]>[] GetShipNames()
         {
             lock (m_locker)
             {
-                var nations = m_helms.Select(i => i.Value.Nation).Distinct().ToList();
+                var nations = Helms.Select(i => i.Value.Nation).Distinct().ToList();
                 nations.Sort();
                 int n = nations.Count;
                 var result = new KeyValuePair<string, string[]>[n];
                 for (int i = 0; i < n; i++)
                 {
                     var nation = nations[i];
-                    var ships = m_helms.Where(p => p.Value.Nation == nation).Select(p => p.Key).Distinct().ToList();
+                    var ships = Helms.Where(p => p.Value.Nation == nation).Select(p => p.Key).Distinct().ToList();
                     ships.Sort();
                     result[i] = new KeyValuePair<string, string[]>(nation, ships.ToArray());
                 }
@@ -254,7 +255,7 @@ namespace SF.ServerLibrary
                 lock (m_locker)
                 {
                     double t = Time.TotalSeconds;
-                    foreach (Ship helm in m_helms.Values)
+                    foreach (Ship helm in Helms.Values)
                         helm.Dynamics.UpdateTime(t);
                     foreach (Missile missile in m_missiles)
                         missile.UpdateTime(t);
@@ -272,9 +273,9 @@ namespace SF.ServerLibrary
         {
             if (dt < MathUtils.Epsilon)
                 return;
-            var helms = m_helms.Values.Where(helm => helm.InSpace()).ToList();
+            var helms = Helms.Values.Where(helm => helm.InSpace()).ToList();
             foreach (Ship helm in helms)
-                foreach (Star star in m_stars.Values)
+                foreach (Star star in Stars.Values)
                     if (m_collider.HaveCollision(helm, star, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
@@ -282,7 +283,7 @@ namespace SF.ServerLibrary
                         DestroyShip(helm);
                     }
             foreach (Missile missile in m_missiles)
-                foreach (Star star in m_stars.Values)
+                foreach (Star star in Stars.Values)
                     if (m_collider.HaveCollision(missile, star, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
@@ -291,15 +292,36 @@ namespace SF.ServerLibrary
                     }
             foreach (Missile missile in m_missiles)
             {
+                // TODO: more damage according to missile.Number
                 var target = (Helm) (missile.Target);
                 if (m_collider.HaveCollision(missile, target, dt, missile.Class.HitDistance))
                 {
                     System.Diagnostics.Trace.WriteLine(string.Format("Ракета поразила корабль {0}.", target.Name));
                     missile.Exploded = true;
+                    double angle = Math.Abs(target.Heading - missile.Heading) % (2*Math.PI);
+                    if (angle > Math.PI)
+                        angle = Math.PI - angle;
+                    var throat = (Math.PI - angle) < Catalog.Instance.ThroatAngle/2;
+                    var skirt = angle > Math.PI - Catalog.Instance.SkirtAngle/2;
+                    System.Diagnostics.Trace.WriteLine(string.Format("Угол {0}.", MathUtils.ToDegreesInt(angle)));
                     byte severity = 0;
-
-
-                    DamageShip(target, severity);
+                    if (throat || skirt)
+                        severity = SevereDamage;
+                    else if (Random.NextDouble() <= target.Board())
+                    {
+                        var r = Random.NextDouble();
+                        if (r < 0.5)
+                            severity = (byte) RanmaRepairSeverity.Easy;
+                        else if (r < 0.8)
+                            severity = (byte)RanmaRepairSeverity.Medium;
+                        else if (r < 0.95)
+                            severity = (byte)RanmaRepairSeverity.Hard;
+                        else
+                            // GOD HATES YOU! NO, REALLY!
+                            severity = (byte)Random.Next((byte)RanmaRepairSeverity.Hard, SevereDamage);
+                    }
+                    if(severity > 0)
+                        DamageShip(target, severity);
                 }
             }
             foreach (Ship one in helms)
@@ -314,11 +336,18 @@ namespace SF.ServerLibrary
 
         private void DamageShip(Ship target, byte severity)
         {
+            System.Diagnostics.Trace.WriteLine(string.Format("Корабль {0} поврежден. Уровень {1}", target.Name, severity));
             if (DamageServiceCallback != null)
             {
                 try
                 {
-                    DamageServiceCallback.DamageShip(target.Id, severity);
+                    while (severity > (byte) RanmaRepairSeverity.Hard)
+                    {
+                        DamageServiceCallback.DamageShip(target.Id, (byte) RanmaRepairSeverity.Hard);
+                        severity -= (byte) RanmaRepairSeverity.Hard;
+                    }
+                    if (severity > 0)
+                        DamageServiceCallback.DamageShip(target.Id, severity);
                 }
                 catch
                 {
@@ -331,6 +360,7 @@ namespace SF.ServerLibrary
 
         private void DestroyShip(Ship target)
         {
+            System.Diagnostics.Trace.WriteLine(string.Format("Корабль {0} уничтожен.", target.Name));
             if (DamageServiceCallback != null)
             {
                 try
@@ -372,12 +402,12 @@ namespace SF.ServerLibrary
                                    Position = 300000000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
                                    Speed = 300000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
                                };
-                    m_helms.Add(helm.Name, Helm.Load(helm));
+                    Helms.Add(helm.Name, Helm.Load(helm));
                 }
                 for (int i = 0; i < 1000; i++)
                 {
-                    var from = m_helms.Values.RandomOf(Random);
-                    var to = m_helms.Values.RandomOf(Random);
+                    var from = Helms.Values.RandomOf(Random);
+                    var to = Helms.Values.RandomOf(Random);
                     var missile = new Missile(from, to, 1, Time);
                     m_missiles.Add(missile);
                 }
@@ -389,7 +419,7 @@ namespace SF.ServerLibrary
         {
             lock (m_locker)
             {
-                var helms = m_helms.Values.OfType<Helm>().ToDictionary(helm => helm.Id);
+                var helms = Helms.Values.OfType<Helm>().ToDictionary(helm => helm.Id);
                 foreach (var status in shipStatuses)
                 {
                     Helm helm;

@@ -10,9 +10,6 @@ namespace SF.ServerLibrary
             var S = missile.Position - target.Position;
             var V = missile.Speed - target.Speed;
             var r = missile.Radius + target.Radius + hitDistance;
-            if (missile is IMissile && target is IShip)
-                System.Diagnostics.Debug.WriteLine(string.Format("S = {0} {1}, V = {2} {3}",
-                    S.Length, S, V, V.Length));
             // Collision at t = 0
             if (S.Length <= r)
                 return true;

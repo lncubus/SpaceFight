@@ -40,7 +40,7 @@ namespace SF.ServerLibrary
 
         public Vector Acceleration
         {
-            get { return Class.Acceleration * Vector.Direction(heading); }
+            get { return Class.Acceleration * Vector.Direction(Heading); }
         }
 
         public readonly double Started;
@@ -48,7 +48,7 @@ namespace SF.ServerLibrary
         private double t0;
         private Vector v0;
         private Vector s0;
-        private double heading;
+        public double Heading { get; private set; }
 
         public Missile(IShip from, IShip to, int number, TimeSpan time)
         {
@@ -59,7 +59,7 @@ namespace SF.ServerLibrary
             t0 = Started = time.TotalSeconds;
             Number = Math.Min(number, from.Missiles);
             var left = from.IsLeft(to);
-            heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
+            Heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;
             Launcher = from;
         }
@@ -95,7 +95,7 @@ namespace SF.ServerLibrary
             var eta = va1 >= d ? va1 - d : va1 + d;
             var h2 = h1.Rotate(Math.PI/2);
             var full = s + (v*h2*eta + a*h2*eta*eta/2)*h2;
-            heading = full.Argument;
+            Heading = full.Argument;
         }
 
         public string Name

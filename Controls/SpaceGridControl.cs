@@ -432,7 +432,8 @@ namespace SF.Controls
             if (!ship.IsDead())
             {
                 DrawVulnerableSectors(graphics, ship);
-                DrawShipWedge(graphics, ship);
+                if (ship.Board() <= 0.5)
+                    DrawShipWedge(graphics, ship);
                 if (ship.Board() > 0.5)
                     DrawMissileCircle(graphics, ship);
             }
@@ -490,8 +491,6 @@ namespace SF.Controls
         
         private void DrawShipWedge(Graphics graphics, IShip ship)
         {
-            if (ship.Board() > 0.5)
-                return;
             double size = WorldScale / 4;
             var pen = SignalPen;
             var points = new[]
