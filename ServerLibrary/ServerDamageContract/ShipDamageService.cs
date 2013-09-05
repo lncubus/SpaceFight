@@ -8,14 +8,12 @@ namespace SF.ServerLibrary.ServerDamageContract
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class ShipDamageService : IServerDamageContract
     {
-        private Universe m_universe = SpaceServer.Universe;
+        private Universe universe = SpaceServer.Universe;
 
         public void ServerConnect()
         {
             //Let's remember Armlet Server callback channel  - запиши его куда-нибудь, и дергай из него методы для сообщения информации мне на сервак
-
-            m_universe.DamageServiceCallback = OperationContext.Current.GetCallbackChannel<IServerDamageCallbackContract>();
-            
+            universe.DamageServiceCallback = OperationContext.Current.GetCallbackChannel<IServerDamageCallbackContract>();
         }
 
         public void SetAllSubsystemsStatuses(ShipStatus[] shipStatuses)

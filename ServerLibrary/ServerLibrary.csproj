@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Collider.cs" />
     <Compile Include="Dynamics.cs" />
+    <Compile Include="Health.cs" />
     <Compile Include="Helm.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,6 +6,8 @@ namespace SF.Space
     public class ShipClass
     {
         [DataMember]
+        public ShipSuperclass Superclass { get; set; }
+        [DataMember]
         public string Nation { get; set; }
         [DataMember]
         public string Name { get; set; }
@@ -21,5 +23,11 @@ namespace SF.Space
         public double Weight { get; set; }
         [DataMember]
         public double Wedge { get; set; }
+    }
+
+    public enum ShipSuperclass
+    {
+        LAC = 0,
+        CLAC = 11,
     }
 }
