@@ -63,7 +63,7 @@ namespace SF.Controls {
         /// <summary>
         ///   Looks up a localized string similar to Ваша битва окончена. Примите соболезнования..
         /// </summary>
-        internal static string DeadMessage {
+        public static string DeadMessage {
             get {
                 return ResourceManager.GetString("DeadMessage", resourceCulture);
             }
