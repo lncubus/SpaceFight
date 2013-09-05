@@ -28,7 +28,7 @@ namespace SF.ServerLibrary
         private readonly Thread m_backgroundWorker;
 
         public ServerDamageContract.IServerDamageCallbackContract DamageServiceCallback;
-
+        public const byte BreakEverything = (byte)RanmaRepairSeverity.Hard * Subsytsem.Length;
 
         private string SerializeObject<T>(T instance)
         {
@@ -296,7 +296,10 @@ namespace SF.ServerLibrary
                 {
                     System.Diagnostics.Trace.WriteLine(string.Format("Ракета поразила корабль {0}.", target.Name));
                     missile.Exploded = true;
-                    DamageShip(target);
+                    byte severity = 0;
+
+
+                    DamageShip(target, severity);
                 }
             }
             foreach (Ship one in helms)
@@ -304,18 +307,18 @@ namespace SF.ServerLibrary
                     if (one != two && m_collider.HaveCollision(one, two, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
-                        DamageShip(one);
-                        DamageShip(two);
+                        DamageShip(one, BreakEverything);
+                        DamageShip(two, BreakEverything);
                     }
         }
 
-        private void DamageShip(Ship target)
+        private void DamageShip(Ship target, byte severity)
         {
             if (DamageServiceCallback != null)
             {
                 try
                 {
-                    DamageServiceCallback.DamageShip(target.Id, Convert.ToByte(Random.Next(2) + 1));
+                    DamageServiceCallback.DamageShip(target.Id, severity);
                 }
                 catch
                 {
