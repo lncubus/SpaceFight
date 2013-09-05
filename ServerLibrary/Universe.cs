@@ -195,7 +195,7 @@ namespace SF.ServerLibrary
             {
                 number = Math.Min(number, from.Missiles);
                 var target = GetHelm(to);
-                if (from.Missile == null || target == null || number <= 0)
+                if (from.Missile == null || target == null || number <= 0 || Random.NextDouble() > from.Board())
                     return;
                 var result = new Missile(from, target, number, Time);
                 m_missiles.Add(result);
@@ -265,6 +265,9 @@ namespace SF.ServerLibrary
                     var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
                     foreach (var missile in deleted)
                         m_missiles.Remove(missile);
+                    foreach(Helm helm in Helms.Values)
+                        if (helm.HealthChanged)
+                            helm.UpdateHealth(t);
                 }
             }
         }
@@ -274,7 +277,7 @@ namespace SF.ServerLibrary
             if (dt < MathUtils.Epsilon)
                 return;
             var helms = Helms.Values.Where(helm => helm.InSpace()).ToList();
-            foreach (Ship helm in helms)
+            foreach (Helm helm in helms)
                 foreach (Star star in Stars.Values)
                     if (m_collider.HaveCollision(helm, star, dt))
                     {
@@ -324,8 +327,8 @@ namespace SF.ServerLibrary
                         DamageShip(target, severity);
                 }
             }
-            foreach (Ship one in helms)
-                foreach (Ship two in helms)
+            foreach (Helm one in helms)
+                foreach (Helm two in helms)
                     if (one != two && m_collider.HaveCollision(one, two, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
@@ -334,7 +337,7 @@ namespace SF.ServerLibrary
                     }
         }
 
-        private void DamageShip(Ship target, byte severity)
+        private void DamageShip(Helm target, byte severity)
         {
             System.Diagnostics.Trace.WriteLine(string.Format("Корабль {0} поврежден. Уровень {1}", target.Name, severity));
             if (DamageServiceCallback != null)
@@ -355,10 +358,13 @@ namespace SF.ServerLibrary
                 }
             }
             else
+            {
                 target.State = ShipState.Junk;
+                target.HealthChanged = false;
+            }
         }
 
-        private void DestroyShip(Ship target)
+        private void DestroyShip(Helm target)
         {
             System.Diagnostics.Trace.WriteLine(string.Format("Корабль {0} уничтожен.", target.Name));
             if (DamageServiceCallback != null)
@@ -373,7 +379,10 @@ namespace SF.ServerLibrary
                 }
             }
             else
+            {
                 target.State = ShipState.Annihilated;
+                target.HealthChanged = false;
+            }
         }
 
         static int generation = 0;
@@ -429,7 +438,8 @@ namespace SF.ServerLibrary
                         continue;
                     }
                     foreach (var subsystemStatus in status.SubsystemStatuses)
-                        helm.Health[(int) subsystemStatus.SubSystem] = (byte)((int)subsystemStatus.Severity*100/3);
+                        helm.Damage[(int) subsystemStatus.SubSystem] = (byte)((int)subsystemStatus.Severity*100/(int)RanmaRepairSeverity.Hard);
+                    helm.HealthChanged = true;
                 }
             }
         }

@@ -13,7 +13,7 @@ namespace SF.Space
         [DataMember]
         public double ThrustTo;
         [DataMember]
-        public byte[] Health;
+        public byte[] Damage;
 
         public static HelmDefinition Store(IHelm helm)
         {
@@ -36,7 +36,7 @@ namespace SF.Space
                 State = helm.State,
                 Radius = helm.Radius,
                 Weight = helm.Weight,
-                Health = helm.Health ?? new byte[Subsytsem.Length],
+                Damage = helm.Damage ?? new byte[Subsytsem.Length],
             };
         }
     }

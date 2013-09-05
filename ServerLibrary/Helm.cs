@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HonorInterfaces;
 using SF.Space;
 
 namespace SF.ServerLibrary
@@ -48,7 +49,8 @@ namespace SF.ServerLibrary
             }
         }
 
-        public byte[] Health { get; set; }
+        public byte[] Damage { get; set; }
+        public volatile bool HealthChanged;
 
         public static IHelm Load(HelmDefinition that)
         {
@@ -73,8 +75,19 @@ namespace SF.ServerLibrary
                 Missile = missileClass,
                 Missiles = that.Missiles,
                 State =  that.State,
-                Health = that.Health,
+                Damage = that.Damage ?? new byte[Subsytsem.Length],
+                HealthChanged = true,
             };
+        }
+
+        public void UpdateHealth(double t)
+        {
+            HealthChanged = false;
+            var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsytsem.Wedge], Damage[Subsytsem.Reactor]) / 100.0;
+            var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsytsem.Navigation], Damage[Subsytsem.Reactor]) / 100.0;
+            Dynamics.EngineHealth = 1 - engineDamage;
+            Dynamics.SteeringHealth = 1 - steeringDamage;
+            Dynamics.UpdateHealth(t, Class);
         }
     }
 }

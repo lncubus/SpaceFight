@@ -7,6 +7,9 @@ namespace SF.ServerLibrary
     {
         public const double TimeEpsilon = 1E-6; // 86 ms
 
+        public double SteeringHealth = 1;
+        public double EngineHealth = 1;
+
         private sealed class LinearValue
         {
             private double m_fromTime;
@@ -18,7 +21,14 @@ namespace SF.ServerLibrary
 
             public double FromValue { get; private set; }
 
-            public double Speed { get; private set; }
+            private double m_speedCorrection = 1;
+            private double m_speed;
+
+            public double Speed
+            {
+                get { return m_speed*m_speedCorrection; }
+                private set { m_speed = value; }
+            }
 
             public double Modulo { get; private set; }
 
@@ -51,8 +61,21 @@ namespace SF.ServerLibrary
                 return FromValue + Direction * Speed * (t - m_fromTime);
             }
 
+            public void Respeed(double t, double correction)
+            {
+                var toValue = ToValue;
+                var fromValue = Get(t);
+                Reset(t, fromValue);
+                m_speedCorrection = correction;
+                Set(t, toValue);
+            }
+
             public void Set(double t, double goesTo)
             {
+                if (MathUtils.NearlyEqual(Speed, 0))
+                {
+                    return;
+                }
                 double currentValue = Get(t);
                 double diff = goesTo - currentValue;
                 Direction = diff < 0 ? -1 : 1;
@@ -79,7 +102,7 @@ namespace SF.ServerLibrary
                 }
             }
 
-            private void Reset(double t, double val)
+            public void Reset(double t, double val)
             {
                 Direction = 0;
                 m_fromTime = t;
@@ -131,7 +154,7 @@ namespace SF.ServerLibrary
         public double AccelerateTo
         {
             get { return accelerateTo ?? Acceleration.ToValue; }
-            set { accelerateTo = value; }
+            set { accelerateTo = value*EngineHealth; }
         }
 
         public double RollTo
@@ -169,6 +192,24 @@ namespace SF.ServerLibrary
             RollValue = Roll.FromValue;
         }
 
+        public void UpdateHealth(double time, ShipClass Class)
+        {
+            System.Diagnostics.Trace.WriteLine(string.Format("Engine = {0}, Steering = {1}", EngineHealth, SteeringHealth));
+            if (MathUtils.NearlyEqual(EngineHealth, 0))
+            {
+                Acceleration.Reset(time, 0);
+                Acceleration.Respeed(time, 0);
+            }
+            else
+            {
+                Acceleration.Respeed(time, EngineHealth);
+                var maxAccel = Class.MaximumAcceleration*EngineHealth;
+                if (Acceleration.Get(time) > maxAccel)
+                    Acceleration.Reset(time, maxAccel);
+            }
+            Heading.Respeed(time, SteeringHealth);
+        }
+        
         public void UpdateTime(double time)
         {
             if (rollTo.HasValue)
@@ -177,7 +218,6 @@ namespace SF.ServerLibrary
                 rollTo = null;
             }
             RollValue = Roll.Get(time);
-
             var t = time - t0;
             var t2 = t*t / 2;
             var a = Acceleration.FromValue;

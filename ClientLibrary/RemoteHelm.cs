@@ -144,9 +144,9 @@ namespace SF.ClientLibrary
             get { return m_that.State; }
         }
 
-        public byte[] Health
+        public byte[] Damage
         {
-            get { return m_that.Health; }
+            get { return m_that.Damage; }
         }
     }
 }

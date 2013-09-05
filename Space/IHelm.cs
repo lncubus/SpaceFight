@@ -5,6 +5,6 @@
         double HeadingTo { get; set; }
         double RollTo { get; set; }
         double ThrustTo { get; set; }
-        byte[] Health { get; }
+        byte[] Damage { get; }
     }
 }
