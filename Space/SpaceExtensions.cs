@@ -43,5 +43,10 @@ namespace SF.Space
         {
             return ship.State == ShipState.Annihilated || ship.State == ShipState.Junk;
         }
+
+        public static bool IsLeft(this IShip helm, IParticle target)
+        {
+            return Math.Sin((target.Position - helm.Position).Argument - helm.Heading) < 0;
+        }
     }
 }

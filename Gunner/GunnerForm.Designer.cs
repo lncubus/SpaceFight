@@ -69,7 +69,7 @@
             // 
             // indicatorControl
             // 
-            this.indicatorControl.Location = new System.Drawing.Point(540, 88);
+            this.indicatorControl.Location = new System.Drawing.Point(540, 107);
             this.indicatorControl.Name = "indicatorControl";
             this.indicatorControl.Size = new System.Drawing.Size(249, 170);
             this.indicatorControl.TabIndex = 5;
@@ -83,12 +83,18 @@
             this.spaceGridControl.CenteredLayout = stringFormat1;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
+            this.spaceGridControl.Missiles = null;
             this.spaceGridControl.Name = "spaceGridControl";
+            this.spaceGridControl.Options = SF.Controls.SpaceGridControl.DrawingOptions.None;
             this.spaceGridControl.Polar = true;
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
             this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 3);
+            this.spaceGridControl.Selectable = SF.Controls.SpaceGridControl.SelectableObjects.None;
+            this.spaceGridControl.Selected = null;
+            this.spaceGridControl.Ships = null;
             this.spaceGridControl.Size = new System.Drawing.Size(531, 567);
+            this.spaceGridControl.Stars = null;
             this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 1;
             this.spaceGridControl.WorldScale = 2000000D;
@@ -110,13 +116,14 @@
             // 
             // panelFire
             // 
+            this.panelFire.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelFire.Controls.Add(this.labelBoard);
             this.panelFire.Controls.Add(this.buttonFire);
             this.panelFire.Controls.Add(this.checkBoxFriendlyFire);
             this.panelFire.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFire.Location = new System.Drawing.Point(540, 38);
             this.panelFire.Name = "panelFire";
-            this.panelFire.Size = new System.Drawing.Size(249, 44);
+            this.panelFire.Size = new System.Drawing.Size(249, 63);
             this.panelFire.TabIndex = 4;
             // 
             // labelBoard
@@ -124,8 +131,9 @@
             this.labelBoard.Dock = System.Windows.Forms.DockStyle.Top;
             this.labelBoard.Location = new System.Drawing.Point(0, 40);
             this.labelBoard.Name = "labelBoard";
-            this.labelBoard.Size = new System.Drawing.Size(249, 13);
+            this.labelBoard.Size = new System.Drawing.Size(249, 23);
             this.labelBoard.TabIndex = 2;
+            this.labelBoard.Text = "Цель не выбрана";
             this.labelBoard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonFire

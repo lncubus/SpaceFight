@@ -33,7 +33,8 @@ namespace Gunner
 
         private IHelm helm;
         private SF.ClientLibrary.SpaceClient client;
-        private bool m_left;
+        private bool left;
+        private IShip target;
 
         private void Login()
         {
@@ -80,8 +81,14 @@ namespace Gunner
             indicatorControl.Acceleration = ship.Acceleration;
             indicatorControl.Speed = ship.Speed;
             indicatorControl.Position = ship.Position;
+            if (target != null)
+            {
+                left = helm.IsLeft(target);
+                if (Math.Cos(helm.Roll) < 0)
+                    left = !left;
+                labelBoard.Text = left ? "Левый борт" : "Правый борт";
+            }
         }
-
 
         private void Die()
         {
@@ -121,22 +128,17 @@ namespace Gunner
         private void CheckCanFire()
         {
             var ship = spaceGridControl.Selected;
-            bool okay = ship != null && ship != helm && (ship.Nation != helm.Nation || checkBoxFriendlyFire.Checked);
+            bool okay = ship != null && ship != helm && (ship is IShip) && (ship.Nation != helm.Nation || checkBoxFriendlyFire.Checked);
             buttonFire.Enabled = okay;
             labelBoard.Visible = okay;
-            if (!okay)
-                return;
-            m_left = (Math.Sin((ship.Position - helm.Position).Argument - helm.Heading) < 0);
-            if (Math.Sin(helm.Roll) < 0)
-                m_left = !m_left;
-            labelBoard.Text = m_left ? "Левый борт" : "Правый борт";
+            target = !okay ? null : ship as IShip;
         }
 
         private void Fire()
         {
             var ship = spaceGridControl.Selected;
             if (ship is IShip)
-                client.Fire((IShip)ship, m_left);
+                client.Fire((IShip)ship);
         }
 
         private void GunnerForm_KeyPress(object sender, KeyPressEventArgs e)

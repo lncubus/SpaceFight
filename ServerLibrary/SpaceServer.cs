@@ -64,9 +64,9 @@ namespace SF.ServerLibrary
             m_helm.ThrustTo = value;
         }
 
-        public void Fire(bool left, string to, int number)
+        public void Fire(string to, int number)
         {
-            Instance.Fire(m_helm, left, to, number);
+            Instance.Fire(m_helm, to, number);
         }
     }
 }

@@ -186,7 +186,7 @@ namespace SF.ServerLibrary
             }
         }
 
-        public void Fire(IShip from, bool left, string to, int number)
+        public void Fire(IShip from, string to, int number)
         {
             if (from.IsDead())
                 return;
@@ -196,7 +196,7 @@ namespace SF.ServerLibrary
                 var target = GetHelm(to);
                 if (from.Missile == null || target == null || number <= 0)
                     return;
-                var result = new Missile(from, left, target, number, Time);
+                var result = new Missile(from, target, number, Time);
                 m_missiles.Add(result);
             }
         }
@@ -375,7 +375,7 @@ namespace SF.ServerLibrary
                 {
                     var from = m_helms.Values.RandomOf(Random);
                     var to = m_helms.Values.RandomOf(Random);
-                    var missile = new Missile(from, true, to, 1, Time);
+                    var missile = new Missile(from, to, 1, Time);
                     m_missiles.Add(missile);
                 }
                 generation++;

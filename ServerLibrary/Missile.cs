@@ -50,7 +50,7 @@ namespace SF.ServerLibrary
         private Vector s0;
         private double heading;
 
-        public Missile(IShip from, bool left, IShip to, int number, TimeSpan time)
+        public Missile(IShip from, IShip to, int number, TimeSpan time)
         {
             Id = Guid.NewGuid();
             Class = from.Missile;
@@ -58,6 +58,7 @@ namespace SF.ServerLibrary
             v0 = Speed = from.Speed;
             t0 = Started = time.TotalSeconds;
             Number = Math.Min(number, from.Missiles);
+            var left = from.IsLeft(to);
             heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;
             Launcher = from;

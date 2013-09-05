@@ -82,9 +82,9 @@ namespace SF.ClientLibrary
             Stars = view.Stars.ToDictionary(s => s.Name);
         }
 
-        public void Fire(IShip ship, bool left)
+        public void Fire(IShip ship)
         {
-            Client.Fire(left, ship.Name, 1);
+            Client.Fire(ship.Name, 1);
         }
     }
 }
