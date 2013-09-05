@@ -40,7 +40,7 @@
   <ItemGroup>
     <Compile Include="Catalog.cs" />
     <Compile Include="CatalogDefinition.cs" />
-    <Compile Include="Health.cs" />
+    <Compile Include="Subsystem.cs" />
     <Compile Include="IHelm.cs" />
     <Compile Include="IMissile.cs" />
     <Compile Include="IParticle.cs" />

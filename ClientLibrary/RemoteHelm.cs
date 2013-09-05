@@ -144,7 +144,7 @@ namespace SF.ClientLibrary
             get { return m_that.State; }
         }
 
-        public Health Health
+        public byte[] Health
         {
             get { return m_that.Health; }
         }

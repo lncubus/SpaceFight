@@ -381,5 +381,24 @@ namespace SF.ServerLibrary
                 generation++;
             }
         }
+
+        public void SetShipsHealth(ShipStatus[] shipStatuses)
+        {
+            lock (m_locker)
+            {
+                var helms = m_helms.Values.OfType<Helm>().ToDictionary(helm => helm.Id);
+                foreach (var status in shipStatuses)
+                {
+                    Helm helm;
+                    if (!helms.TryGetValue(status.ShipGuid, out helm))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format("Ship Id = {0} not found.", status.ShipGuid));
+                        continue;
+                    }
+                    foreach (var subsystemStatus in status.SubsystemStatuses)
+                        helm.Health[(int) subsystemStatus.SubSystem] = (byte)((int)subsystemStatus.Severity*100/3);
+                }
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace SF.ServerLibrary.ServerDamageContract
         {
             //Итерируешься о кораблям в листе, сравниваешь со своими Guid-ами в шипах. Обращаешься к своему объекту Universe, проставляешь статусы
             // Обращайся - m_universe
-            throw new NotImplementedException();
+            universe.SetShipsHealth(shipStatuses);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace SF.ServerLibrary
             }
         }
 
-        public Health Health { get; set; }
+        public byte[] Health { get; set; }
 
         public static IHelm Load(HelmDefinition that)
         {
