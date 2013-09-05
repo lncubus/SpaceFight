@@ -38,6 +38,8 @@ namespace SF.Space
 
         [DataMember]
         public ShipState State { get; set; }
+        [DataMember]
+        public string Description { get; set; }
 
         public Vector Acceleration
         {
@@ -72,6 +74,7 @@ namespace SF.Space
                 State = ship.State,
                 Radius = ship.Radius,
                 Weight = ship.Weight,
+                Description = ship.Description,
             };
         }
     }

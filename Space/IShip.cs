@@ -10,6 +10,8 @@ namespace SF.Space
         string MissileName { get; }
         int Missiles { get; }
 
+        string Description { get; }
+
         ShipState State { get; }
 
         double Heading { get; }

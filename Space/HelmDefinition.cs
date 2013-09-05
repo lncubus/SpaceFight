@@ -37,6 +37,7 @@ namespace SF.Space
                 Radius = helm.Radius,
                 Weight = helm.Weight,
                 Damage = helm.Damage ?? new byte[Subsytsem.Length],
+                Description = helm.Description,
             };
         }
     }

@@ -3,7 +3,6 @@ using SF.Space;
 
 namespace SF.ServerLibrary
 {
-
     internal class Ship : IShip
     {
         public Guid Id { get; set; }
@@ -28,6 +27,7 @@ namespace SF.ServerLibrary
         }
 
         public ShipState State { get; set; }
+        public string Description { get; set; }
 
         public Vector Position
         {

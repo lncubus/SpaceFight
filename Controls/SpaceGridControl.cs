@@ -378,7 +378,7 @@ namespace SF.Controls
                 if (points.Count != 0)
                 {
                     var prev = points[points.Count - 1];
-                    if (prev.X == q.X && prev.Y == q.Y)
+                    if (MathUtils.NearlyEqual(prev.X, q.X) && MathUtils.NearlyEqual(prev.Y, q.Y))
                         continue;
                 }
                 points.Add(q);
@@ -439,7 +439,9 @@ namespace SF.Controls
             }
             DrawShipHull(graphics, ship);
             var brush = ShipNames.Select(OwnShip, ship);
-            WorldDrawText(graphics, brush, ship.Position, ship.Name);
+            var text = string.IsNullOrEmpty(ship.Description) ? ship.Name : ship.Name + "\n" + ship.Description;
+            WorldDrawText(graphics, brush, ship.Position, text);
+
         }
 
         private void DrawVulnerableSectors(Graphics graphics, IShip ship)

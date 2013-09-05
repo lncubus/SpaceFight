@@ -124,6 +124,11 @@ namespace SF.ClientLibrary
             get { return m_that.Missiles; }
         }
 
+        public string Description
+        {
+            get { return m_that.Description;  }
+        }
+
         public double Heading
         {
             get { return m_that.Heading; }
