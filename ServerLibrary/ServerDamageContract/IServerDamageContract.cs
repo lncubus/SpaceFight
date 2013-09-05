@@ -22,7 +22,7 @@ namespace SF.ServerLibrary.ServerDamageContract
     public interface IServerDamageCallbackContract
     {
         [OperationContract]
-        bool DamageShip(Guid shipGuid, ShipSubsystemStatus subsystemStatus);
+        bool DamageShip(Guid shipGuid, byte byteSeverity);
 
         [OperationContract]
         bool DestroyShip(Guid shipGuid);

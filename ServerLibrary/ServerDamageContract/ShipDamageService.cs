@@ -9,20 +9,21 @@ namespace SF.ServerLibrary.ServerDamageContract
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class ShipDamageService : IServerDamageContract
     {
-
-
-        public Universe m_universe;
+        private Universe m_universe = UniverseSingleton.Instance;
 
         public void ServerConnect()
         {
-            //Let's remember Armlet Server callback channel
-            IServerDamageContract callbackChannel = OperationContext.Current.GetCallbackChannel<IServerDamageContract>();
+            //Let's remember Armlet Server callback channel  - запиши его куда-нибудь, и дергай из него методы для сообщения информации мне на сервак
+
+            m_universe.DamageServiceCallback = OperationContext.Current.GetCallbackChannel<IServerDamageCallbackContract>();
             
         }
 
         public void SetAllSubsystemsStatuses(List<ShipStatus> shipStatuses)
         {
             //Итерируешься о кораблям в листе, сравниваешь со своими Guid-ами в шипах. Обращаешься к своему объекту Universe, проставляешь статусы
+            // Обращайся - m_universe
+          
             throw new NotImplementedException();
         }
     }

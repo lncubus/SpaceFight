@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
-
+using HonorInterfaces;
 using SF.Space;
 
 namespace SF.ServerLibrary
@@ -28,7 +28,7 @@ namespace SF.ServerLibrary
         private readonly IList<IMissile> m_missiles;
         private readonly Thread m_backgroundWorker;
 
-        public static ServerDamageContract.ShipDamageService Service;
+        public ServerDamageContract.IServerDamageCallbackContract DamageServiceCallback;
 
 
         private string SerializeObject<T>(T instance)
@@ -280,6 +280,10 @@ namespace SF.ServerLibrary
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
                             "Корабль {0} врезался в планету {1}.", helm.Name, star.Name));
+                        if (DamageServiceCallback != null)
+                        {
+                            DamageServiceCallback.DestroyShip(helm.Id);
+                        }
                         helm.State = ShipState.Annihilated;
                     }
             foreach (Missile missile in m_missiles)
@@ -296,6 +300,10 @@ namespace SF.ServerLibrary
                 if (m_collider.HaveCollision(missile, target, dt, missile.Class.HitDistance))
                 {
                     System.Diagnostics.Trace.WriteLine(string.Format("Ракета поразила корабль {0}.", target.Name));
+                    if (DamageServiceCallback != null)
+                    {
+                        DamageServiceCallback.DamageShip(target.Id, Convert.ToByte(Random.Next(2) + 1));
+                    }
                     missile.Exploded = true;
                     target.State = ShipState.Junk;
                 }
@@ -305,6 +313,11 @@ namespace SF.ServerLibrary
                     if (one != two && m_collider.HaveCollision(one, two, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
+                        if (DamageServiceCallback != null)
+                        {
+                            DamageServiceCallback.DestroyShip(one.Id);
+                            DamageServiceCallback.DestroyShip(two.Id);
+                        }
                         one.State = ShipState.Junk;
                         two.State = ShipState.Junk;
                     }
