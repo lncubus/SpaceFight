@@ -6,9 +6,47 @@ namespace SF.ServerLibrary
 {
     internal class Helm : Ship, IHelm
     {
-        public double RollTo { get { return Dynamics.RollTo; } set { Dynamics.RollTo = value; } }
-        public double HeadingTo { get { return Dynamics.HeadingTo; } set { Dynamics.HeadingTo = value; } }
-        public double ThrustTo { get { return Dynamics.AccelerateTo; } set { Dynamics.AccelerateTo = value; } }
+        public double RollTo
+        {
+            get
+            {
+                return Dynamics.RollTo;
+            }
+            set
+            {
+                if (this.IsDead())
+                    return;
+                Dynamics.RollTo = value;
+            }
+        }
+
+        public double HeadingTo
+        {
+            get
+            {
+                return Dynamics.HeadingTo;
+            }
+            set
+            {
+                if (this.IsDead())
+                    return;
+                Dynamics.HeadingTo = value;
+            }
+        }
+
+        public double ThrustTo
+        {
+            get
+            {
+                return Dynamics.AccelerateTo;
+            }
+            set
+            {
+                if (this.IsDead())
+                    return;
+                Dynamics.AccelerateTo = value;
+            }
+        }
 
         public static IHelm Load(HelmDefinition that)
         {

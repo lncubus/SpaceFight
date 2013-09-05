@@ -1,4 +1,5 @@
-﻿using SF.Space;
+﻿using System.IO;
+using SF.Space;
 
 namespace SF.ServerLibrary
 {
@@ -18,7 +19,8 @@ namespace SF.ServerLibrary
             set { m_className = value; }
         }
 
-        public IShip Target { get; set; }
+        public IShip Target { get; private set; }
+        public IShip Launcher { get; private set; }
 
         public int Number { get; set; }
 
@@ -58,6 +60,7 @@ namespace SF.ServerLibrary
             Number = Math.Min(number, from.Missiles);
             heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;
+            Launcher = from;
         }
 
         public void UpdateTime(double time)
@@ -68,33 +71,30 @@ namespace SF.ServerLibrary
                 return;
             }
             var t = time - t0;
-            var t2 = t * t / 2;
-            Speed = v0 + Acceleration * t;
-            Position = s0 + v0 * t + Acceleration * t2;
-            var s = Target.Position - Position;
-            var v = Target.Speed - Speed;
+            Speed = v0 + Acceleration*t;
+            Position = s0 + v0*t + Acceleration*t*t/2;
             if (t < Class.Targeting)
                 return;
             v0 = Speed;
             s0 = Position;
             t0 = time;
-            heading = s.Argument;
-            //if (MathUtils.NearlyEqual(h, heading))
-            //    return;
-            //var diff = heading - h;
-            //// end of the current arc
-            //bool changed = (headingTo.HasValue || accelerateTo.HasValue || Acceleration.WillReset(time) || Heading.WillReset(time));
-            //if (changed)
-            //{
-            //    v0 = V;
-            //    t0 = time;
-            //    Heading.Set(time, HeadingTo);
-            //    Acceleration.Set(time, AccelerateTo);
-            //    headingTo = null;
-            //    accelerateTo = null;
-            //}
-            //AccelerationValue = a1;
-            //HeadingValue = phi1;
+            var s = Target.Position - Position;
+            var v = Target.Speed - Speed;
+            var a = Target.Acceleration;
+            var h = s.Argument;
+            var h1 = Vector.Direction(h);
+            var a1 = a*h1 - Class.Acceleration;
+            var va1 = v*h1/a1;
+            var sa1 = s*h1/a1;
+            // t^2 + 2 va1 t + 2 sa1
+            var d = va1*va1 - 2*sa1;
+            if (d < 0)
+                return;
+            d = Math.Sqrt(d);
+            var eta = va1 >= d ? va1 - d : va1 + d;
+            var h2 = h1.Rotate(Math.PI/2);
+            var full = s + (v*h2*eta + a*h2*eta*eta/2)*h2;
+            heading = full.Argument;
         }
 
         public string Name

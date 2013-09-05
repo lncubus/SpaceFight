@@ -5,13 +5,14 @@ namespace SF.ServerLibrary
 {
     public class Collider
     {
-        public const double Megatonn = 4184; // 4.184 E 15, Дж = кг м2 с-2 -> 1E-9 т км2 с-2  
-
         public bool HaveCollision(IParticle missile, IParticle target, double dt, double hitDistance = 0)
         {
             var S = missile.Position - target.Position;
             var V = missile.Speed - target.Speed;
             var r = missile.Radius + target.Radius + hitDistance;
+            if (missile is IMissile && target is IShip)
+                System.Diagnostics.Debug.WriteLine(string.Format("S = {0} {1}, V = {2} {3}",
+                    S.Length, S, V, V.Length));
             // Collision at t = 0
             if (S.Length <= r)
                 return true;
@@ -25,12 +26,6 @@ namespace SF.ServerLibrary
             var s = S + V * t;
             // Was that near enough?
             return s.Length <= r;
-        }
-
-        public double PowerOfCollision(IParticle missile, IParticle target)
-        {
-            var v2 = (missile.Speed - target.Speed).SquareLength; 
-            return (missile.Weight * v2 / 2) / Megatonn;
         }
     }
 }

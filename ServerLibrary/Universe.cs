@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
-
+using HonorInterfaces;
 using SF.Space;
 
 namespace SF.ServerLibrary
@@ -26,6 +27,9 @@ namespace SF.ServerLibrary
         private readonly IDictionary<string, Star> m_stars;
         private readonly IList<IMissile> m_missiles;
         private readonly Thread m_backgroundWorker;
+
+        public ServerDamageContract.IServerDamageCallbackContract DamageServiceCallback;
+
 
         private string SerializeObject<T>(T instance)
         {
@@ -54,6 +58,7 @@ namespace SF.ServerLibrary
             writer.Close();
             return writer.ToString();
         }
+
         private void SerializeCollection<T, U>(IEnumerable<T> collection, XmlDocument doc) where U : T
         {
             var nav = doc.CreateNavigator();
@@ -139,7 +144,7 @@ namespace SF.ServerLibrary
         {
             lock (m_locker)
             {
-                bool blind = me.State == ShipState.Annihilated || me.State == ShipState.Junk || me.State == ShipState.Hyperspace;
+                bool blind = me.IsDead() || !me.InSpace();
                 return new View
                 {
                     Time = Time,
@@ -184,6 +189,8 @@ namespace SF.ServerLibrary
 
         public void Fire(IShip from, bool left, string to, int number)
         {
+            if (from.IsDead())
+                return;
             lock (m_locker)
             {
                 number = Math.Min(number, from.Missiles);
@@ -205,7 +212,7 @@ namespace SF.ServerLibrary
 
         private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            return m_helms.Values.Where(i => i != me); 
+            return m_helms.Values.Where(i => i != me && i.InSpace()); 
         }
 
         private IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
@@ -253,7 +260,7 @@ namespace SF.ServerLibrary
                     foreach (Missile missile in m_missiles)
                         missile.UpdateTime(t);
                     var dt = t - tPrev;
-                    CheckCollisions(dt);
+                    CheckCollisions(t, dt);
                     tPrev = t;
                     var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
                     foreach (var missile in deleted)
@@ -262,17 +269,21 @@ namespace SF.ServerLibrary
             }
         }
 
-        private void CheckCollisions(double dt)
+        private void CheckCollisions(double t, double dt)
         {
             if (dt < MathUtils.Epsilon)
                 return;
-            foreach (Ship helm in m_helms.Values)
-                foreach (var star in m_stars.Values)
+            var helms = m_helms.Values.Where(helm => helm.InSpace()).ToList();
+            foreach (Ship helm in helms)
+                foreach (Star star in m_stars.Values)
                     if (m_collider.HaveCollision(helm, star, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
-                            "Корабль {0} врезался в планету {1}, оценка энергии взрыва {2}.",
-                            helm.Name, star.Name, MathUtils.NumberToText(m_collider.PowerOfCollision(helm, star), "Мт")));
+                            "Корабль {0} врезался в планету {1}.", helm.Name, star.Name));
+                        if (DamageServiceCallback != null)
+                        {
+                            DamageServiceCallback.DestroyShip(helm.Id);
+                        }
                         helm.State = ShipState.Annihilated;
                     }
             foreach (Missile missile in m_missiles)
@@ -280,18 +291,35 @@ namespace SF.ServerLibrary
                     if (m_collider.HaveCollision(missile, star, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
-                            "Ракета врезалась в планету {0}, оценка энергии взрыва {1}.",
-                            star.Name, MathUtils.NumberToText(m_collider.PowerOfCollision(missile, star), "Мт")));
+                            "Ракета врезалась в планету {0}", star.Name));
                         missile.Exploded = true;
                     }
             foreach (Missile missile in m_missiles)
-                foreach (Ship helm in m_helms.Values)
-                    if (m_collider.HaveCollision(missile, helm, dt, missile.Class.HitDistance))
+            {
+                var target = (Helm) (missile.Target);
+                if (m_collider.HaveCollision(missile, target, dt, missile.Class.HitDistance))
+                {
+                    System.Diagnostics.Trace.WriteLine(string.Format("Ракета поразила корабль {0}.", target.Name));
+                    if (DamageServiceCallback != null)
                     {
-                        System.Diagnostics.Trace.WriteLine(string.Format(
-                            "Ракета поразила корабль {0}, энергия поражения {1}, кинетическая энергия {2}.",
-                            helm.Name, missile.Class.Damage, MathUtils.NumberToText(m_collider.PowerOfCollision(missile, helm), "Мт")));
-                        missile.Exploded = true;
+                        DamageServiceCallback.DamageShip(target.Id, Convert.ToByte(Random.Next(2) + 1));
+                    }
+                    missile.Exploded = true;
+                    target.State = ShipState.Junk;
+                }
+            }
+            foreach (Ship one in helms)
+                foreach (Ship two in helms)
+                    if (one != two && m_collider.HaveCollision(one, two, dt))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
+                        if (DamageServiceCallback != null)
+                        {
+                            DamageServiceCallback.DestroyShip(one.Id);
+                            DamageServiceCallback.DestroyShip(two.Id);
+                        }
+                        one.State = ShipState.Junk;
+                        two.State = ShipState.Junk;
                     }
         }
 

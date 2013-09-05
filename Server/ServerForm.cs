@@ -20,17 +20,23 @@ namespace Server
         }
 
         private ServiceHost Host { get; set; }
+        private ServiceHost DamageHost { get; set; }
 
         private void ServerForm_Load(object sender, EventArgs e)
         {
             Host = new ServiceHost(typeof(SpaceServer));
             Host.Open();
+            
+
             if (SpaceServer.Instance == null)
                 Close();
             else
             {
+                new SF.ServerLibrary.UniverseSingleton(SpaceServer.Instance);
                 ShowNode(SpaceServer.Instance);
             }
+            DamageHost = new ServiceHost(typeof(SF.ServerLibrary.ServerDamageContract.ShipDamageService));
+            DamageHost.Open();
         }
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)

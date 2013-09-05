@@ -33,5 +33,15 @@ namespace SF.Space
                 return default(T);
             return particles.FirstOrDefault(i => i.Id == id);
         }
+
+        public static bool InSpace(this IShip ship)
+        {
+            return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace;
+        }
+
+        public static bool IsDead(this IShip ship)
+        {
+            return ship.State == ShipState.Annihilated || ship.State == ShipState.Junk;
+        }
     }
 }
