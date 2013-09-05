@@ -360,7 +360,7 @@ namespace SF.ServerLibrary
             else
             {
                 target.State = ShipState.Junk;
-                target.HealthChanged = false;
+                target.HealthChanged = true;
             }
         }
 
@@ -381,7 +381,7 @@ namespace SF.ServerLibrary
             else
             {
                 target.State = ShipState.Annihilated;
-                target.HealthChanged = false;
+                target.HealthChanged = true;
             }
         }
 
