@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
 
 namespace SF.Space
 {
     [DataContract]
     public class ShipDefinition : IShip
     {
-        [XmlIgnore]
         [DataMember]
         public Guid Id { get; set; }
 
