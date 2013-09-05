@@ -5,5 +5,6 @@
         double HeadingTo { get; set; }
         double RollTo { get; set; }
         double ThrustTo { get; set; }
+        Health Health { get; }
     }
 }

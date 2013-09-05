@@ -143,5 +143,10 @@ namespace SF.ClientLibrary
         {
             get { return m_that.State; }
         }
+
+        public Health Health
+        {
+            get { return m_that.Health; }
+        }
     }
 }

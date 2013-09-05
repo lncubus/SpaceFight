@@ -11,6 +11,8 @@ namespace SF.Space
         public double RollTo;
         [DataMember]
         public double ThrustTo;
+        [DataMember]
+        public Health Health;
 
         public static HelmDefinition Store(IHelm helm)
         {
@@ -33,6 +35,7 @@ namespace SF.Space
                 State = helm.State,
                 Radius = helm.Radius,
                 Weight = helm.Weight,
+                Health = helm.Health,
             };
         }
     }

@@ -48,6 +48,8 @@ namespace SF.ServerLibrary
             }
         }
 
+        public Health Health { get; set; }
+
         public static IHelm Load(HelmDefinition that)
         {
             var shipClass = Catalog.Instance.GetShipClass(that.ClassName);
@@ -71,6 +73,7 @@ namespace SF.ServerLibrary
                 Missile = missileClass,
                 Missiles = that.Missiles,
                 State =  that.State,
+                Health = that.Health,
             };
         }
     }
