@@ -81,7 +81,9 @@ namespace Gunner
             indicatorControl.Acceleration = ship.Acceleration;
             indicatorControl.Speed = ship.Speed;
             indicatorControl.Position = ship.Position;
-            if (target != null)
+            if (target == null)
+                labelBoard.Text = "Цель не выбрана";
+            else
             {
                 left = helm.IsLeft(target);
                 if (Math.Cos(helm.Roll) < 0)
@@ -130,7 +132,6 @@ namespace Gunner
             var ship = spaceGridControl.Selected;
             bool okay = ship != null && ship != helm && (ship is IShip) && (ship.Nation != helm.Nation || checkBoxFriendlyFire.Checked);
             buttonFire.Enabled = okay;
-            labelBoard.Visible = okay;
             target = !okay ? null : ship as IShip;
         }
 
