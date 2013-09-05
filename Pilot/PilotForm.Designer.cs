@@ -115,6 +115,7 @@
             // 
             // indicatorControl
             // 
+            this.indicatorControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.indicatorControl.Location = new System.Drawing.Point(542, 459);
             this.indicatorControl.Name = "indicatorControl";
             this.indicatorControl.Size = new System.Drawing.Size(249, 126);
