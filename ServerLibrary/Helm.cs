@@ -70,6 +70,7 @@ namespace SF.ServerLibrary
                 Dynamics = shipDynamics,
                 Missile = missileClass,
                 Missiles = that.Missiles,
+                State =  that.State,
             };
         }
     }
