@@ -18,6 +18,7 @@
         public const int Sails = 6;
         // Реактор
         public const int Reactor = 7;
+        public const int Length = Reactor + 1;
     }
 }
 

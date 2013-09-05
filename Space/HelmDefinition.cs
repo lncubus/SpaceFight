@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace SF.Space
 {
@@ -35,7 +36,7 @@ namespace SF.Space
                 State = helm.State,
                 Radius = helm.Radius,
                 Weight = helm.Weight,
-                Health = helm.Health ?? new byte[8],
+                Health = helm.Health ?? new byte[Subsytsem.Length],
             };
         }
     }
