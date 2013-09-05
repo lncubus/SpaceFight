@@ -28,11 +28,11 @@ namespace Server
             Host.Open();
             
 
-            if (SpaceServer.Instance == null)
+            if (SpaceServer.Universe == null)
                 Close();
             else
             {
-                ShowNode(SpaceServer.Instance);
+                ShowNode(SpaceServer.Universe);
             }
             DamageHost = new ServiceHost(typeof(SF.ServerLibrary.ServerDamageContract.ShipDamageService));
             DamageHost.Open();
@@ -75,12 +75,12 @@ namespace Server
 
         private void toolStripButtonBang_Click(object sender, EventArgs e)
         {
-            SpaceServer.Instance.BigBangTest();
+            SpaceServer.Universe.BigBangTest();
         }
 
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
-            SpaceServer.Instance.Save();
+            SpaceServer.Universe.Save();
         }
     }
 }

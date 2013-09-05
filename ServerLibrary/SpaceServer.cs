@@ -10,13 +10,13 @@ namespace SF.ServerLibrary
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class SpaceServer : IServer
     {
-        public static readonly Universe Instance = new Universe("universe.xml");
+        public static readonly Universe Universe = new Universe("universe.xml");
 
         private IHelm m_helm;
 
         public bool Login(string nation, string ship)
         {
-            m_helm = Instance.GetHelm(nation, ship);
+            m_helm = Universe.GetHelm(nation, ship);
             return m_helm != null;
         }
 
@@ -32,17 +32,17 @@ namespace SF.ServerLibrary
 
         public KeyValuePair<string, string[]>[] GetShipNames()
         {
-            return Instance.GetShipNames();
+            return Universe.GetShipNames();
         }
 
         public CatalogDefinition GetCatalog()
         {
-            return Instance.GetCatalog(m_helm.Nation);
+            return Universe.GetCatalog(m_helm.Nation);
         }
 
         public View GetView()
         {
-            return Instance.GetView(m_helm);
+            return Universe.GetView(m_helm);
         }
 
         public void SetHeadingTo(double value)
@@ -66,7 +66,7 @@ namespace SF.ServerLibrary
 
         public void Fire(string to, int number)
         {
-            Instance.Fire(m_helm, to, number);
+            Universe.Fire(m_helm, to, number);
         }
     }
 }
