@@ -9,7 +9,7 @@ namespace SF.ServerLibrary.ServerDamageContract
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class ShipDamageService : IServerDamageContract
     {
-        private Universe m_universe = UniverseSingleton.Instance;
+        private Universe m_universe = SpaceServer.Instance;
 
         public void ServerConnect()
         {

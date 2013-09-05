@@ -54,7 +54,6 @@
     <Compile Include="ServerDamageContract\ShipDamageService.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="SpaceServer.cs" />
-    <Compile Include="UniverseSingleton.cs" />
     <Compile Include="Universe.cs" />
   </ItemGroup>
   <ItemGroup>

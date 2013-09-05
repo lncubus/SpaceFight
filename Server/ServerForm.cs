@@ -32,7 +32,6 @@ namespace Server
                 Close();
             else
             {
-                new SF.ServerLibrary.UniverseSingleton(SpaceServer.Instance);
                 ShowNode(SpaceServer.Instance);
             }
             DamageHost = new ServiceHost(typeof(SF.ServerLibrary.ServerDamageContract.ShipDamageService));
@@ -43,6 +42,8 @@ namespace Server
         {
             if (Host != null)
                 Host.Close();
+            if (DamageHost != null)
+                DamageHost.Close();
         }
 
         private TreeNode ShowNode(object thing, TreeNode parentNode = null)

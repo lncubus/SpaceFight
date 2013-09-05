@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -49,9 +48,9 @@ namespace SF.ServerLibrary
             return read;
         }
 
-        private string SerializeCollection<T, U>(IEnumerable<T> collection) where U : T
+        private string SerializeCollection<T>(IEnumerable<T> collection)
         {
-            var list = collection.Cast<U>().ToArray();
+            var list = collection.ToArray();
             var serializer = new XmlSerializer(list.GetType());
             var writer = new StringWriter();
             serializer.Serialize(writer, list);
@@ -59,12 +58,12 @@ namespace SF.ServerLibrary
             return writer.ToString();
         }
 
-        private void SerializeCollection<T, U>(IEnumerable<T> collection, XmlDocument doc) where U : T
+        private void SerializeCollection<T>(IEnumerable<T> collection, XmlDocument doc)
         {
             var nav = doc.CreateNavigator();
             using (XmlWriter writer = nav.AppendChild())
             {
-                var list = collection.Cast<U>().ToArray();
+                var list = collection.ToArray();
                 var serializer = new XmlSerializer(list.GetType());
                 serializer.Serialize(writer, list);
             }
@@ -106,8 +105,8 @@ namespace SF.ServerLibrary
             XmlDocument helmsDoc = new XmlDocument();
             lock (m_locker)
             {
-                SerializeCollection<Star, Star>(m_stars.Values, starsDoc);
-                SerializeCollection<HelmDefinition, HelmDefinition>(m_helms.Values.Select(HelmDefinition.Store), helmsDoc);
+                SerializeCollection(m_stars.Values, starsDoc);
+                SerializeCollection(m_helms.Values.Select(HelmDefinition.Store), helmsDoc);
             }
             XmlDocument doc = new XmlDocument();
             var root = doc.CreateElement("Universe");
@@ -280,11 +279,7 @@ namespace SF.ServerLibrary
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
                             "Корабль {0} врезался в планету {1}.", helm.Name, star.Name));
-                        if (DamageServiceCallback != null)
-                        {
-                            DamageServiceCallback.DestroyShip(helm.Id);
-                        }
-                        helm.State = ShipState.Annihilated;
+                        DestroyShip(helm);
                     }
             foreach (Missile missile in m_missiles)
                 foreach (Star star in m_stars.Values)
@@ -300,12 +295,8 @@ namespace SF.ServerLibrary
                 if (m_collider.HaveCollision(missile, target, dt, missile.Class.HitDistance))
                 {
                     System.Diagnostics.Trace.WriteLine(string.Format("Ракета поразила корабль {0}.", target.Name));
-                    if (DamageServiceCallback != null)
-                    {
-                        DamageServiceCallback.DamageShip(target.Id, Convert.ToByte(Random.Next(2) + 1));
-                    }
                     missile.Exploded = true;
-                    target.State = ShipState.Junk;
+                    DamageShip(target);
                 }
             }
             foreach (Ship one in helms)
@@ -313,14 +304,43 @@ namespace SF.ServerLibrary
                     if (one != two && m_collider.HaveCollision(one, two, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
-                        if (DamageServiceCallback != null)
-                        {
-                            DamageServiceCallback.DestroyShip(one.Id);
-                            DamageServiceCallback.DestroyShip(two.Id);
-                        }
-                        one.State = ShipState.Junk;
-                        two.State = ShipState.Junk;
+                        DamageShip(one);
+                        DamageShip(two);
                     }
+        }
+
+        private void DamageShip(Ship target)
+        {
+            if (DamageServiceCallback != null)
+            {
+                try
+                {
+                    DamageServiceCallback.DamageShip(target.Id, Convert.ToByte(Random.Next(2) + 1));
+                }
+                catch
+                {
+                    System.Diagnostics.Trace.WriteLine("Потеряно соединение с сервером повреждений.");
+                }
+            }
+            else
+                target.State = ShipState.Junk;
+        }
+
+        private void DestroyShip(Ship target)
+        {
+            if (DamageServiceCallback != null)
+            {
+                try
+                {
+                    DamageServiceCallback.DestroyShip(target.Id);
+                }
+                catch
+                {
+                    System.Diagnostics.Trace.WriteLine("Потеряно соединение с сервером повреждений.");
+                }
+            }
+            else
+                target.State = ShipState.Annihilated;
         }
 
         static int generation = 0;
