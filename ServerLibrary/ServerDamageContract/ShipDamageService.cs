@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ServiceModel;
 using HonorInterfaces;
 
@@ -19,7 +18,7 @@ namespace SF.ServerLibrary.ServerDamageContract
             
         }
 
-        public void SetAllSubsystemsStatuses(List<ShipStatus> shipStatuses)
+        public void SetAllSubsystemsStatuses(ShipStatus[] shipStatuses)
         {
             //Итерируешься о кораблям в листе, сравниваешь со своими Guid-ами в шипах. Обращаешься к своему объекту Universe, проставляешь статусы
             // Обращайся - m_universe

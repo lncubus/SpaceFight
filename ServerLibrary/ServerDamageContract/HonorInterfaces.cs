@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace HonorInterfaces
 {
@@ -13,15 +10,35 @@ namespace HonorInterfaces
         Hard = 3
     }
 
+    public enum RandirSubsytsem
+    {
+        // Атака
+        Attack = 0,
+        // Оборона
+        Defense = 1,
+        // Импеллер
+        Wedge = 2,
+        // Навигация
+        Navigation = 3,
+        // Жизнеобеспечение
+        Life = 4,
+        // Шлюзы ЛАКов
+        Gate = 5,
+        // Паруса Варш-кой
+        Sails = 6,
+        // Реактор
+        Reactor = 7,
+    }
+
     public class ShipSubsystemStatus
     {
-        public int SubSystemNum { get; set; }
+        public RandirSubsytsem SubSystem { get; set; }
         public RanmaRepairSeverity Severity { get; set; }
     }
 
     public class ShipStatus
     {
         public Guid ShipGuid;
-        public List<HonorInterfaces.ShipSubsystemStatus> SubsystemStatuses;
+        public ShipSubsystemStatus[] SubsystemStatuses;
     }
 }

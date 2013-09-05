@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 using HonorInterfaces;
 
 namespace SF.ServerLibrary.ServerDamageContract
@@ -16,7 +12,7 @@ namespace SF.ServerLibrary.ServerDamageContract
         void ServerConnect();
 
         [OperationContract]
-        void SetAllSubsystemsStatuses(List<ShipStatus> shipStatuses);
+        void SetAllSubsystemsStatuses(ShipStatus[] shipStatuses);
     }
 
     public interface IServerDamageCallbackContract
