@@ -3,7 +3,7 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Star</StarClass>
-      <Name>Солнце</Name>
+      <Name>РЎРѕР»РЅС†Рµ</Name>
       <Radius>695510</Radius>
       <Position X="0" Y="0" />
       <Weight>0</Weight>
@@ -11,8 +11,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Planet</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Меркурий</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РњРµСЂРєСѓСЂРёР№</Name>
       <Radius>2439</Radius>
       <Position X="-44390705.378367372" Y="37187705.396267861" />
       <Weight>0</Weight>
@@ -20,8 +20,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Planet</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Венера</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>Р’РµРЅРµСЂР°</Name>
       <Radius>6051</Radius>
       <Position X="85311905.349006966" Y="-66566142.576139823" />
       <Weight>0</Weight>
@@ -29,8 +29,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Inhabited</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Земля</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>Р—РµРјР»СЏ</Name>
       <Radius>6371</Radius>
       <Position X="70992558.707589224" Y="-131680280.61320958" />
       <Weight>0</Weight>
@@ -38,8 +38,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Inhabited</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Луна</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>Р›СѓРЅР°</Name>
       <Radius>1737</Radius>
       <Position X="71326883.597300321" Y="-131490571.73276204" />
       <Weight>0</Weight>
@@ -47,8 +47,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Inhabited</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Марс</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РњР°СЂСЃ</Name>
       <Radius>3389</Radius>
       <Position X="-24456912.250427302" Y="-226627987.06110263" />
       <Weight>0</Weight>
@@ -56,8 +56,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Gas</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Юпитер</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>Р®РїРёС‚РµСЂ</Name>
       <Radius>69911</Radius>
       <Position X="777298477.86893487" Y="44077419.734792314" />
       <Weight>0</Weight>
@@ -65,8 +65,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Gas</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Сатурн</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РЎР°С‚СѓСЂРЅ</Name>
       <Radius>60268</Radius>
       <Position X="-562748298.8760277" Y="1318366962.7480559" />
       <Weight>0</Weight>
@@ -74,8 +74,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Gas</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Уран</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РЈСЂР°РЅ</Name>
       <Radius>25559</Radius>
       <Position X="-2072611341.6135752" Y="1994884650.15678" />
       <Weight>0</Weight>
@@ -83,8 +83,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Gas</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Нептун</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РќРµРїС‚СѓРЅ</Name>
       <Radius>24764</Radius>
       <Position X="1890986501.5450416" Y="4087196454.6343412" />
       <Weight>0</Weight>
@@ -92,8 +92,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Planet</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Плутон</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РџР»СѓС‚РѕРЅ</Name>
       <Radius>1195</Radius>
       <Position X="5794112605.6728516" Y="-1146177043.75034" />
       <Weight>0</Weight>
@@ -101,8 +101,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Planet</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Хаумеа</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РҐР°СѓРјРµР°</Name>
       <Radius>718</Radius>
       <Position X="-6152513231.05258" Y="1870164730.3085353" />
       <Weight>0</Weight>
@@ -110,8 +110,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Planet</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Макемаке</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>РњР°РєРµРјР°РєРµ</Name>
       <Radius>1502</Radius>
       <Position X="6797116588.93921" Y="31936487.841355361" />
       <Weight>0</Weight>
@@ -119,8 +119,8 @@
     <Star>
       <Id>00000000-0000-0000-0000-000000000000</Id>
       <StarClass>Planet</StarClass>
-      <Nation>Солярианская Лига</Nation>
-      <Name>Эрида</Name>
+      <Nation>РЎРѕР»СЏСЂРёР°РЅСЃРєР°СЏ Р›РёРіР°</Nation>
+      <Name>Р­СЂРёРґР°</Name>
       <Radius>250</Radius>
       <Position X="-2951145770.4282389" Y="-9742619558.1411114" />
       <Weight>0</Weight>
@@ -128,13 +128,14 @@
   </ArrayOfStar>
   <ArrayOfHelmDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <HelmDefinition>
-      <ClassName>Unknown</ClassName>
+      <Id>00000000-0000-0000-0002-000000000011</Id>
+      <ClassName>ЛАК</ClassName>
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>2</Missiles>
-      <Name>Адмирал Нельсон</Name>
-      <Weight>0</Weight>
-      <Radius>0</Radius>
+      <Name>Афина</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
@@ -144,15 +145,17 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
     </HelmDefinition>
     <HelmDefinition>
-      <ClassName>Unknown</ClassName>
+      <Id>00000000-0000-0000-0002-000000000012</Id>
+      <ClassName>ЛАК</ClassName>
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>2</Missiles>
-      <Name>Фрэнсис Дрейк</Name>
-      <Weight>0</Weight>
-      <Radius>0</Radius>
+      <Name>Апполон</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
@@ -162,15 +165,17 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
     </HelmDefinition>
     <HelmDefinition>
-      <ClassName>Unknown</ClassName>
+      <Id>00000000-0000-0000-0002-000000000013</Id>
+      <ClassName>ЛАК</ClassName>
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>2</Missiles>
-      <Name>Генерал Грант</Name>
-      <Weight>0</Weight>
-      <Radius>0</Radius>
+      <Name>Гермес</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
@@ -180,15 +185,37 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
     </HelmDefinition>
     <HelmDefinition>
-      <ClassName>Unknown</ClassName>
+      <Id>00000000-0000-0000-0002-000000000014</Id>
+      <ClassName>ЛАК</ClassName>
+      <Nation>Звездное Королевство Мантикора</Nation>
+      <MissileName>Дротик</MissileName>
+      <Missiles>2</Missiles>
+      <Name>Персей</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
+      <Heading>0</Heading>
+      <Roll>0</Roll>
+      <Thrust>0</Thrust>
+      <Position X="83579606" Y="30016344" />
+      <Speed X="0" Y="0" />
+      <State>Normal</State>
+      <HeadingTo>0</HeadingTo>
+      <RollTo>0</RollTo>
+      <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
+    </HelmDefinition>
+    <HelmDefinition>
+      <Id>00000000-0000-0000-0001-000000000011</Id>
+      <ClassName>ЛАК</ClassName>
       <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>2</Missiles>
-      <Name>Командате Че Гевара</Name>
-      <Weight>0</Weight>
-      <Radius>0</Radius>
+      <Name>Ятаган</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
@@ -198,15 +225,17 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
     </HelmDefinition>
     <HelmDefinition>
-      <ClassName>Unknown</ClassName>
+      <Id>00000000-0000-0000-0001-000000000012</Id>
+      <ClassName>ЛАК</ClassName>
       <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>2</Missiles>
-      <Name>Жань-Поль Марат</Name>
-      <Weight>0</Weight>
-      <Radius>0</Radius>
+      <Name>Штык</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
@@ -216,42 +245,47 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
     </HelmDefinition>
     <HelmDefinition>
-      <ClassName>Unknown</ClassName>
+      <Id>00000000-0000-0000-0001-000000000013</Id>
+      <ClassName>ЛАК</ClassName>
       <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>2</Missiles>
-      <Name>Петр Кропоткин</Name>
-      <Weight>0</Weight>
-      <Radius>0</Radius>
+      <Name>Кортик</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="-68882238" Y="-33960644" />
+      <Position X="-78282238" Y="-33960644" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
     </HelmDefinition>
     <HelmDefinition>
-      <ClassName>Unknown</ClassName>
-      <Nation>Упоротые религиозные фанатики</Nation>
+      <Id>00000000-0000-0000-0001-000000000014</Id>
+      <ClassName>ЛАК</ClassName>
+      <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>2</Missiles>
-      <Name>Forever Alone</Name>
-      <Weight>0</Weight>
-      <Radius>0</Radius>
+      <Name>Стилет</Name>
+      <Weight>15000</Weight>
+      <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="-44399557" Y="37150224" />
+      <Position X="-68882238" Y="-29160644" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
+      <Damage>AAAAAAAAAAA=</Damage>
     </HelmDefinition>
   </ArrayOfHelmDefinition>
 </Universe>

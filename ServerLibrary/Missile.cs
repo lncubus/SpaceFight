@@ -74,13 +74,13 @@ namespace SF.ServerLibrary
             var t = time - t0;
             Speed = v0 + Acceleration*t;
             Position = s0 + v0*t + Acceleration*t*t/2;
-            if (t < Class.Targeting)
+            var s = Target.Position - Position;
+            var v = Target.Speed - Speed;
+            if (t < Class.Targeting && s.Length > v.Length*Class.Targeting)
                 return;
             v0 = Speed;
             s0 = Position;
             t0 = time;
-            var s = Target.Position - Position;
-            var v = Target.Speed - Speed;
             var a = Target.Acceleration;
             var h = s.Argument;
             var h1 = Vector.Direction(h);
