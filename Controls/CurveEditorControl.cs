@@ -28,6 +28,8 @@ namespace SF.Controls
             set
             {
                 m_trajectories.Clear();
+                if (value == null || value.Length == 0)
+                    return;
                 foreach (var vectors in value)
                 {
                     var trajectory = new Trajectory

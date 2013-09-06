@@ -90,7 +90,7 @@ namespace SF.Controls
                     dataGridViewMissiles.Rows[i].Cells[columnSelected.Index].Value = selectedAll || selected.Contains(i);
                     dataGridViewMissiles.Rows[i].Cells[columnName.Index].Value = MissileClass == null ? string.Empty : MissileClass.Name;
                 }
-            var accumulator = Board.Accumulator < 0 ? -1 : (ShipClass == null || ShipClass.RechargeTime <= MathUtils.Epsilon) ? 0 : 1 - (Board.Accumulator / ShipClass.RechargeTime);
+            var accumulator = Board.Accumulator < 0 ? -1 : (ShipClass == null || Board.Launchers == null || ShipClass.RechargeTime <= MathUtils.Epsilon) ? 0 : 1 - (Board.Accumulator / ShipClass.RechargeTime);
             progressBarAccumulator.Value = (int)(progressBarAccumulator.Maximum*accumulator);
             progressBarAccumulator.ForeColor = GetColor(accumulator);
             dataGridViewMissiles.Invalidate();

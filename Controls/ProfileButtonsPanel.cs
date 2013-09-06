@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SF.Space;
 
 namespace SF.Controls
 {
@@ -38,13 +39,35 @@ namespace SF.Controls
             }
         }
 
+        private Vector[][] m_trajectories;
+        public Vector[][] Trajectories
+        {
+            get
+            {
+                return m_trajectories ?? new Vector[0][];
+            }
+            set
+            {
+                m_trajectories = value;
+                curvesControl.Curves.Clear();
+                foreach (var trajectoory in Trajectories)
+                {
+                    var curve = new SpaceGridControl.Curve();
+                    curve.Pencil = Pens.Crimson;
+                    curve.AddRange(trajectoory);
+                    curvesControl.Curves.Add(curve);
+                }
+            }
+        }
+
         private void buttonAttackProfile_Click(object sender, EventArgs e)
         {
             using (var dialog = new ProfileEditorForm())
             {
+                dialog.Trajectories = Trajectories;
                 if (DialogResult.OK != dialog.ShowDialog())
                     return;
-                //dialog.
+                Trajectories = dialog.Trajectories;
             }
         }
     }

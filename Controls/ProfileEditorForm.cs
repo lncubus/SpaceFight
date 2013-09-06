@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SF.Space;
 
 namespace SF.Controls
 {
@@ -19,6 +20,18 @@ namespace SF.Controls
         private void curveEditorControl_Resize(object sender, EventArgs e)
         {
             curveEditorControl.Invalidate();
+        }
+
+        public Vector[][] Trajectories
+        {
+            get
+            {
+                return curveEditorControl.Trajectories;
+            }
+            set
+            {
+                curveEditorControl.Trajectories = value;
+            }
         }
     }
 }

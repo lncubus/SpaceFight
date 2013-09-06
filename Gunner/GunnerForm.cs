@@ -41,24 +41,24 @@ namespace Gunner
             client = new SF.ClientLibrary.SpaceClient();
             var credentials = LogonDialog.Execute(client.GetShipNames());
             if (credentials == null)
-                Close();
-            else
             {
-                if (!client.Login(credentials.Nation, credentials.ShipName))
-                {
-                    Close();
-                    return;
-                }
-                helm = client.GetHelm();
-                Text = helm.Name;
-                spaceGridControl.OwnShip = helm;
-                missileControl.MissileClass = helm.Missile;
-                missileControl.ShipClass = helm.Class;
-                spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
-                scaleControl.Value = Catalog.Instance.DefaultScale; ;
-                tableLayoutPanel.Visible = true;
-                timerUpdate.Enabled = true;
+                Close();
+                return;
             }
+            if (!client.Login(credentials.Nation, credentials.ShipName))
+            {
+                Close();
+                return;
+            }
+            helm = client.GetHelm();
+            Text = helm.Name;
+            spaceGridControl.OwnShip = helm;
+            missileControl.MissileClass = helm.Missile;
+            missileControl.ShipClass = helm.Class;
+            spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
+            scaleControl.Value = Catalog.Instance.DefaultScale; ;
+            tableLayoutPanel.Visible = true;
+            timerUpdate.Enabled = true;
         }
 
         private void timerUpdate_Tick(object sender, EventArgs e)
@@ -68,9 +68,10 @@ namespace Gunner
                 timerUpdate.Enabled = false;
                 Login();
             }
+            if (helm == null)
+                return;
             client.Update();
-            if (helm != null)
-                GetData();
+            GetData();
             spaceGridControl.Invalidate();
         }
 

@@ -30,18 +30,31 @@
         {
             System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             this.panelButtons = new System.Windows.Forms.Panel();
+            this.buttonOkay = new System.Windows.Forms.Button();
             this.textBoxHint = new System.Windows.Forms.TextBox();
             this.curveEditorControl = new SF.Controls.CurveEditorControl();
+            this.panelButtons.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelButtons
             // 
             this.panelButtons.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelButtons.Controls.Add(this.buttonOkay);
             this.panelButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButtons.Location = new System.Drawing.Point(0, 531);
+            this.panelButtons.Location = new System.Drawing.Point(0, 537);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(792, 42);
+            this.panelButtons.Size = new System.Drawing.Size(792, 36);
             this.panelButtons.TabIndex = 1;
+            // 
+            // buttonOkay
+            // 
+            this.buttonOkay.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonOkay.Location = new System.Drawing.Point(12, 6);
+            this.buttonOkay.Name = "buttonOkay";
+            this.buttonOkay.Size = new System.Drawing.Size(75, 23);
+            this.buttonOkay.TabIndex = 0;
+            this.buttonOkay.Text = "Применить";
+            this.buttonOkay.UseVisualStyleBackColor = true;
             // 
             // textBoxHint
             // 
@@ -72,10 +85,10 @@
             this.curveEditorControl.Selectable = SF.Controls.SpaceGridControl.SelectableObjects.Missiles;
             this.curveEditorControl.Selected = null;
             this.curveEditorControl.Ships = null;
-            this.curveEditorControl.Size = new System.Drawing.Size(792, 511);
+            this.curveEditorControl.Size = new System.Drawing.Size(792, 517);
             this.curveEditorControl.Stars = null;
             this.curveEditorControl.StaticGrid = true;
-            this.curveEditorControl.TabIndex = 4;
+            this.curveEditorControl.TabIndex = 5;
             this.curveEditorControl.WorldScale = 1000000D;
             this.curveEditorControl.Resize += new System.EventHandler(this.curveEditorControl_Resize);
             // 
@@ -91,6 +104,7 @@
             this.KeyPreview = true;
             this.Name = "ProfileEditorForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.panelButtons.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -100,6 +114,7 @@
 
         private System.Windows.Forms.Panel panelButtons;
         private System.Windows.Forms.TextBox textBoxHint;
+        private System.Windows.Forms.Button buttonOkay;
         private CurveEditorControl curveEditorControl;
 
     }

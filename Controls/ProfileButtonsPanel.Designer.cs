@@ -114,7 +114,7 @@
             this.curvesControl.Stars = null;
             this.curvesControl.StaticGrid = false;
             this.curvesControl.TabIndex = 9;
-            this.curvesControl.WorldScale = 1000000D;
+            this.curvesControl.WorldScale = 10000000D;
             // 
             // ProfileButtonsPanel
             // 
