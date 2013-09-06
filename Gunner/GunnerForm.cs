@@ -48,6 +48,7 @@ namespace Gunner
                 helm = client.GetHelm();
                 Text = helm.Name;
                 spaceGridControl.OwnShip = helm;
+                missileControl.Class = helm.Missile;
                 spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
                 scaleControl.Value = Catalog.Instance.DefaultScale; ;
                 tableLayoutPanel.Visible = true;
@@ -82,13 +83,20 @@ namespace Gunner
             indicatorControl.Speed = ship.Speed;
             indicatorControl.Position = ship.Position;
             if (target == null)
+            {
                 labelBoard.Text = "Цель не выбрана";
+                missileControl.Launchers = new double[0];
+            }
             else
             {
                 left = helm.IsLeft(target);
                 if (Math.Cos(helm.Roll) < 0)
                     left = !left;
                 labelBoard.Text = left ? "Левый борт" : "Правый борт";
+                var launchers = new double[helm.Missiles];
+                for (int i = 0; i < helm.Missiles; i++)
+                    launchers[i] = i*1.0/helm.Missiles;
+                missileControl.Launchers = launchers;
             }
         }
 

@@ -132,7 +132,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Афина</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
@@ -152,7 +152,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Апполон</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
@@ -172,7 +172,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Гермес</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
@@ -192,7 +192,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Персей</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
@@ -212,7 +212,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Ятаган</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
@@ -232,7 +232,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Штык</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
@@ -252,7 +252,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Кортик</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
@@ -272,7 +272,7 @@
       <ClassName>ЛАК</ClassName>
       <Nation>Народная Республика Хевен</Nation>
       <MissileName>Дротик</MissileName>
-      <Missiles>2</Missiles>
+      <Missiles>3</Missiles>
       <Name>Стилет</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>

@@ -18,24 +18,8 @@ namespace SF.Controls
             InitializeComponent();
         }
 
-        public class LauncherWrapper
-        {
-            public MissileClass Class;
-
-            public bool Selected { get; set; }
-
-            public string Name
-            {
-                get { return Class.Name; }
-                set { throw new InvalidOperationException("Not allowed"); }
-            }
-
-            public double Loaded { get; set; }
-        }
-
         private MissileClass m_class;
         private double[] m_launchers;
-        private BindingList<LauncherWrapper> m_launchersList;
 
         public MissileClass Class
         {
@@ -51,7 +35,7 @@ namespace SF.Controls
 
         public double[] Launchers
         {
-            get { return m_launchers ?? ;  }
+            get { return m_launchers;  }
             set
             {
                 m_launchers = value;
@@ -66,14 +50,9 @@ namespace SF.Controls
 
         private IEnumerable<int> GetSelection()
         {
-            if (m_launchersList == null)
-                yield break;
-            for (int i = 0; i < m_launchersList.Count; i++)
-            {
-                if (m_launchersList[i].Selected)
+            for (int i = 0; i < dataGridViewMissiles.RowCount; i++)
+                if ((bool)dataGridViewMissiles.Rows[i].Cells[columnSelected.Index].Value)
                     yield return i;
-                i++;
-            }
         }
 
         private int Updating;
@@ -93,21 +72,34 @@ namespace SF.Controls
 
         private void InternalUpdateControls()
         {
-            int index = 0;
             var selected = GetSelection().ToList();
-            var selectedAll = m_launchersList == null || m_launchersList.Count == selected.Count;
-            m_launchersList = new BindingList<LauncherWrapper>();
+            var selectedAll = dataGridViewMissiles.RowCount == selected.Count;
+            dataGridViewMissiles.RowCount = Launchers == null ? 0 : Launchers.Length;
             if (Launchers != null)
-                foreach(var loading in Launchers)
-                    m_launchersList.Add(
-                        new LauncherWrapper
-                        {
-                            Class = Class,
-                            Loaded = loading,
-                            Selected = selectedAll || selected.Contains(index++),
-                        });
-            dataGridViewMissiles.DataSource = m_launchersList;
+                for (int i = 0; i < Launchers.Length; i++)
+                {
+                    dataGridViewMissiles.Rows[i].Cells[columnSelected.Index].Value = selectedAll || selected.Contains(i);
+                    dataGridViewMissiles.Rows[i].Cells[columnName.Index].Value = Class == null ? string.Empty : Class.Name;
+                }
         }
+        //int index = 0;
+        //public class LauncherWrapper
+        //{
+        //    public MissileClass Class;
+
+        //    public bool Selected { get; set; }
+
+        //    public string Name
+        //    {
+        //        get { return Class == null ? string.Empty : Class.Name; }
+        //        set { throw new InvalidOperationException("Not allowed"); }
+        //    }
+
+        //    public double Loaded { get; set; }
+        //}
+        //private BindingList<LauncherWrapper> m_launchersList;
+        //m_launchersList = new BindingList<LauncherWrapper>();
+        //dataGridViewMissiles.DataSource = m_launchersList;
     }
 
 }
