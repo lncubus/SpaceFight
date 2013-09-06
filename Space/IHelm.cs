@@ -6,5 +6,7 @@
         double RollTo { get; set; }
         double ThrustTo { get; set; }
         byte[] Damage { get; }
+        Board Right { get; }
+        Board Left { get; }
     }
 }

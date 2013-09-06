@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using HonorInterfaces;
 using SF.Space;
 
 namespace SF.ServerLibrary
@@ -50,6 +48,17 @@ namespace SF.ServerLibrary
         }
 
         public byte[] Damage { get; set; }
+
+        public Board Right
+        {
+            get; set;
+        }
+
+        public Board Left
+        {
+            get; set;
+        }
+
         public volatile bool HealthChanged;
 
         public static IHelm Load(HelmDefinition that)
@@ -76,6 +85,8 @@ namespace SF.ServerLibrary
                 Missiles = that.Missiles,
                 State =  that.State,
                 Damage = that.Damage ?? new byte[Subsytsem.Length],
+                Right = that.Right.Launchers != null ? that.Right : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
+                Left = that.Left.Launchers != null ? that.Left : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
                 HealthChanged = true,
             };
         }

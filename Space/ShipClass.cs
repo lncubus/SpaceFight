@@ -23,6 +23,10 @@ namespace SF.Space
         public double Weight { get; set; }
         [DataMember]
         public double Wedge { get; set; }
+        [DataMember]
+        public double ReloadTime { get; set; }
+        [DataMember]
+        public double RechargeTime { get; set; }
     }
 
     public enum ShipSuperclass

@@ -18,27 +18,40 @@ namespace SF.Controls
             InitializeComponent();
         }
 
-        private MissileClass m_class;
-        private double[] m_launchers;
+        private MissileClass m_missileClass;
+        private ShipClass m_shipClass;
+        private Board m_board;
 
-        public MissileClass Class
+        public MissileClass MissileClass
         {
-            get { return m_class; }
+            get { return m_missileClass; }
             set
             {
-                if (m_class == value)
+                if (m_missileClass == value)
                     return;
-                m_class = value;
+                m_missileClass = value;
                 UpdateControls();
             }
         }
 
-        public double[] Launchers
+        public ShipClass ShipClass
         {
-            get { return m_launchers;  }
+            get { return m_shipClass; }
             set
             {
-                m_launchers = value;
+                if (m_shipClass == value)
+                    return;
+                m_shipClass = value;
+                UpdateControls();
+            }
+        }
+
+        public Board Board
+        {
+            get { return m_board; }
+            set
+            {
+                m_board = value;
                 UpdateControls();
             }
         }
@@ -74,32 +87,24 @@ namespace SF.Controls
         {
             var selected = GetSelection().ToList();
             var selectedAll = dataGridViewMissiles.RowCount == selected.Count;
-            dataGridViewMissiles.RowCount = Launchers == null ? 0 : Launchers.Length;
-            if (Launchers != null)
-                for (int i = 0; i < Launchers.Length; i++)
+            dataGridViewMissiles.RowCount = Board.Launchers == null ? 0 : Board.Launchers.Length;
+            if (Board.Launchers != null)
+                for (int i = 0; i < Board.Launchers.Length; i++)
                 {
                     dataGridViewMissiles.Rows[i].Cells[columnSelected.Index].Value = selectedAll || selected.Contains(i);
-                    dataGridViewMissiles.Rows[i].Cells[columnName.Index].Value = Class == null ? string.Empty : Class.Name;
+                    dataGridViewMissiles.Rows[i].Cells[columnName.Index].Value = MissileClass == null ? string.Empty : MissileClass.Name;
                 }
+            var accumulator = ShipClass == null ? 0 : 1 - (Board.Accumulator/ShipClass.RechargeTime);
+            progressBarAccumulator.Value = (int)(progressBarAccumulator.Maximum*accumulator);
+            if (accumulator < 0.3)
+                progressBarAccumulator.ForeColor = Color.Crimson;
+            else if (accumulator < 0.8)
+                progressBarAccumulator.ForeColor = Color.Chocolate;
+            else if (accumulator < 1)
+                progressBarAccumulator.ForeColor = Color.Yellow;
+            else
+                progressBarAccumulator.ForeColor = Color.Green;
         }
-        //int index = 0;
-        //public class LauncherWrapper
-        //{
-        //    public MissileClass Class;
-
-        //    public bool Selected { get; set; }
-
-        //    public string Name
-        //    {
-        //        get { return Class == null ? string.Empty : Class.Name; }
-        //        set { throw new InvalidOperationException("Not allowed"); }
-        //    }
-
-        //    public double Loaded { get; set; }
-        //}
-        //private BindingList<LauncherWrapper> m_launchersList;
-        //m_launchersList = new BindingList<LauncherWrapper>();
-        //dataGridViewMissiles.DataSource = m_launchersList;
     }
 
 }

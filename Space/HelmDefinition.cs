@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace SF.Space
 {
@@ -14,6 +13,10 @@ namespace SF.Space
         public double ThrustTo;
         [DataMember]
         public byte[] Damage;
+        [DataMember]
+        public Board Right;
+        [DataMember]
+        public Board Left;
 
         public static HelmDefinition Store(IHelm helm)
         {
@@ -38,6 +41,8 @@ namespace SF.Space
                 Weight = helm.Weight,
                 Damage = helm.Damage ?? new byte[Subsytsem.Length],
                 Description = helm.Description,
+                Right = helm.Right,
+                Left = helm.Left,
             };
         }
     }

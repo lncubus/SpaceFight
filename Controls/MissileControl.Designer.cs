@@ -31,6 +31,9 @@
             this.dataGridViewMissiles = new System.Windows.Forms.DataGridView();
             this.columnSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelAccumulator = new System.Windows.Forms.Label();
+            this.progressBarAccumulator = new System.Windows.Forms.ProgressBar();
+            this.labelMissiles = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMissiles)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,6 +51,7 @@
             this.dataGridViewMissiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewMissiles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dataGridViewMissiles.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewMissiles.MultiSelect = false;
             this.dataGridViewMissiles.Name = "dataGridViewMissiles";
             this.dataGridViewMissiles.RowHeadersVisible = false;
             this.dataGridViewMissiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -69,10 +73,43 @@
             this.columnName.Name = "columnName";
             this.columnName.ReadOnly = true;
             // 
+            // labelAccumulator
+            // 
+            this.labelAccumulator.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelAccumulator.Location = new System.Drawing.Point(0, 0);
+            this.labelAccumulator.Name = "labelAccumulator";
+            this.labelAccumulator.Size = new System.Drawing.Size(150, 23);
+            this.labelAccumulator.TabIndex = 3;
+            this.labelAccumulator.Text = "Пусковая батарея";
+            this.labelAccumulator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // progressBarAccumulator
+            // 
+            this.progressBarAccumulator.Dock = System.Windows.Forms.DockStyle.Top;
+            this.progressBarAccumulator.ForeColor = System.Drawing.Color.Gray;
+            this.progressBarAccumulator.Location = new System.Drawing.Point(0, 23);
+            this.progressBarAccumulator.Name = "progressBarAccumulator";
+            this.progressBarAccumulator.Size = new System.Drawing.Size(150, 23);
+            this.progressBarAccumulator.TabIndex = 4;
+            this.progressBarAccumulator.Value = 100;
+            // 
+            // labelMissiles
+            // 
+            this.labelMissiles.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelMissiles.Location = new System.Drawing.Point(0, 46);
+            this.labelMissiles.Name = "labelMissiles";
+            this.labelMissiles.Size = new System.Drawing.Size(150, 23);
+            this.labelMissiles.TabIndex = 5;
+            this.labelMissiles.Text = "Ракетные установки";
+            this.labelMissiles.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MissileControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelMissiles);
+            this.Controls.Add(this.progressBarAccumulator);
+            this.Controls.Add(this.labelAccumulator);
             this.Controls.Add(this.dataGridViewMissiles);
             this.Name = "MissileControl";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMissiles)).EndInit();
@@ -85,6 +122,9 @@
         private System.Windows.Forms.DataGridView dataGridViewMissiles;
         private System.Windows.Forms.DataGridViewCheckBoxColumn columnSelected;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnName;
+        private System.Windows.Forms.Label labelAccumulator;
+        private System.Windows.Forms.ProgressBar progressBarAccumulator;
+        private System.Windows.Forms.Label labelMissiles;
 
     }
 }

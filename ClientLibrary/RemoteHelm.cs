@@ -153,5 +153,15 @@ namespace SF.ClientLibrary
         {
             get { return m_that.Damage; }
         }
+
+        public Board Right
+        {
+            get { return m_that.Right; }
+        }
+
+        public Board Left
+        {
+            get { return m_that.Left; }
+        }
     }
 }

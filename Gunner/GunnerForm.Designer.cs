@@ -168,9 +168,8 @@
             // 
             // missileControl
             // 
-            this.missileControl.Class = null;
+            this.missileControl.MissileClass = null;
             this.missileControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.missileControl.Launchers = null;
             this.missileControl.Location = new System.Drawing.Point(540, 107);
             this.missileControl.Name = "missileControl";
             this.missileControl.Size = new System.Drawing.Size(249, 287);
