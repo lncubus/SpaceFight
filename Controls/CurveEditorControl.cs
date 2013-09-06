@@ -5,38 +5,44 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using SF.Space;
-using System.Diagnostics;
 
 namespace SF.Controls
 {
     public class CurveEditorControl : SpaceGridControl
     {
         private const int Quality = 10;
-        private class Trajectory : List<Vector>
+        private readonly IList<Trajectory> m_trajectories = new List<Trajectory>();
+        public static readonly Pen[] Pencils = new[] {Pens.Blue, Pens.Crimson, Pens.ForestGreen, Pens.MediumVioletRed, Pens.SaddleBrown, Pens.Teal, Pens.YellowGreen, Pens.Aqua };
+
+        protected class Trajectory : List<Vector>
         {
             public bool Finished = false;
         }
-        private List<Trajectory> Trajectories = new List<Trajectory>();
+
+        public Vector[][] Trajectories
+        {
+            get
+            {
+                return m_trajectories.Where(trajectory => trajectory.Finished && trajectory.Count > 0).Select(trajectory => trajectory.ToArray()).ToArray();
+            }
+            set
+            {
+                m_trajectories.Clear();
+                foreach (var vectors in value)
+                {
+                    var trajectory = new Trajectory
+                    {
+                        Finished = true,
+                    };
+                    trajectory.AddRange(vectors);
+                    m_trajectories.Add(trajectory);
+                }
+                Invalidate();
+            }
+        }
 
         public CurveEditorControl()
         {
-            //List<Vector> points = new List<Vector>();
-            //points.Add(new Vector(-44390705.378367372, 37187705.396267861));
-            //points.Add(new Vector(0, 0));
-            //points.Add(new Vector(85311905.349006966, -66566142.576139823));
-            //points.Add(new Vector(70992558.707589224, -131680280.61320958));
-
-            //Curve missile = new Curve();
-            //missile.AddRange(CRSpline.Create(points).Interpolate(10));
-            //missile.Pencil = new Pen(Color.Magenta, 2);
-
-            //Curve missile2 = new Curve();
-            //missile2.AddRange(points);
-            //missile2.Pencil = new Pen(Color.Green, 2);
-
-            //Curves.Add(missile);
-            //Curves.Add(missile2);
-
             InitializeComponent();
         }
 
@@ -49,22 +55,22 @@ namespace SF.Controls
             this.Name = "CurveEditorControl";
             this.ResumeLayout(false);
         }
+
         protected override void OnMouseClick(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (Trajectories.Count == 0 || Trajectories.Last().Finished)
+                if (m_trajectories.Count == 0 || m_trajectories.Last().Finished)
                 {
-                    Trajectories.Add(new Trajectory());
-                    Trajectories.Last().Add(OwnShip.Position);
+                    m_trajectories.Add(new Trajectory());
+                    m_trajectories.Last().Add(OwnShip == null ? Vector.Zero : OwnShip.Position);
                 }
-
-                var trajectory = Trajectories.Last();
+                var trajectory = m_trajectories.Last();
                 trajectory.Add(DeviceToWorld(CreateGraphics(), e.Location));
             }
-            else if (e.Button == MouseButtons.Right && Trajectories.Count > 0)
+            else if (e.Button == MouseButtons.Right && m_trajectories.Count > 0)
             {
-                var trajectory = Trajectories.Last();
+                var trajectory = m_trajectories.Last();
                 if (trajectory.Finished)
                 {
                     trajectory.Finished = false;
@@ -78,36 +84,37 @@ namespace SF.Controls
                     else
                     {
                         // only 1 point left - delete the whole thing
-                        Trajectories.RemoveAt(Trajectories.Count - 1);
+                        m_trajectories.RemoveAt(m_trajectories.Count - 1);
                     }
                 }
             }
             Invalidate();
         }
 
-        private void Draw(Trajectory t, PaintEventArgs e)
+        protected void WorldDraw(Graphics g, Pen pencil, Trajectory t)
         {
             Curve c = new Curve();
             c.AddRange(CRSpline.Create(t).Interpolate(t.Count * Quality));
-            c.Pencil = new Pen(t.Finished ? Brushes.OliveDrab : Brushes.MediumSlateBlue, 1);
-            DrawCurve(e.Graphics, c);
+            c.Pencil = pencil;
+            DrawCurve(g, c);
         }
 
         protected override void DrawContents(PaintEventArgs e)
         {
             base.DrawContents(e);
-
-            Trajectories.ForEach(x => Draw(x, e));
+            for (int i = 0; i < m_trajectories.Count; i++)
+                WorldDraw(e.Graphics, m_trajectories[i].Finished ? Pencils[i%Pencils.Length] : Pens.Black, m_trajectories[i]);
+            foreach(int i in new[] { 1, 2, 5 })
+                WorldDrawCircle(e.Graphics, BlackPen, Vector.Zero, WorldScale*i);
         }
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && Trajectories.Count > 0)
+            if (e.Button == MouseButtons.Left && m_trajectories.Count > 0)
             {
-                Trajectories.Last().Finished = true;
+                m_trajectories.Last().Finished = true;
             }
             Invalidate();
         }
-
     }
 }

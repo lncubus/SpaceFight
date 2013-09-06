@@ -282,7 +282,7 @@ namespace SF.Controls
             e.Graphics.DrawRectangles(BlackPen, new[] { m_client });
         }
 
-        private void DrawGridLines(Graphics graphics)
+        protected void DrawGridLines(Graphics graphics)
         { 
             if (Options.HasFlag(DrawingOptions.NoGrid))
                 return;
@@ -397,22 +397,22 @@ namespace SF.Controls
             }
         }
 
-        private bool IsVisible(RectangleF rect)
+        protected bool IsVisible(RectangleF rect)
         {
             return m_client.IntersectsWith(rect);
         }
 
-        private bool IsVisible(PointF point)
+        protected bool IsVisible(PointF point)
         {
             return m_client.Contains((int)point.X, (int)point.Y);
         }
 
-        private bool IsVisible(PointF[] points)
+        protected bool IsVisible(PointF[] points)
         {
             return points.Any(p => m_client.Contains((int)p.X, (int)p.Y));
         }
 
-        private void DrawStar(Graphics graphics, Star star)
+        protected void DrawStar(Graphics graphics, Star star)
         {
             var pen = SignalPen;
             var brush = BlackInk;
@@ -427,7 +427,7 @@ namespace SF.Controls
             WorldDrawText(graphics, brush, star.Position, star.Name);
         }
 
-        private void DrawShip(Graphics graphics, IShip ship)
+        protected void DrawShip(Graphics graphics, IShip ship)
         {
             if (!ship.IsDead())
             {
@@ -444,7 +444,7 @@ namespace SF.Controls
 
         }
 
-        private void DrawVulnerableSectors(Graphics graphics, IShip ship)
+        protected void DrawVulnerableSectors(Graphics graphics, IShip ship)
         {
             var pen = VulnerableSectors.Select(OwnShip, ship);
             bool isMyShip = ship == OwnShip;
@@ -462,7 +462,7 @@ namespace SF.Controls
             WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading - Math.PI, Catalog.Instance.SkirtAngle);
         }
 
-        private void DrawMissileCircle(Graphics graphics, IShip ship)
+        protected void DrawMissileCircle(Graphics graphics, IShip ship)
         {
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
@@ -476,7 +476,7 @@ namespace SF.Controls
             WorldDrawCircle(graphics, pen, ship.Position, range);
         }
 
-        private void DrawSelection(Graphics graphics, IParticle p)
+        protected void DrawSelection(Graphics graphics, IParticle p)
         {
             var size = (float)Math.Max(1.0F / 4, p.Radius / WorldScale);
             var pen = BlackPen;
@@ -490,8 +490,8 @@ namespace SF.Controls
             };
             graphics.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
         }
-        
-        private void DrawShipWedge(Graphics graphics, IShip ship)
+
+        protected void DrawShipWedge(Graphics graphics, IShip ship)
         {
             double size = WorldScale / 4;
             var pen = SignalPen;
@@ -508,7 +508,7 @@ namespace SF.Controls
             graphics.DrawLine(pen, points[2], points[3]);
         }
 
-        private void DrawShipHull(Graphics graphics, IShip ship)
+        protected void DrawShipHull(Graphics graphics, IShip ship)
         {
             var alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;
@@ -538,7 +538,7 @@ namespace SF.Controls
             graphics.DrawLine(pen, points[2], points[3]);
         }
 
-        private void DrawMissile(Graphics graphics, IMissile missile)
+        protected void DrawMissile(Graphics graphics, IMissile missile)
         {
             //const double alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;// / 8;
@@ -560,7 +560,7 @@ namespace SF.Controls
             graphics.DrawLine(pen, points[2], points[3]);
         }
 
-        private void WorldDrawText(Graphics graphics, Brush brush, Vector origin, string text)
+        protected void WorldDrawText(Graphics graphics, Brush brush, Vector origin, string text)
         {
             var p = WorldToDevice(graphics, origin);
             p = new PointF
@@ -572,7 +572,7 @@ namespace SF.Controls
                 graphics.DrawString(text, Font, brush, p);
         }
 
-        private void WorldDrawCircle(Graphics graphics, Pen pen, Vector origin, double radius)
+        protected void WorldDrawCircle(Graphics graphics, Pen pen, Vector origin, double radius)
         {
             var rx = WorldToDevice(graphics.DpiX, radius);
             var ry = WorldToDevice(graphics.DpiY, radius);
@@ -584,7 +584,7 @@ namespace SF.Controls
                 graphics.DrawEllipse(pen, rect);
         }
 
-        private void WorldDrawPie(Graphics graphics, Pen pen, Vector origin, double radius, double medianAngle, double sweepAngle)
+        protected void WorldDrawPie(Graphics graphics, Pen pen, Vector origin, double radius, double medianAngle, double sweepAngle)
         {
             var rx = WorldToDevice(graphics.DpiX, radius);
             var ry = WorldToDevice(graphics.DpiY, radius);
@@ -603,9 +603,6 @@ namespace SF.Controls
                     (float)MathUtils.ToDegrees(sweepAngle));
         }
 
-        public SpaceGridControl()
-        {
-        }
 
         [Flags]
         public enum DrawingOptions

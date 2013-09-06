@@ -42,15 +42,18 @@ namespace SF.ClientLibrary
             return result;
         }
 
-        public void Login(string nation, string name)
+        public bool Login(string nation, string name)
         {
-            Client.Login(nation, name);
+            var accepted = Client.Login(nation, name);
+            if (!accepted)
+                return false;
             Catalog.Create(Client.GetCatalog());
             var view = Client.GetView();
             Helm = new RemoteHelm(Client, view.Helm);
             Ships = view.Ships.OfType<IShip>().ToDictionary(s => s.Name);
             Missiles = view.Missiles.OfType<IMissile>().ToList();
             Stars = view.Stars.ToDictionary(s => s.Name);
+            return true;
         }
 
         public IHelm GetHelm()

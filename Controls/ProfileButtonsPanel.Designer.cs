@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             this.buttonAttackProfile = new System.Windows.Forms.Button();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
-            this.labelJammer = new System.Windows.Forms.Label();
             this.comboBoxJammer = new System.Windows.Forms.ComboBox();
+            this.labelJammer = new System.Windows.Forms.Label();
+            this.curvesControl = new SF.Controls.SpaceGridControl();
             this.tableLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonAttackProfile
@@ -45,6 +45,7 @@
             this.buttonAttackProfile.TabIndex = 3;
             this.buttonAttackProfile.Text = "Профиль";
             this.buttonAttackProfile.UseVisualStyleBackColor = true;
+            this.buttonAttackProfile.Click += new System.EventHandler(this.buttonAttackProfile_Click);
             // 
             // tableLayoutPanel
             // 
@@ -55,8 +56,8 @@
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel.Controls.Add(this.comboBoxJammer, 2, 1);
             this.tableLayoutPanel.Controls.Add(this.buttonAttackProfile, 0, 1);
-            this.tableLayoutPanel.Controls.Add(this.pictureBoxProfile, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.labelJammer, 1, 1);
+            this.tableLayoutPanel.Controls.Add(this.curvesControl, 0, 0);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -66,15 +67,18 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(249, 121);
             this.tableLayoutPanel.TabIndex = 4;
             // 
-            // pictureBoxProfile
+            // comboBoxJammer
             // 
-            this.tableLayoutPanel.SetColumnSpan(this.pictureBoxProfile, 3);
-            this.pictureBoxProfile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxProfile.Location = new System.Drawing.Point(3, 3);
-            this.pictureBoxProfile.Name = "pictureBoxProfile";
-            this.pictureBoxProfile.Size = new System.Drawing.Size(243, 86);
-            this.pictureBoxProfile.TabIndex = 6;
-            this.pictureBoxProfile.TabStop = false;
+            this.comboBoxJammer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxJammer.FormattingEnabled = true;
+            this.comboBoxJammer.Items.AddRange(new object[] {
+            "Вертикальная",
+            "Горизонтальная",
+            "Круговая"});
+            this.comboBoxJammer.Location = new System.Drawing.Point(121, 95);
+            this.comboBoxJammer.Name = "comboBoxJammer";
+            this.comboBoxJammer.Size = new System.Drawing.Size(125, 21);
+            this.comboBoxJammer.TabIndex = 8;
             // 
             // labelJammer
             // 
@@ -87,20 +91,30 @@
             this.labelJammer.Text = "РЭБ";
             this.labelJammer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // comboBoxJammer
+            // curvesControl
             // 
-            this.comboBoxJammer.DropDownHeight = 39;
-            this.comboBoxJammer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxJammer.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxJammer.FormattingEnabled = true;
-            this.comboBoxJammer.Items.AddRange(new object[] {
-            "Вертикальная",
-            "Горизонтальная",
-            "Круговая"});
-            this.comboBoxJammer.Location = new System.Drawing.Point(121, 95);
-            this.comboBoxJammer.Name = "comboBoxJammer";
-            this.comboBoxJammer.Size = new System.Drawing.Size(125, 21);
-            this.comboBoxJammer.TabIndex = 8;
+            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
+            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
+            this.curvesControl.CenteredLayout = stringFormat1;
+            this.tableLayoutPanel.SetColumnSpan(this.curvesControl, 3);
+            this.curvesControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.curvesControl.Location = new System.Drawing.Point(3, 3);
+            this.curvesControl.Missiles = null;
+            this.curvesControl.Name = "curvesControl";
+            this.curvesControl.Options = SF.Controls.SpaceGridControl.DrawingOptions.NoGrid;
+            this.curvesControl.Polar = false;
+            this.curvesControl.ReadOnly = true;
+            this.curvesControl.Rotation = 0D;
+            this.curvesControl.Selectable = SF.Controls.SpaceGridControl.SelectableObjects.None;
+            this.curvesControl.Selected = null;
+            this.curvesControl.Ships = null;
+            this.curvesControl.Size = new System.Drawing.Size(243, 86);
+            this.curvesControl.Stars = null;
+            this.curvesControl.StaticGrid = false;
+            this.curvesControl.TabIndex = 9;
+            this.curvesControl.WorldScale = 1000000D;
             // 
             // ProfileButtonsPanel
             // 
@@ -112,7 +126,6 @@
             this.Size = new System.Drawing.Size(249, 121);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -121,8 +134,8 @@
 
         private System.Windows.Forms.Button buttonAttackProfile;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        private System.Windows.Forms.PictureBox pictureBoxProfile;
         private System.Windows.Forms.Label labelJammer;
         private System.Windows.Forms.ComboBox comboBoxJammer;
+        private SpaceGridControl curvesControl;
     }
 }

@@ -44,7 +44,11 @@ namespace Gunner
                 Close();
             else
             {
-                client.Login(credentials.Nation, credentials.ShipName);
+                if (!client.Login(credentials.Nation, credentials.ShipName))
+                {
+                    Close();
+                    return;
+                }
                 helm = client.GetHelm();
                 Text = helm.Name;
                 spaceGridControl.OwnShip = helm;

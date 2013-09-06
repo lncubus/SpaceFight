@@ -15,5 +15,10 @@ namespace SF.Controls
         {
             InitializeComponent();
         }
+
+        private void curveEditorControl_Resize(object sender, EventArgs e)
+        {
+            curveEditorControl.Invalidate();
+        }
     }
 }

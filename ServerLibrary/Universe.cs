@@ -167,6 +167,8 @@ namespace SF.ServerLibrary
 
         public View GetView(IHelm me)
         {
+            if (me != null)
+                return null;
             lock (m_locker)
             {
                 bool blind = me.IsDead() || !me.InSpace();
