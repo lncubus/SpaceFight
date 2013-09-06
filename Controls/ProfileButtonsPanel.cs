@@ -57,6 +57,7 @@ namespace SF.Controls
                     curve.AddRange(trajectoory);
                     curvesControl.Curves.Add(curve);
                 }
+                curvesControl.Invalidate();
             }
         }
 
