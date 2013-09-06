@@ -167,7 +167,7 @@ namespace SF.ServerLibrary
 
         public View GetView(IHelm me)
         {
-            if (me != null)
+            if (me == null)
                 return null;
             lock (m_locker)
             {
