@@ -34,7 +34,7 @@
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.indicatorControl = new SF.Controls.IndicatorControl();
             //this.spaceGridControl = new SF.Controls.SpaceGridControl();
-            this.spaceGridControl = new SF.Controls.CurveEditorControl();
+            this.spaceGridControl = new SF.Controls.SpaceGridControl();
             this.scaleControl = new SF.Controls.ScaleControl();
             this.panelFire = new System.Windows.Forms.Panel();
             this.labelBoard = new System.Windows.Forms.Label();
@@ -186,8 +186,7 @@
 
         private System.Windows.Forms.Timer timerUpdate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        //private SF.Controls.SpaceGridControl spaceGridControl;
-        private SF.Controls.CurveEditorControl spaceGridControl;
+        private SF.Controls.SpaceGridControl spaceGridControl;
         private SF.Controls.ScaleControl scaleControl;
         private System.Windows.Forms.Panel panelFire;
         private System.Windows.Forms.Button buttonFire;

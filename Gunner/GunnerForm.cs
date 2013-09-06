@@ -76,7 +76,7 @@ namespace Gunner
             spaceGridControl.Stars = client.GetStars();
             spaceGridControl.Missiles = client.GetVisibleMissiles();
             spaceGridControl.Origin = helm.Position;
-            spaceGridControl.Rotation = helm.Heading;
+            spaceGridControl.Rotation = helm.Speed.Length <= MathUtils.Epsilon ? helm.Heading : helm.Speed.Argument;
             var ship = spaceGridControl.Selected ?? helm;
             indicatorControl.Acceleration = ship.Acceleration;
             indicatorControl.Speed = ship.Speed;

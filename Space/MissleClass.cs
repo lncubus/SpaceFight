@@ -19,9 +19,5 @@ namespace SF.Space
         public double Weight { get; set; }
         [DataMember]
         public double HitDistance { get; set; }
-        [DataMember]
-        public double Damage { get; set; }
-        [DataMember]
-        public double JammerResistance { get; set; }
     }
 }

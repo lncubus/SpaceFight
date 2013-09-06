@@ -71,14 +71,14 @@ namespace Server
             propertyGrid.SelectedObject = node.Tag;
         }
 
-        private void toolStripButtonBang_Click(object sender, EventArgs e)
-        {
-            SpaceServer.Universe.BigBangTest();
-        }
-
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
             SpaceServer.Universe.Save();
+        }
+
+        private void toolStripButtonPlay_Click(object sender, EventArgs e)
+        {
+            SpaceServer.Universe.IsRunning = toolStripButtonPlay.Checked;
         }
     }
 }
