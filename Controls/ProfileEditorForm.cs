@@ -28,10 +28,11 @@ namespace SF.Controls
             {
                 return curveEditorControl.Trajectories;
             }
-            set
-            {
-                curveEditorControl.Trajectories = value;
-            }
+        }
+
+        public void SetTrajectories(Vector[][] trajectories)
+        {
+            curveEditorControl.SetTrajectories(trajectories);
         }
     }
 }
