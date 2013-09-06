@@ -118,6 +118,13 @@ namespace SF.ServerLibrary
             var helms = DeserializeCollection<HelmDefinition>(helmsReader.ReadOuterXml());
 
             Helms = helms.Select(Helm.Load).ToDictionary(ship => ship.Name);
+            foreach (var helmDefinition in helms)
+            {
+                if (string.IsNullOrEmpty(helmDefinition.Carrier))
+                    continue;
+                var helm = (Helm)Helms[helmDefinition.Name];
+                helm.CarrierShip = Helms[helmDefinition.Carrier];
+            }
             Stars = stars.ToDictionary(star => star.Name);
             m_missiles = new List<IMissile>();
 
@@ -171,7 +178,7 @@ namespace SF.ServerLibrary
                 return null;
             lock (m_locker)
             {
-                bool blind = me.IsDead() || !me.InSpace();
+                bool blind = me.IsDead() || !me.InSpace() || me.Carrier != null;
                 return new View
                 {
                     Time = Time,
@@ -197,6 +204,7 @@ namespace SF.ServerLibrary
                     SkirtAngle = Catalog.Instance.SkirtAngle,
                     ThroatAngle = Catalog.Instance.ThroatAngle,
                     DefaultScale = Catalog.Instance.DefaultScale,
+                    CarrierRange = Catalog.Instance.CarrierRange,
                     ShipClasses = shipClassesByNation.Union(shipClassesByShips).Distinct().ToArray(),
                     MissileClasses = missileClassesByNation.Union(missileClassesByShips).Distinct().ToArray(),
                 };
@@ -259,7 +267,7 @@ namespace SF.ServerLibrary
 
         private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
-            return Helms.Values.Where(i => i != me && i.InSpace()); 
+            return Helms.Values.Where(i => i != me && i.InSpace() && i.Carrier == null); 
         }
 
         private IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
@@ -427,43 +435,6 @@ namespace SF.ServerLibrary
         }
 
         static int generation = 0;
-
-        public void BigBangTest()
-        {
-            lock (m_locker)
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    var h = Random.NextAngle();
-                    var a = Random.NextDouble();
-                    var classification = Catalog.Instance.ShipClasses.Values.First();
-                    var missile = Catalog.Instance.MissileClasses.Values.First();
-                    var helm = new HelmDefinition
-                               {
-                                   Thrust = a * classification.MaximumAcceleration,
-                                   ThrustTo = a * classification.MaximumAcceleration,
-                                   ClassName = classification.Name,
-                                   Heading = h,
-                                   HeadingTo = h,
-                                   Nation = "Солярианская Лига",
-                                   Name = "Бандит-" + (generation > 0 ? generation + "-" : "") + (i + 1),
-                                   Missiles = 1,
-                                   MissileName = missile.Name,
-                                   Position = 300000000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
-                                   Speed = 300000 * (Random.NextDouble() + Random.NextDouble()) * Random.NextDirection(),
-                               };
-                    Helms.Add(helm.Name, Helm.Load(helm));
-                }
-                for (int i = 0; i < 1000; i++)
-                {
-                    var from = Helms.Values.RandomOf(Random);
-                    var to = Helms.Values.RandomOf(Random);
-                    var missile = new Missile(from, to, Time);
-                    m_missiles.Add(missile);
-                }
-                generation++;
-            }
-        }
 
         public void SetShipsHealth(ShipStatus[] shipStatuses)
         {

@@ -3,7 +3,6 @@ using SF.Space;
 
 namespace SF.ClientLibrary
 {
-
     internal class RemoteHelm : IHelm
     {
         private readonly IServer m_client;
@@ -164,6 +163,14 @@ namespace SF.ClientLibrary
         {
             get { return m_that.Left; }
             set { throw new InvalidOperationException(); }
+        }
+
+        public string Carrier
+        {
+            get
+            {
+                return m_that.Carrier;
+            }
         }
     }
 }

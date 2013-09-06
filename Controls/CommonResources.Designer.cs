@@ -63,9 +63,30 @@ namespace SF.Controls {
         /// <summary>
         ///   Looks up a localized string similar to Ваша битва окончена. Примите соболезнования..
         /// </summary>
-        public static string DeadMessage {
+        public static string DeadMessage
+        {
             get {
                 return ResourceManager.GetString("DeadMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выйдите из гиперпространства..
+        /// </summary>
+        public static string InHyperspace
+        {
+            get {
+                return ResourceManager.GetString("InHyperspace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Управление кораблем в этом режиме невозможно..
+        /// </summary>
+        public static string NoControl
+        {
+            get {
+                return ResourceManager.GetString("NoControl", resourceCulture);
             }
         }
     }

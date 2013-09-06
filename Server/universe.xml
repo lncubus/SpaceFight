@@ -250,6 +250,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Ятаган</Name>
+      <Carrier>Юрий Гагарин</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -270,6 +271,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Штык</Name>
+      <Carrier>Юрий Гагарин</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -290,6 +292,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Кортик</Name>
+      <Carrier>Юрий Гагарин</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -310,6 +313,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Стилет</Name>
+      <Carrier>Юрий Гагарин</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
