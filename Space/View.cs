@@ -23,5 +23,8 @@ namespace SF.Space
 
         [DataMember]
         public Star[] Stars { get; set; }
+
+        [DataMember]
+        public string[] Carried { get; set; }
     }
 }

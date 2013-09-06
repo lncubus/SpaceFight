@@ -186,6 +186,7 @@ namespace SF.ServerLibrary
                     Ships = blind ? new ShipDefinition[0] : GetVisibleShips(me).Select(ShipDefinition.Store).ToArray(),
                     Missiles = blind ? new MissileDefinition[0] : GetVisibleMissiles(me).Select(MissileDefinition.Store).ToArray(),
                     Stars = GetStars().ToArray(),
+                    Carried = me.Class.Superclass != ShipSuperclass.CLAC ? new string[0] : GetCarriedShips(me).Select(ship => ship.Name).ToArray(),
                 };
             }
         }
@@ -245,7 +246,7 @@ namespace SF.ServerLibrary
                     // missile hit the wedge
                     if (Random.NextDouble() > from.Board())
                         continue;
-                    var result = new Missile(from, target, Time);
+                    var result = new Missile(from, target, Time, (Random.NextDouble() - 0.5)*Math.PI/3);
                     m_missiles.Add(result);
                 }
                 if (fired)
@@ -268,6 +269,11 @@ namespace SF.ServerLibrary
         private IEnumerable<IShip> GetVisibleShips(IHelm me)
         {
             return Helms.Values.Where(i => i != me && i.InSpace() && i.Carrier == null); 
+        }
+
+        private IEnumerable<IShip> GetCarriedShips(IHelm me)
+        {
+            return Helms.Values.Where(i => i.Carrier == me.Name);
         }
 
         private IEnumerable<IMissile> GetVisibleMissiles(IHelm me)
