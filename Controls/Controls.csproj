@@ -64,6 +64,12 @@
     <Compile Include="MissileControl.Designer.cs">
       <DependentUpon>MissileControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProfileButtonsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProfileButtonsPanel.Designer.cs">
+      <DependentUpon>ProfileButtonsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProfileEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MissileControl.resx">
       <DependentUpon>MissileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProfileButtonsPanel.resx">
+      <DependentUpon>ProfileButtonsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProfileEditorForm.resx">
       <DependentUpon>ProfileEditorForm.cs</DependentUpon>

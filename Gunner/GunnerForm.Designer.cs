@@ -40,6 +40,7 @@
             this.buttonFire = new System.Windows.Forms.Button();
             this.checkBoxFriendlyFire = new System.Windows.Forms.CheckBox();
             this.missileControl = new SF.Controls.MissileControl();
+            this.profileButtonsPanel1 = new SF.Controls.ProfileButtonsPanel();
             this.tableLayoutPanel.SuspendLayout();
             this.panelFire.SuspendLayout();
             this.SuspendLayout();
@@ -59,14 +60,15 @@
             this.tableLayoutPanel.Controls.Add(this.scaleControl, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.panelFire, 1, 1);
             this.tableLayoutPanel.Controls.Add(this.missileControl, 1, 2);
+            this.tableLayoutPanel.Controls.Add(this.profileButtonsPanel1, 1, 3);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 3;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.90909F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.Size = new System.Drawing.Size(792, 573);
             this.tableLayoutPanel.TabIndex = 0;
@@ -174,8 +176,17 @@
             this.missileControl.MissileClass = null;
             this.missileControl.Name = "missileControl";
             this.missileControl.ShipClass = null;
-            this.missileControl.Size = new System.Drawing.Size(249, 260);
+            this.missileControl.Size = new System.Drawing.Size(249, 140);
             this.missileControl.TabIndex = 6;
+            // 
+            // profileButtonsPanel1
+            // 
+            this.profileButtonsPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.profileButtonsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.profileButtonsPanel1.Location = new System.Drawing.Point(540, 253);
+            this.profileButtonsPanel1.Name = "profileButtonsPanel1";
+            this.profileButtonsPanel1.Size = new System.Drawing.Size(249, 140);
+            this.profileButtonsPanel1.TabIndex = 7;
             // 
             // GunnerForm
             // 
@@ -207,6 +218,7 @@
         private System.Windows.Forms.Label labelBoard;
         private SF.Controls.IndicatorControl indicatorControl;
         private SF.Controls.MissileControl missileControl;
+        private SF.Controls.ProfileButtonsPanel profileButtonsPanel1;
     }
 }
 
