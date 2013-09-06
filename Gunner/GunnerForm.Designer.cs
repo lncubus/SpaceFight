@@ -32,13 +32,13 @@
             System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.indicatorControl = new SF.Controls.IndicatorControl();
+            this.spaceGridControl = new SF.Controls.SpaceGridControl();
+            this.scaleControl = new SF.Controls.ScaleControl();
             this.panelFire = new System.Windows.Forms.Panel();
             this.labelBoard = new System.Windows.Forms.Label();
             this.buttonFire = new System.Windows.Forms.Button();
             this.checkBoxFriendlyFire = new System.Windows.Forms.CheckBox();
-            this.indicatorControl = new SF.Controls.IndicatorControl();
-            this.spaceGridControl = new SF.Controls.SpaceGridControl();
-            this.scaleControl = new SF.Controls.ScaleControl();
             this.missileControl = new SF.Controls.MissileControl();
             this.tableLayoutPanel.SuspendLayout();
             this.panelFire.SuspendLayout();
@@ -54,7 +54,7 @@
             this.tableLayoutPanel.ColumnCount = 2;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel.Controls.Add(this.indicatorControl, 0, 3);
+            this.tableLayoutPanel.Controls.Add(this.indicatorControl, 0, 4);
             this.tableLayoutPanel.Controls.Add(this.spaceGridControl, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.scaleControl, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.panelFire, 1, 1);
@@ -65,10 +65,58 @@
             this.tableLayoutPanel.RowCount = 3;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.90909F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.090909F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.Size = new System.Drawing.Size(792, 573);
             this.tableLayoutPanel.TabIndex = 0;
+            // 
+            // indicatorControl
+            // 
+            this.indicatorControl.Location = new System.Drawing.Point(540, 399);
+            this.indicatorControl.Name = "indicatorControl";
+            this.indicatorControl.Size = new System.Drawing.Size(249, 170);
+            this.indicatorControl.TabIndex = 5;
+            // 
+            // spaceGridControl
+            // 
+            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
+            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
+            this.spaceGridControl.CenteredLayout = stringFormat1;
+            this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
+            this.spaceGridControl.Missiles = null;
+            this.spaceGridControl.Name = "spaceGridControl";
+            this.spaceGridControl.Options = SF.Controls.SpaceGridControl.DrawingOptions.None;
+            this.spaceGridControl.Polar = true;
+            this.spaceGridControl.ReadOnly = false;
+            this.spaceGridControl.Rotation = 0D;
+            this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 5);
+            this.spaceGridControl.Selectable = SF.Controls.SpaceGridControl.SelectableObjects.None;
+            this.spaceGridControl.Selected = null;
+            this.spaceGridControl.Ships = null;
+            this.spaceGridControl.Size = new System.Drawing.Size(531, 567);
+            this.spaceGridControl.Stars = null;
+            this.spaceGridControl.StaticGrid = true;
+            this.spaceGridControl.TabIndex = 1;
+            this.spaceGridControl.WorldScale = 2000000D;
+            this.spaceGridControl.ParticleSelected += new System.EventHandler(this.spaceGridControl_ParticleSelected);
+            this.spaceGridControl.DoubleClick += new System.EventHandler(this.spaceGridControl_DoubleClick);
+            // 
+            // scaleControl
+            // 
+            this.scaleControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.scaleControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scaleControl.Location = new System.Drawing.Point(540, 3);
+            this.scaleControl.MaxValue = 5000000000D;
+            this.scaleControl.MinValue = 500D;
+            this.scaleControl.Name = "scaleControl";
+            this.scaleControl.Size = new System.Drawing.Size(249, 29);
+            this.scaleControl.TabIndex = 3;
+            this.scaleControl.Unit = "км";
+            this.scaleControl.Value = 2000000D;
             // 
             // panelFire
             // 
@@ -119,60 +167,14 @@
             this.checkBoxFriendlyFire.UseVisualStyleBackColor = true;
             this.checkBoxFriendlyFire.CheckedChanged += new System.EventHandler(this.checkBoxFriendlyFire_CheckedChanged);
             // 
-            // indicatorControl
-            // 
-            this.indicatorControl.Location = new System.Drawing.Point(540, 400);
-            this.indicatorControl.Name = "indicatorControl";
-            this.indicatorControl.Size = new System.Drawing.Size(249, 170);
-            this.indicatorControl.TabIndex = 5;
-            // 
-            // spaceGridControl
-            // 
-            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
-            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
-            this.spaceGridControl.CenteredLayout = stringFormat1;
-            this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
-            this.spaceGridControl.Missiles = null;
-            this.spaceGridControl.Name = "spaceGridControl";
-            this.spaceGridControl.Options = SF.Controls.SpaceGridControl.DrawingOptions.None;
-            this.spaceGridControl.Polar = true;
-            this.spaceGridControl.ReadOnly = false;
-            this.spaceGridControl.Rotation = 0D;
-            this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 4);
-            this.spaceGridControl.Selectable = SF.Controls.SpaceGridControl.SelectableObjects.None;
-            this.spaceGridControl.Selected = null;
-            this.spaceGridControl.Ships = null;
-            this.spaceGridControl.Size = new System.Drawing.Size(531, 567);
-            this.spaceGridControl.Stars = null;
-            this.spaceGridControl.StaticGrid = true;
-            this.spaceGridControl.TabIndex = 1;
-            this.spaceGridControl.WorldScale = 2000000D;
-            this.spaceGridControl.ParticleSelected += new System.EventHandler(this.spaceGridControl_ParticleSelected);
-            this.spaceGridControl.DoubleClick += new System.EventHandler(this.spaceGridControl_DoubleClick);
-            // 
-            // scaleControl
-            // 
-            this.scaleControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.scaleControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scaleControl.Location = new System.Drawing.Point(540, 3);
-            this.scaleControl.MaxValue = 5000000000D;
-            this.scaleControl.MinValue = 500D;
-            this.scaleControl.Name = "scaleControl";
-            this.scaleControl.Size = new System.Drawing.Size(249, 29);
-            this.scaleControl.TabIndex = 3;
-            this.scaleControl.Unit = "км";
-            this.scaleControl.Value = 2000000D;
-            // 
             // missileControl
             // 
-            this.missileControl.MissileClass = null;
             this.missileControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.missileControl.Location = new System.Drawing.Point(540, 107);
+            this.missileControl.MissileClass = null;
             this.missileControl.Name = "missileControl";
-            this.missileControl.Size = new System.Drawing.Size(249, 287);
+            this.missileControl.ShipClass = null;
+            this.missileControl.Size = new System.Drawing.Size(249, 260);
             this.missileControl.TabIndex = 6;
             // 
             // GunnerForm
