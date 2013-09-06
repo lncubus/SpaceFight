@@ -1,6 +1,6 @@
 ﻿namespace SF.Space
 {
-    public static class Subsytsem
+    public static class Subsystem
     {
         // Атака
         public const int Attack = 0;

@@ -157,11 +157,13 @@ namespace SF.ClientLibrary
         public Board Right
         {
             get { return m_that.Right; }
+            set { throw new InvalidOperationException(); }
         }
 
         public Board Left
         {
             get { return m_that.Left; }
+            set { throw new InvalidOperationException(); }
         }
     }
 }

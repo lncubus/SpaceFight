@@ -33,6 +33,11 @@ namespace SF.Space
             return particles.FirstOrDefault(i => i.Id == id);
         }
 
+        public static bool IsLight(this IShip ship)
+        {
+            return ship.Class.Superclass == ShipSuperclass.LAC;
+        }
+
         public static bool InSpace(this IShip ship)
         {
             return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace;
@@ -47,5 +52,14 @@ namespace SF.Space
         {
             return Math.Sin((target.Position - helm.Position).Argument - helm.Heading) < 0;
         }
+
+        public static bool IsLeftBoard(this IShip helm, IParticle target)
+        {
+            var left = helm.IsLeft(target);
+            if (Math.Cos(helm.Roll) < 0)
+                left = !left;
+            return left;
+        }
+
     }
 }

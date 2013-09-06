@@ -39,7 +39,7 @@ namespace SF.Space
                 State = helm.State,
                 Radius = helm.Radius,
                 Weight = helm.Weight,
-                Damage = helm.Damage ?? new byte[Subsytsem.Length],
+                Damage = helm.Damage ?? new byte[Subsystem.Length],
                 Description = helm.Description,
                 Right = helm.Right,
                 Left = helm.Left,

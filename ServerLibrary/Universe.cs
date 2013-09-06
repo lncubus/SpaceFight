@@ -28,8 +28,33 @@ namespace SF.ServerLibrary
         private readonly Thread m_backgroundWorker;
 
         public ServerDamageContract.IServerDamageCallbackContract DamageServiceCallback;
-        public const byte BreakEverything = (byte)RanmaRepairSeverity.Hard * Subsytsem.Length;
-        public const byte SevereDamage = (byte)RanmaRepairSeverity.Hard * 2;
+        //public const byte BreakEverything = (byte)RanmaRepairSeverity.Hard * Subsystem.Length;
+        //public const byte SevereDamage = (byte)RanmaRepairSeverity.Hard * 2;
+
+        private byte ThroatDamage()
+        {
+            var r = Random.NextDouble();
+            if (r < 0.1)
+                return (byte)RanmaRepairSeverity.Easy;
+            if (r < 0.3)
+                return (byte)RanmaRepairSeverity.Medium;
+            return (byte)RanmaRepairSeverity.Hard;
+        }
+
+        private byte BoardDamage()
+        {
+            var r = Random.NextDouble();
+            if (r < 0.6)
+                return (byte)RanmaRepairSeverity.Easy;
+            if (r < 0.9)
+                return (byte)RanmaRepairSeverity.Medium;
+            return (byte)RanmaRepairSeverity.Hard;
+        }
+
+        private byte CollisionDamage(bool isLight)
+        {
+            return isLight ? (byte)(3 * (byte)RanmaRepairSeverity.Hard) : (byte)RanmaRepairSeverity.Hard;
+        }
 
         private string SerializeObject<T>(T instance)
         {
@@ -187,18 +212,38 @@ namespace SF.ServerLibrary
             }
         }
 
-        public void Fire(IShip from, string to, int number)
+        public void Fire(IHelm from, string to, int[] launchers)
         {
             if (from.IsDead())
                 return;
             lock (m_locker)
             {
-                number = Math.Min(number, from.Missiles);
                 var target = GetHelm(to);
-                if (from.Missile == null || target == null || number <= 0 || Random.NextDouble() > from.Board())
+                if (from.Missile == null || target == null || launchers == null || launchers.Length == 0)
                     return;
-                var result = new Missile(from, target, number, Time);
-                m_missiles.Add(result);
+                var left = from.IsLeftBoard(target);
+                var board = left ? from.Left : from.Right;
+                if (board.Accumulator > 0)
+                    return;
+                var fired = false;
+                foreach (var n in launchers)
+                {
+                    if (n < 0 || n >= board.Launchers.Length || !MathUtils.NearlyEqual(board.Launchers[n], 0))
+                        continue;
+                    fired = true;
+                    board.Launchers[n] = from.Class.ReloadTime;
+                    // missile hit the wedge
+                    if (Random.NextDouble() > from.Board())
+                        continue;
+                    var result = new Missile(from, target, Time);
+                    m_missiles.Add(result);
+                }
+                if (fired)
+                    board.Accumulator = from.Class.RechargeTime;
+                if (left)
+                    from.Left = board;
+                else
+                    from.Right = board;
             }
         }
 
@@ -255,11 +300,14 @@ namespace SF.ServerLibrary
                 lock (m_locker)
                 {
                     double t = Time.TotalSeconds;
-                    foreach (Ship helm in Helms.Values)
+                    var dt = t - tPrev;
+                    foreach (Helm helm in Helms.Values)
+                    {
                         helm.Dynamics.UpdateTime(t);
+                        helm.UpdateWeapons(dt);
+                    }
                     foreach (Missile missile in m_missiles)
                         missile.UpdateTime(t);
-                    var dt = t - tPrev;
                     CheckCollisions(t, dt);
                     tPrev = t;
                     var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
@@ -307,22 +355,13 @@ namespace SF.ServerLibrary
                     var throat = (Math.PI - angle) < Catalog.Instance.ThroatAngle/2;
                     var skirt = angle > Math.PI - Catalog.Instance.SkirtAngle/2;
                     System.Diagnostics.Trace.WriteLine(string.Format("Угол {0}.", MathUtils.ToDegreesInt(angle)));
-                    byte severity = 0;
+                    byte severity;
                     if (throat || skirt)
-                        severity = SevereDamage;
+                        severity = ThroatDamage();
                     else if (Random.NextDouble() <= target.Board())
-                    {
-                        var r = Random.NextDouble();
-                        if (r < 0.5)
-                            severity = (byte) RanmaRepairSeverity.Easy;
-                        else if (r < 0.8)
-                            severity = (byte)RanmaRepairSeverity.Medium;
-                        else if (r < 0.95)
-                            severity = (byte)RanmaRepairSeverity.Hard;
-                        else
-                            // GOD HATES YOU! NO, REALLY!
-                            severity = (byte)Random.Next((byte)RanmaRepairSeverity.Hard, SevereDamage);
-                    }
+                        severity = BoardDamage();
+                    else
+                        severity = 0;
                     if(severity > 0)
                         DamageShip(target, severity);
                 }
@@ -332,8 +371,8 @@ namespace SF.ServerLibrary
                     if (one != two && m_collider.HaveCollision(one, two, dt))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
-                        DamageShip(one, BreakEverything);
-                        DamageShip(two, BreakEverything);
+                        DamageShip(one, CollisionDamage(one.IsLight()));
+                        DamageShip(two, CollisionDamage(two.IsLight()));
                     }
         }
 
@@ -417,7 +456,7 @@ namespace SF.ServerLibrary
                 {
                     var from = Helms.Values.RandomOf(Random);
                     var to = Helms.Values.RandomOf(Random);
-                    var missile = new Missile(from, to, 1, Time);
+                    var missile = new Missile(from, to, Time);
                     m_missiles.Add(missile);
                 }
                 generation++;

@@ -49,6 +49,7 @@ namespace Gunner
                 Text = helm.Name;
                 spaceGridControl.OwnShip = helm;
                 missileControl.MissileClass = helm.Missile;
+                missileControl.ShipClass = helm.Class;
                 spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
                 scaleControl.Value = Catalog.Instance.DefaultScale; ;
                 tableLayoutPanel.Visible = true;
@@ -89,9 +90,7 @@ namespace Gunner
             }
             else
             {
-                left = helm.IsLeft(target);
-                if (Math.Cos(helm.Roll) < 0)
-                    left = !left;
+                left = helm.IsLeftBoard(target);
                 labelBoard.Text = left ? "Левый борт" : "Правый борт";
                 var launchers = new double[helm.Missiles];
                 for (int i = 0; i < helm.Missiles; i++)
@@ -147,7 +146,7 @@ namespace Gunner
         {
             var ship = spaceGridControl.Selected;
             if (ship is IShip)
-                client.Fire((IShip)ship);
+                client.Fire((IShip)ship, missileControl.Selected);
         }
 
         private void GunnerForm_KeyPress(object sender, KeyPressEventArgs e)

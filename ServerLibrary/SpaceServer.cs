@@ -64,9 +64,9 @@ namespace SF.ServerLibrary
             m_helm.ThrustTo = value;
         }
 
-        public void Fire(string to, int number)
+        public void Fire(string to, int[] launchers)
         {
-            Universe.Fire(m_helm, to, number);
+            Universe.Fire(m_helm, to, launchers);
         }
     }
 }

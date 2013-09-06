@@ -22,8 +22,6 @@ namespace SF.ServerLibrary
         public IShip Target { get; private set; }
         public IShip Launcher { get; private set; }
 
-        public int Number { get; set; }
-
         public bool Exploded { get; set; }
         public bool Exhausted { get; set; }
 
@@ -50,14 +48,13 @@ namespace SF.ServerLibrary
         private Vector s0;
         public double Heading { get; private set; }
 
-        public Missile(IShip from, IShip to, int number, TimeSpan time)
+        public Missile(IShip from, IShip to, TimeSpan time)
         {
             Id = Guid.NewGuid();
             Class = from.Missile;
             s0 = Position = from.Position;
             v0 = Speed = from.Speed;
             t0 = Started = time.TotalSeconds;
-            Number = Math.Min(number, from.Missiles);
             var left = from.IsLeft(to);
             Heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;

@@ -36,6 +36,6 @@ namespace SF.Space
         void SetThrustTo(double value);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void Fire(string to, int number);
+        void Fire(string to, int[] launchers);
     }
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using SF.Space;
@@ -94,16 +90,37 @@ namespace SF.Controls
                     dataGridViewMissiles.Rows[i].Cells[columnSelected.Index].Value = selectedAll || selected.Contains(i);
                     dataGridViewMissiles.Rows[i].Cells[columnName.Index].Value = MissileClass == null ? string.Empty : MissileClass.Name;
                 }
-            var accumulator = ShipClass == null ? 0 : 1 - (Board.Accumulator/ShipClass.RechargeTime);
+            var accumulator = Board.Accumulator < 0 ? -1 : (ShipClass == null || ShipClass.RechargeTime <= MathUtils.Epsilon) ? 0 : 1 - (Board.Accumulator / ShipClass.RechargeTime);
             progressBarAccumulator.Value = (int)(progressBarAccumulator.Maximum*accumulator);
+            progressBarAccumulator.ForeColor = GetColor(accumulator);
+            dataGridViewMissiles.Invalidate();
+        }
+
+        private Color GetColor(double accumulator)
+        {
+            if (accumulator < 0)
+                return Color.Gray;
             if (accumulator < 0.3)
-                progressBarAccumulator.ForeColor = Color.Crimson;
-            else if (accumulator < 0.8)
-                progressBarAccumulator.ForeColor = Color.Chocolate;
-            else if (accumulator < 1)
-                progressBarAccumulator.ForeColor = Color.Yellow;
-            else
-                progressBarAccumulator.ForeColor = Color.Green;
+                return Color.LightCoral;
+            if (accumulator < 0.8)
+                return Color.SandyBrown;
+            if (accumulator < 1)
+                return Color.Yellow;
+            return Color.LightGreen;
+        }
+
+        private void dataGridViewMissiles_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            int n = e.RowIndex;
+            if (Board.Launchers == null || e.ColumnIndex == 0 || n < 0 || n >= Board.Launchers.Length)
+                return;
+            e.PaintBackground(e.CellBounds, false);
+            var load = (ShipClass == null || ShipClass.ReloadTime <= MathUtils.Epsilon) ? 0 : 1 - (Board.Launchers[n] / ShipClass.ReloadTime);
+            var brush = new SolidBrush(GetColor(load));
+            var rect = new Rectangle(e.CellBounds.X, e.CellBounds.Y, (int) (e.CellBounds.Width*load), e.CellBounds.Height);
+            e.Graphics.FillRectangle(brush, rect);
+            e.PaintContent(e.CellBounds);
+            e.Handled = true;
         }
     }
 

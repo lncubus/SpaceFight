@@ -1,4 +1,5 @@
 ﻿using System;
+using HonorInterfaces;
 using SF.Space;
 
 namespace SF.ServerLibrary
@@ -61,6 +62,8 @@ namespace SF.ServerLibrary
 
         public volatile bool HealthChanged;
 
+        public double AttackHealth = 1;
+
         public static IHelm Load(HelmDefinition that)
         {
             var shipClass = Catalog.Instance.GetShipClass(that.ClassName);
@@ -84,7 +87,7 @@ namespace SF.ServerLibrary
                 Missile = missileClass,
                 Missiles = that.Missiles,
                 State =  that.State,
-                Damage = that.Damage ?? new byte[Subsytsem.Length],
+                Damage = that.Damage ?? new byte[Subsystem.Length],
                 Right = that.Right.Launchers != null ? that.Right : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
                 Left = that.Left.Launchers != null ? that.Left : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
                 HealthChanged = true,
@@ -93,12 +96,34 @@ namespace SF.ServerLibrary
 
         public void UpdateHealth(double t)
         {
+            if (Damage[Subsystem.Reactor] == 100)
+                State = ShipState.Junk;
             HealthChanged = false;
-            var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsytsem.Wedge], Damage[Subsytsem.Reactor]) / 100.0;
-            var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsytsem.Navigation], Damage[Subsytsem.Reactor]) / 100.0;
+            var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Wedge], Damage[Subsystem.Reactor]) / 100.0;
+            var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Navigation], Damage[Subsystem.Reactor]) / 100.0;
+            AttackHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Attack], Damage[Subsystem.Reactor]) / 100.0;
             Dynamics.EngineHealth = 1 - engineDamage;
             Dynamics.SteeringHealth = 1 - steeringDamage;
             Dynamics.UpdateHealth(t, Class);
+        }
+
+        public void UpdateWeapons(double dt)
+        {
+            Left = UpdateBoard(Left, dt);
+            Right = UpdateBoard(Right, dt);
+        }
+
+        private Board UpdateBoard(Board board, double dt)
+        {
+            var accumulator = board.Accumulator <= 0 ? board.Accumulator : Math.Max(board.Accumulator - dt*AttackHealth, 0);
+            var launchers = board.Launchers;
+            for (int i = 0; i < launchers.Length; i++)
+                launchers[i] = launchers[i] <= 0 ? launchers[i] : Math.Max(launchers[i] - dt*AttackHealth, 0);
+            return new Board
+            {
+                Accumulator = accumulator,
+                Launchers = launchers,
+            };
         }
     }
 }
