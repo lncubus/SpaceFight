@@ -98,6 +98,8 @@ namespace SF.ServerLibrary
         {
             if (Damage[Subsystem.Reactor] == 100)
                 State = ShipState.Junk;
+            if (Damage[Subsystem.Attack] == 100 && Damage[Subsystem.Defense] == 100 && Damage[Subsystem.Navigation] == 100 && Damage[Subsystem.Wedge] == 100)
+                State = ShipState.Junk;
             HealthChanged = false;
             var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Wedge], Damage[Subsystem.Reactor]) / 100.0;
             var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Navigation], Damage[Subsystem.Reactor]) / 100.0;
