@@ -57,6 +57,8 @@ namespace Gunner
             missileControl.ShipClass = helm.Class;
             spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
             scaleControl.Value = Catalog.Instance.DefaultScale; ;
+            if (helm.Class.Superclass != ShipSuperclass.CLAC)
+                tabControlWeapons.TabPages.Remove(tabPageLACs);
             tableLayoutPanel.Visible = true;
             timerUpdate.Enabled = true;
         }
