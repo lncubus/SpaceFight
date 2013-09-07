@@ -46,29 +46,30 @@ namespace SF.Controls
             {
                 return m_trajectories ?? new Vector[0][];
             }
-            set
+        }
+
+        public void SetTrajectories(Vector[][] trajectories)
+        {
+            m_trajectories = trajectories;
+            curvesControl.Curves.Clear();
+            foreach (var trajectoory in Trajectories)
             {
-                m_trajectories = value;
-                curvesControl.Curves.Clear();
-                foreach (var trajectoory in Trajectories)
-                {
-                    var curve = new SpaceGridControl.Curve();
-                    curve.Pencil = Pens.Crimson;
-                    curve.AddRange(trajectoory);
-                    curvesControl.Curves.Add(curve);
-                }
-                curvesControl.Invalidate();
+                var curve = new SpaceGridControl.Curve();
+                curve.Pencil = Pens.Crimson;
+                curve.AddRange(trajectoory);
+                curvesControl.Curves.Add(curve);
             }
+            curvesControl.Invalidate();
         }
 
         private void buttonAttackProfile_Click(object sender, EventArgs e)
         {
             using (var dialog = new ProfileEditorForm())
             {
-                dialog.Trajectories = Trajectories;
+                dialog.SetTrajectories(Trajectories);
                 if (DialogResult.OK != dialog.ShowDialog())
                     return;
-                Trajectories = dialog.Trajectories;
+                SetTrajectories(dialog.Trajectories);
             }
         }
     }

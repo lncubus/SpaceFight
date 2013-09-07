@@ -17,6 +17,8 @@ namespace SF.Space
         public Board Right;
         [DataMember]
         public Board Left;
+        [DataMember]
+        public string Carrier;
 
         public static HelmDefinition Store(IHelm helm)
         {
@@ -43,6 +45,7 @@ namespace SF.Space
                 Description = helm.Description,
                 Right = helm.Right,
                 Left = helm.Left,
+                Carrier = helm.Carrier,
             };
         }
     }

@@ -27,6 +27,7 @@ namespace Pilot
                 SpaceGridControl.SelectableObjects.Missiles | 
                 SpaceGridControl.SelectableObjects.Stars |
                 SpaceGridControl.SelectableObjects.Ships;
+            Controls.Add(labelMessage);
         }
 
         private IHelm helm;
@@ -37,6 +38,16 @@ namespace Pilot
             {
                 Pencil = Pens.DarkGreen
             };
+
+        private Label labelMessage = new Label
+        {
+            Dock = DockStyle.Fill,
+            Location = new Point(0, 40),
+            Name = "labelMessage",
+            TextAlign = ContentAlignment.MiddleCenter,
+            Text = CommonResources.NoControl,
+            Visible = false,
+        };
 
         private void Login()
         {
@@ -58,7 +69,6 @@ namespace Pilot
             spaceGridControl.Curves.Add(Trajectory);
             spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
             scaleControl.Value = Catalog.Instance.DefaultScale;
-            ;
             tableLayoutPanel.Visible = true;
             timerUpdate.Enabled = true;
         }
@@ -82,7 +92,21 @@ namespace Pilot
         private void GetData()
         {
             if (helm.State == ShipState.Annihilated || helm.State == ShipState.Junk)
+            {
                 Die();
+                return;
+            }
+            if (helm.State == ShipState.Hyperspace || !string.IsNullOrEmpty(helm.Carrier))
+            {
+                tableLayoutPanel.Visible = false;
+                labelMessage.Visible = true;
+                return;
+            }
+            if (!tableLayoutPanel.Visible)
+            {
+                labelMessage.Visible = false;
+                tableLayoutPanel.Visible = true;
+            }
             spaceGridControl.Ships = client.GetVisibleShips();
             spaceGridControl.Stars = client.GetStars();
             spaceGridControl.Missiles = client.GetVisibleMissiles();

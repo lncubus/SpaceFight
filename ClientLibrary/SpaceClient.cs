@@ -16,6 +16,7 @@ namespace SF.ClientLibrary
         private RemoteHelm Helm;
         private IList<IMissile> Missiles;
         private IDictionary<string, Star> Stars;
+        private IList<string> Carried; 
 
         public SpaceClient()
         {
@@ -32,6 +33,7 @@ namespace SF.ClientLibrary
             Ships = null;
             Missiles = null;
             Helm = null;
+            Carried = null;
         }
 
         public IDictionary<string, string[]> GetShipNames()
@@ -53,6 +55,7 @@ namespace SF.ClientLibrary
             Ships = view.Ships.OfType<IShip>().ToDictionary(s => s.Name);
             Missiles = view.Missiles.OfType<IMissile>().ToList();
             Stars = view.Stars.ToDictionary(s => s.Name);
+            Carried = view.Carried.ToList();
             return true;
         }
 
@@ -76,6 +79,11 @@ namespace SF.ClientLibrary
             return Missiles;
         }
 
+        public IList<string> GetCarriedShips()
+        {
+            return Carried;
+        }
+
         public void Update()
         {
             var view = Client.GetView();
@@ -83,11 +91,17 @@ namespace SF.ClientLibrary
             Ships = view.Ships.OfType<IShip>().ToDictionary(s => s.Name);
             Missiles = view.Missiles.OfType<IMissile>().ToList();
             Stars = view.Stars.ToDictionary(s => s.Name);
+            Carried = view.Carried.ToList();
         }
 
         public void Fire(IShip ship, int[] launchers)
         {
             Client.Fire(ship.Name, launchers);
+        }
+
+        public void Launch(string name)
+        {
+            Client.Launch(name);
         }
     }
 }

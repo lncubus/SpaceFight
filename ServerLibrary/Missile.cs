@@ -48,7 +48,7 @@ namespace SF.ServerLibrary
         private Vector s0;
         public double Heading { get; private set; }
 
-        public Missile(IShip from, IShip to, TimeSpan time)
+        public Missile(IShip from, IShip to, TimeSpan time, double delta)
         {
             Id = Guid.NewGuid();
             Class = from.Missile;
@@ -56,7 +56,7 @@ namespace SF.ServerLibrary
             v0 = Speed = from.Speed;
             t0 = Started = time.TotalSeconds;
             var left = from.IsLeft(to);
-            Heading = Math.IEEERemainder(from.Heading + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
+            Heading = Math.IEEERemainder(from.Heading + delta + (left ? -Math.PI / 2 : Math.PI / 2), 2 * Math.PI);
             Target = to;
             Launcher = from;
         }

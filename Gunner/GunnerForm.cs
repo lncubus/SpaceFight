@@ -29,12 +29,23 @@ namespace Gunner
             spaceGridControl.Selectable =
                 SpaceGridControl.SelectableObjects.Stars |
                 SpaceGridControl.SelectableObjects.Ships;
+            Controls.Add(labelMessage);
         }
 
         private IHelm helm;
         private SF.ClientLibrary.SpaceClient client;
         private bool left;
         private IShip target;
+
+        private Label labelMessage = new Label
+        {
+            Dock = DockStyle.Fill,
+            Location = new Point(0, 40),
+            Name = "labelMessage",
+            TextAlign = ContentAlignment.MiddleCenter,
+            Text = CommonResources.NoControl,
+            Visible = false,
+        };
 
         private void Login()
         {
@@ -57,6 +68,8 @@ namespace Gunner
             missileControl.ShipClass = helm.Class;
             spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
             scaleControl.Value = Catalog.Instance.DefaultScale; ;
+            if (helm.Class.Superclass != ShipSuperclass.CLAC)
+                tabControlWeapons.TabPages.Remove(tabPageLACs);
             tableLayoutPanel.Visible = true;
             timerUpdate.Enabled = true;
         }
@@ -78,7 +91,21 @@ namespace Gunner
         private void GetData()
         {
             if (helm.IsDead())
+            {
                 Die();
+                return;
+            }
+            if (helm.State == ShipState.Hyperspace || !string.IsNullOrEmpty(helm.Carrier))
+            {
+                tableLayoutPanel.Visible = false;
+                labelMessage.Visible = true;
+                return;
+            }
+            if (!tableLayoutPanel.Visible)
+            {
+                labelMessage.Visible = false;
+                tableLayoutPanel.Visible = true;
+            }
             spaceGridControl.Ships = client.GetVisibleShips();
             spaceGridControl.Stars = client.GetStars();
             spaceGridControl.Missiles = client.GetVisibleMissiles();
@@ -88,6 +115,13 @@ namespace Gunner
             indicatorControl.Acceleration = ship.Acceleration;
             indicatorControl.Speed = ship.Speed;
             indicatorControl.Position = ship.Position;
+            var carried = client.GetCarriedShips();
+            if (carried != null)
+            {
+                dataGridViewLACs.RowCount = carried.Count;
+                for (int i = 0; i < carried.Count; i++)
+                    dataGridViewLACs.Rows[i].Cells[columnName.Index].Value = carried[i];
+            }
             if (target == null)
             {
                 labelBoard.Text = "Цель не выбрана";
@@ -169,6 +203,14 @@ namespace Gunner
                     e.Handled = false;
                     break;
             }
+        }
+
+        private void dataGridViewLACs_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != columnLaunch.Index)
+                return;
+            var name = (string) dataGridViewLACs.Rows[e.RowIndex].Cells[columnName.Index].Value;
+            client.Launch(name);
         }
     }
 }

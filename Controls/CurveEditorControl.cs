@@ -25,22 +25,23 @@ namespace SF.Controls
             {
                 return m_trajectories.Where(trajectory => trajectory.Finished && trajectory.Count > 0).Select(trajectory => trajectory.ToArray()).ToArray();
             }
-            set
+        }
+
+        public void SetTrajectories(Vector[][] trajectories)
+        {
+            m_trajectories.Clear();
+            if (trajectories == null || trajectories.Length == 0)
+                return;
+            foreach (var vectors in trajectories)
             {
-                m_trajectories.Clear();
-                if (value == null || value.Length == 0)
-                    return;
-                foreach (var vectors in value)
+                var trajectory = new Trajectory
                 {
-                    var trajectory = new Trajectory
-                    {
-                        Finished = true,
-                    };
-                    trajectory.AddRange(vectors);
-                    m_trajectories.Add(trajectory);
-                }
-                Invalidate();
+                    Finished = true,
+                };
+                trajectory.AddRange(vectors);
+                m_trajectories.Add(trajectory);
             }
+            Invalidate();
         }
 
         public CurveEditorControl()

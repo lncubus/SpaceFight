@@ -37,5 +37,8 @@ namespace SF.Space
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void Fire(string to, int[] launchers);
+
+        [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
+        void Launch(string name);
     }
 }

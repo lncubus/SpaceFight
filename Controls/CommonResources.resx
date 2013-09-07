@@ -120,4 +120,10 @@
   <data name="DeadMessage" xml:space="preserve">
     <value>Ваша битва окончена. Примите соболезнования.</value>
   </data>
+  <data name="InHyperspace" xml:space="preserve">
+    <value>Выйдите из гиперпространства.</value>
+  </data>
+  <data name="NoControl" xml:space="preserve">
+    <value>Управление кораблем в этом режиме невозможно.</value>
+  </data>
 </root>

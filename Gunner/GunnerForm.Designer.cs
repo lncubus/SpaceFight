@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
+            System.Drawing.StringFormat stringFormat2 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.indicatorControl = new SF.Controls.IndicatorControl();
@@ -39,10 +39,22 @@
             this.labelBoard = new System.Windows.Forms.Label();
             this.buttonFire = new System.Windows.Forms.Button();
             this.checkBoxFriendlyFire = new System.Windows.Forms.CheckBox();
+            this.tabControlWeapons = new System.Windows.Forms.TabControl();
+            this.tabPageMissiles = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanelMissiles = new System.Windows.Forms.TableLayoutPanel();
             this.missileControl = new SF.Controls.MissileControl();
             this.profileButtonsPanel = new SF.Controls.ProfileButtonsPanel();
+            this.tabPageLACs = new System.Windows.Forms.TabPage();
+            this.dataGridViewLACs = new System.Windows.Forms.DataGridView();
+            this.columnLaunch = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.columnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel.SuspendLayout();
             this.panelFire.SuspendLayout();
+            this.tabControlWeapons.SuspendLayout();
+            this.tabPageMissiles.SuspendLayout();
+            this.tableLayoutPanelMissiles.SuspendLayout();
+            this.tabPageLACs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLACs)).BeginInit();
             this.SuspendLayout();
             // 
             // timerUpdate
@@ -55,38 +67,37 @@
             this.tableLayoutPanel.ColumnCount = 2;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel.Controls.Add(this.indicatorControl, 0, 4);
+            this.tableLayoutPanel.Controls.Add(this.indicatorControl, 0, 3);
             this.tableLayoutPanel.Controls.Add(this.spaceGridControl, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.scaleControl, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.panelFire, 1, 1);
-            this.tableLayoutPanel.Controls.Add(this.missileControl, 1, 2);
-            this.tableLayoutPanel.Controls.Add(this.profileButtonsPanel, 1, 3);
+            this.tableLayoutPanel.Controls.Add(this.tabControlWeapons, 1, 2);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 3;
+            this.tableLayoutPanel.RowCount = 2;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(792, 573);
             this.tableLayoutPanel.TabIndex = 0;
             // 
             // indicatorControl
             // 
-            this.indicatorControl.Location = new System.Drawing.Point(540, 399);
+            this.indicatorControl.Location = new System.Drawing.Point(540, 400);
             this.indicatorControl.Name = "indicatorControl";
             this.indicatorControl.Size = new System.Drawing.Size(249, 170);
             this.indicatorControl.TabIndex = 5;
             // 
             // spaceGridControl
             // 
-            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
-            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
-            this.spaceGridControl.CenteredLayout = stringFormat1;
+            stringFormat2.Alignment = System.Drawing.StringAlignment.Center;
+            stringFormat2.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
+            stringFormat2.LineAlignment = System.Drawing.StringAlignment.Center;
+            stringFormat2.Trimming = System.Drawing.StringTrimming.None;
+            this.spaceGridControl.CenteredLayout = stringFormat2;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
             this.spaceGridControl.Missiles = null;
@@ -95,7 +106,7 @@
             this.spaceGridControl.Polar = true;
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
-            this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 5);
+            this.tableLayoutPanel.SetRowSpan(this.spaceGridControl, 4);
             this.spaceGridControl.Selectable = SF.Controls.SpaceGridControl.SelectableObjects.None;
             this.spaceGridControl.Selected = null;
             this.spaceGridControl.Ships = null;
@@ -169,24 +180,113 @@
             this.checkBoxFriendlyFire.UseVisualStyleBackColor = true;
             this.checkBoxFriendlyFire.CheckedChanged += new System.EventHandler(this.checkBoxFriendlyFire_CheckedChanged);
             // 
+            // tabControlWeapons
+            // 
+            this.tabControlWeapons.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControlWeapons.Controls.Add(this.tabPageMissiles);
+            this.tabControlWeapons.Controls.Add(this.tabPageLACs);
+            this.tabControlWeapons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlWeapons.Location = new System.Drawing.Point(540, 107);
+            this.tabControlWeapons.Name = "tabControlWeapons";
+            this.tabControlWeapons.SelectedIndex = 0;
+            this.tabControlWeapons.Size = new System.Drawing.Size(249, 287);
+            this.tabControlWeapons.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
+            this.tabControlWeapons.TabIndex = 6;
+            // 
+            // tabPageMissiles
+            // 
+            this.tabPageMissiles.BackColor = System.Drawing.Color.MintCream;
+            this.tabPageMissiles.Controls.Add(this.tableLayoutPanelMissiles);
+            this.tabPageMissiles.Location = new System.Drawing.Point(4, 25);
+            this.tabPageMissiles.Name = "tabPageMissiles";
+            this.tabPageMissiles.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMissiles.Size = new System.Drawing.Size(241, 258);
+            this.tabPageMissiles.TabIndex = 0;
+            this.tabPageMissiles.Text = "Ракеты";
+            // 
+            // tableLayoutPanelMissiles
+            // 
+            this.tableLayoutPanelMissiles.ColumnCount = 1;
+            this.tableLayoutPanelMissiles.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelMissiles.Controls.Add(this.missileControl, 0, 0);
+            this.tableLayoutPanelMissiles.Controls.Add(this.profileButtonsPanel, 0, 1);
+            this.tableLayoutPanelMissiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelMissiles.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanelMissiles.Name = "tableLayoutPanelMissiles";
+            this.tableLayoutPanelMissiles.RowCount = 2;
+            this.tableLayoutPanelMissiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelMissiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelMissiles.Size = new System.Drawing.Size(235, 252);
+            this.tableLayoutPanelMissiles.TabIndex = 0;
+            // 
             // missileControl
             // 
             this.missileControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.missileControl.Location = new System.Drawing.Point(540, 107);
+            this.missileControl.Location = new System.Drawing.Point(3, 3);
             this.missileControl.MissileClass = null;
             this.missileControl.Name = "missileControl";
             this.missileControl.ShipClass = null;
-            this.missileControl.Size = new System.Drawing.Size(249, 140);
-            this.missileControl.TabIndex = 6;
+            this.missileControl.Size = new System.Drawing.Size(229, 120);
+            this.missileControl.TabIndex = 8;
             // 
             // profileButtonsPanel
             // 
             this.profileButtonsPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.profileButtonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.profileButtonsPanel.Location = new System.Drawing.Point(540, 253);
+            this.profileButtonsPanel.Jammer = 0;
+            this.profileButtonsPanel.Location = new System.Drawing.Point(3, 129);
             this.profileButtonsPanel.Name = "profileButtonsPanel";
-            this.profileButtonsPanel.Size = new System.Drawing.Size(249, 140);
-            this.profileButtonsPanel.TabIndex = 7;
+            this.profileButtonsPanel.Size = new System.Drawing.Size(229, 120);
+            this.profileButtonsPanel.TabIndex = 9;
+            // 
+            // tabPageLACs
+            // 
+            this.tabPageLACs.BackColor = System.Drawing.Color.MintCream;
+            this.tabPageLACs.Controls.Add(this.dataGridViewLACs);
+            this.tabPageLACs.Location = new System.Drawing.Point(4, 25);
+            this.tabPageLACs.Name = "tabPageLACs";
+            this.tabPageLACs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLACs.Size = new System.Drawing.Size(241, 258);
+            this.tabPageLACs.TabIndex = 1;
+            this.tabPageLACs.Text = "ЛАК";
+            // 
+            // dataGridViewLACs
+            // 
+            this.dataGridViewLACs.AllowUserToAddRows = false;
+            this.dataGridViewLACs.AllowUserToDeleteRows = false;
+            this.dataGridViewLACs.AllowUserToResizeColumns = false;
+            this.dataGridViewLACs.AllowUserToResizeRows = false;
+            this.dataGridViewLACs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewLACs.ColumnHeadersVisible = false;
+            this.dataGridViewLACs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.columnLaunch,
+            this.columnName});
+            this.dataGridViewLACs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewLACs.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
+            this.dataGridViewLACs.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewLACs.MultiSelect = false;
+            this.dataGridViewLACs.Name = "dataGridViewLACs";
+            this.dataGridViewLACs.RowHeadersVisible = false;
+            this.dataGridViewLACs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewLACs.ShowEditingIcon = false;
+            this.dataGridViewLACs.Size = new System.Drawing.Size(235, 252);
+            this.dataGridViewLACs.TabIndex = 7;
+            this.dataGridViewLACs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewLACs_CellClick);
+            // 
+            // columnLaunch
+            // 
+            this.columnLaunch.HeaderText = "Launch";
+            this.columnLaunch.Name = "columnLaunch";
+            this.columnLaunch.Text = "Пуск";
+            this.columnLaunch.UseColumnTextForButtonValue = true;
+            this.columnLaunch.Width = 35;
+            // 
+            // columnName
+            // 
+            this.columnName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.columnName.HeaderText = "Name";
+            this.columnName.Name = "columnName";
+            this.columnName.ReadOnly = true;
             // 
             // GunnerForm
             // 
@@ -202,6 +302,11 @@
             this.tableLayoutPanel.ResumeLayout(false);
             this.panelFire.ResumeLayout(false);
             this.panelFire.PerformLayout();
+            this.tabControlWeapons.ResumeLayout(false);
+            this.tabPageMissiles.ResumeLayout(false);
+            this.tableLayoutPanelMissiles.ResumeLayout(false);
+            this.tabPageLACs.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLACs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -217,8 +322,15 @@
         private System.Windows.Forms.CheckBox checkBoxFriendlyFire;
         private System.Windows.Forms.Label labelBoard;
         private SF.Controls.IndicatorControl indicatorControl;
+        private System.Windows.Forms.TabControl tabControlWeapons;
+        private System.Windows.Forms.TabPage tabPageMissiles;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMissiles;
         private SF.Controls.MissileControl missileControl;
         private SF.Controls.ProfileButtonsPanel profileButtonsPanel;
+        private System.Windows.Forms.TabPage tabPageLACs;
+        private System.Windows.Forms.DataGridView dataGridViewLACs;
+        private System.Windows.Forms.DataGridViewButtonColumn columnLaunch;
+        private System.Windows.Forms.DataGridViewTextBoxColumn columnName;
     }
 }
 

@@ -8,5 +8,6 @@
         byte[] Damage { get; }
         Board Right { get; set; }
         Board Left { get; set; }
+        string Carrier { get; }
     }
 }

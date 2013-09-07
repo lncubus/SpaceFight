@@ -17,6 +17,8 @@ namespace SF.Space
         [DataMember]
         public double SkirtAngle { get; set; }
         [DataMember]
+        public double CarrierRange { get; set; }
+        [DataMember]
         public ShipClass[] ShipClasses { get; set; }
         [DataMember]
         public MissileClass[] MissileClasses { get; set; }

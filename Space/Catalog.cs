@@ -15,6 +15,7 @@ namespace SF.Space
         public double ThroatAngle { get; private set; }
         public double SkirtAngle { get; private set; }
         public double DefaultScale { get; private set; }
+        public double CarrierRange { get; private set; }
 
         public ShipClass GetShipClass(string name)
         {
@@ -35,7 +36,8 @@ namespace SF.Space
             SkirtAngle = def.SkirtAngle;
             DefaultScale = def.DefaultScale;
             ShipClasses = (def.ShipClasses ?? new ShipClass[0]) .ToDictionary(c => c.Name);
-            MissileClasses = (def.MissileClasses ?? new MissileClass[0]).ToDictionary(c => c.Name); 
+            MissileClasses = (def.MissileClasses ?? new MissileClass[0]).ToDictionary(c => c.Name);
+            CarrierRange = def.CarrierRange;
         }
 
         public static void Create(CatalogDefinition def)

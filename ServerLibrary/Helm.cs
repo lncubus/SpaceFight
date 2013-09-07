@@ -48,6 +48,10 @@ namespace SF.ServerLibrary
             }
         }
 
+        public IShip CarrierShip { get; set; }
+
+        public string Carrier { get { return CarrierShip == null ? null : CarrierShip.Name; } }
+
         public byte[] Damage { get; set; }
 
         public Board Right
@@ -63,6 +67,7 @@ namespace SF.ServerLibrary
         public volatile bool HealthChanged;
 
         public double AttackHealth = 1;
+        public double GateHealth = 1;
 
         public static IHelm Load(HelmDefinition that)
         {
@@ -91,6 +96,7 @@ namespace SF.ServerLibrary
                 Right = that.Right.Launchers != null ? that.Right : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
                 Left = that.Left.Launchers != null ? that.Left : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
                 HealthChanged = true,
+                GateHealth = shipClass.Superclass == ShipSuperclass.CLAC ? 1 : -1,
             };
         }
 
@@ -104,6 +110,8 @@ namespace SF.ServerLibrary
             var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Wedge], Damage[Subsystem.Reactor]) / 100.0;
             var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Navigation], Damage[Subsystem.Reactor]) / 100.0;
             AttackHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Attack], Damage[Subsystem.Reactor]) / 100.0;
+            if (GateHealth >= 0)
+                GateHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Gate], Damage[Subsystem.Reactor]) / 100.0;
             Dynamics.EngineHealth = 1 - engineDamage;
             Dynamics.SteeringHealth = 1 - steeringDamage;
             Dynamics.UpdateHealth(t, Class);
