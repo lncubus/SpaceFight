@@ -143,7 +143,36 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000011</Id>
@@ -158,13 +187,32 @@
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="90476069" Y="28614631" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Золотая Лань</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000012</Id>
@@ -179,13 +227,32 @@
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="87051432" Y="30531327" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Золотая Лань</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000013</Id>
@@ -200,13 +267,32 @@
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="85870016" Y="33960644" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Золотая Лань</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000014</Id>
@@ -215,19 +301,37 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Персей</Name>
-      <Carrier>Золотая Лань</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="83579606" Y="30016344" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Золотая Лань</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000001</Id>
@@ -245,7 +349,36 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000011</Id>
@@ -254,19 +387,37 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Ятаган</Name>
-      <Carrier>Юрий Гагарин</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="-79227276" Y="-27821151" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Юрий Гагарин</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000012</Id>
@@ -281,13 +432,32 @@
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="-70851432" Y="-31869380" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Юрий Гагарин</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000013</Id>
@@ -308,7 +478,27 @@
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Юрий Гагарин</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000014</Id>
@@ -323,13 +513,32 @@
       <Heading>0</Heading>
       <Roll>0</Roll>
       <Thrust>0</Thrust>
-      <Position X="-68882238" Y="-29160644" />
       <Speed X="0" Y="0" />
       <State>Normal</State>
       <HeadingTo>0</HeadingTo>
       <RollTo>0</RollTo>
       <ThrustTo>0</ThrustTo>
-      <Damage>AAAAAAAAAAA=</Damage>
+      <Right>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Right>
+      <Left>
+        <Accumulator>0</Accumulator>
+        <Launchers>
+          <double>0</double>
+          <double>0</double>
+          <double>0</double>
+        </Launchers>
+      </Left>
+      <Carrier>Юрий Гагарин</Carrier>
+      <AttackHealth>1</AttackHealth>
+      <DefenseHealth>1</DefenseHealth>
+      <EngineHealth>1</EngineHealth>
+      <NavigationHealth>1</NavigationHealth>
     </HelmDefinition>
   </ArrayOfHelmDefinition>
 </Universe>

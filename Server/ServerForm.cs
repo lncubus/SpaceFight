@@ -32,8 +32,8 @@ namespace Server
             {
                 ShowNode(SpaceServer.Universe);
             }
-            DamageHost = new ServiceHost(typeof(SF.ServerLibrary.ServerDamageContract.ShipDamageService));
-            DamageHost.Open();
+//            DamageHost = new ServiceHost(typeof(SF.ServerLibrary.ServerDamageContract.ShipDamageService));
+//            DamageHost.Open();
         }
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)

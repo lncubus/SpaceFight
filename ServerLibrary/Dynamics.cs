@@ -7,8 +7,8 @@ namespace SF.ServerLibrary
     {
         public const double TimeEpsilon = 1E-6; // 86 ms
 
-        public double SteeringHealth = 1;
-        public double EngineHealth = 1;
+        public double NavigationHealth;
+        public double EngineHealth;
 
         private sealed class LinearValue
         {
@@ -144,6 +144,7 @@ namespace SF.ServerLibrary
         private double? headingTo;
         private double? rollTo;
         private double? accelerateTo;
+        public bool HealthChanged;
 
         public double HeadingTo
         {
@@ -179,8 +180,11 @@ namespace SF.ServerLibrary
 
         public Vector S { get; private set; }
 
+        public ShipClass Class { get; private set; }
+
         public Dynamics(ShipClass Class, HelmDefinition Def, TimeSpan time)
         {
+            this.Class = Class;
             t1 = t0 = time.TotalSeconds;
             S = Def.Position;
             V = v0 = Def.Speed;
@@ -190,11 +194,14 @@ namespace SF.ServerLibrary
             AccelerationValue = Acceleration.FromValue;
             HeadingValue = Heading.FromValue;
             RollValue = Roll.FromValue;
+            NavigationHealth = 1;
+            EngineHealth = 1;
+            UpdateHealth(time.TotalSeconds);
         }
 
-        public void UpdateHealth(double time, ShipClass Class)
+        public void UpdateHealth(double time)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("Engine = {0}, Steering = {1}", EngineHealth, SteeringHealth));
+            System.Diagnostics.Trace.WriteLine(string.Format("Engine = {0}, Navigation = {1}", EngineHealth, NavigationHealth));
             if (MathUtils.NearlyEqual(EngineHealth, 0))
             {
                 Acceleration.Reset(time, 0);
@@ -207,11 +214,16 @@ namespace SF.ServerLibrary
                 if (Acceleration.Get(time) > maxAccel)
                     Acceleration.Reset(time, maxAccel);
             }
-            Heading.Respeed(time, SteeringHealth);
+            Heading.Respeed(time, NavigationHealth);
         }
         
         public void UpdateTime(double time)
         {
+            if (HealthChanged)
+            {
+                UpdateHealth(time);
+                HealthChanged = false;
+            }
             if (rollTo.HasValue)
             {
                 Roll.Set(time, rollTo.Value);

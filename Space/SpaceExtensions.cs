@@ -38,14 +38,14 @@ namespace SF.Space
             return ship.Class.Superclass == ShipSuperclass.LAC;
         }
 
-        public static bool InSpace(this IShip ship)
+        public static bool InSpace(this IHelm ship)
         {
-            return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace;
+            return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace && string.IsNullOrEmpty(ship.Carrier);
         }
 
         public static bool IsDead(this IShip ship)
         {
-            return ship.State == ShipState.Annihilated || ship.State == ShipState.Junk;
+            return ship.State == ShipState.Annihilated;
         }
 
         public static bool IsLeft(this IShip helm, IParticle target)

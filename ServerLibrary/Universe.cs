@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
-using HonorInterfaces;
 using SF.Space;
 
 namespace SF.ServerLibrary
@@ -27,7 +26,7 @@ namespace SF.ServerLibrary
         private readonly IList<IMissile> m_missiles;
         private readonly Thread m_backgroundWorker;
 
-        public ServerDamageContract.IServerDamageCallbackContract DamageServiceCallback;
+//        public ServerDamageContract.IServerDamageCallbackContract DamageServiceCallback;
         //public const byte BreakEverything = (byte)RanmaRepairSeverity.Hard * Subsystem.Length;
         //public const byte SevereDamage = (byte)RanmaRepairSeverity.Hard * 2;
 
@@ -35,25 +34,25 @@ namespace SF.ServerLibrary
         {
             var r = Random.NextDouble();
             if (r < 0.1)
-                return (byte)RanmaRepairSeverity.Easy;
+                return 1;//(byte)RanmaRepairSeverity.Easy;
             if (r < 0.3)
-                return (byte)RanmaRepairSeverity.Medium;
-            return (byte)RanmaRepairSeverity.Hard;
+                return 2; //(byte)RanmaRepairSeverity.Medium;
+            return 3;//(byte)RanmaRepairSeverity.Hard;
         }
 
         private byte BoardDamage()
         {
             var r = Random.NextDouble();
             if (r < 0.6)
-                return (byte)RanmaRepairSeverity.Easy;
+                return 1;//(byte)RanmaRepairSeverity.Easy;
             if (r < 0.9)
-                return (byte)RanmaRepairSeverity.Medium;
-            return (byte)RanmaRepairSeverity.Hard;
+                return 2;//(byte)RanmaRepairSeverity.Medium;
+            return 3;//(byte)RanmaRepairSeverity.Hard;
         }
 
-        private byte CollisionDamage(bool isLight)
+        private int CollisionDamage(bool isLight)
         {
-            return isLight ? (byte)(3 * (byte)RanmaRepairSeverity.Hard) : (byte)RanmaRepairSeverity.Hard;
+            return isLight ? 9 : 3;
         }
 
         private string SerializeObject<T>(T instance)
@@ -274,7 +273,6 @@ namespace SF.ServerLibrary
                 arrowDef.ThrustTo = arrowDef.Thrust = 0;
                 arrowDef.Speed = from.Speed;
                 arrowDef.Position = from.Position + Vector.Direction(angle)*Catalog.Instance.CarrierRange/2;
-                arrow.HealthChanged = true;
                 arrow.CarrierShip = null;
                 arrow.Dynamics = new Dynamics(arrow.Class, arrowDef, Time);
                 arrow.Dynamics.UpdateTime(Time.TotalSeconds);
@@ -352,9 +350,6 @@ namespace SF.ServerLibrary
                     var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
                     foreach (var missile in deleted)
                         m_missiles.Remove(missile);
-                    foreach(Helm helm in Helms.Values)
-                        if (helm.HealthChanged)
-                            helm.UpdateHealth(t);
                 }
             }
         }
@@ -415,74 +410,71 @@ namespace SF.ServerLibrary
                     }
         }
 
-        private void DamageShip(Helm target, byte severity)
+        private void DamageShip(Helm target, int severity)
         {
             System.Diagnostics.Trace.WriteLine(string.Format("Корабль {0} поврежден. Уровень {1}", target.Name, severity));
-            if (DamageServiceCallback != null)
-            {
-                try
-                {
-                    while (severity > (byte) RanmaRepairSeverity.Hard)
-                    {
-                        DamageServiceCallback.DamageShip(target.Id, (byte) RanmaRepairSeverity.Hard);
-                        severity -= (byte) RanmaRepairSeverity.Hard;
-                    }
-                    if (severity > 0)
-                        DamageServiceCallback.DamageShip(target.Id, severity);
-                }
-                catch
-                {
-                    System.Diagnostics.Trace.WriteLine("Потеряно соединение с сервером повреждений.");
-                }
-            }
-            else
-            {
-                target.State = ShipState.Junk;
-                target.HealthChanged = true;
-            }
+            //if (DamageServiceCallback != null)
+            //{
+            //    try
+            //    {
+            //        while (severity > (byte) RanmaRepairSeverity.Hard)
+            //        {
+            //            DamageServiceCallback.DamageShip(target.Id, (byte) RanmaRepairSeverity.Hard);
+            //            severity -= (byte) RanmaRepairSeverity.Hard;
+            //        }
+            //        if (severity > 0)
+            //            DamageServiceCallback.DamageShip(target.Id, severity);
+            //    }
+            //    catch
+            //    {
+            //        System.Diagnostics.Trace.WriteLine("Потеряно соединение с сервером повреждений.");
+            //    }
+            //}
+            //else
+            //{
+            //    target.State = ShipState.Junk;
+            //    target.HealthChanged = true;
+            //}
         }
 
         private void DestroyShip(Helm target)
         {
             System.Diagnostics.Trace.WriteLine(string.Format("Корабль {0} уничтожен.", target.Name));
-            if (DamageServiceCallback != null)
-            {
-                try
-                {
-                    DamageServiceCallback.DestroyShip(target.Id);
-                }
-                catch
-                {
-                    System.Diagnostics.Trace.WriteLine("Потеряно соединение с сервером повреждений.");
-                }
-            }
-            else
-            {
+            //if (DamageServiceCallback != null)
+            //{
+            //    try
+            //    {
+            //        DamageServiceCallback.DestroyShip(target.Id);
+            //    }
+            //    catch
+            //    {
+            //        System.Diagnostics.Trace.WriteLine("Потеряно соединение с сервером повреждений.");
+            //    }
+            //}
+            //else
+            //{
                 target.State = ShipState.Annihilated;
-                target.HealthChanged = true;
-            }
+            //}
         }
 
-        static int generation = 0;
-
-        public void SetShipsHealth(ShipStatus[] shipStatuses)
-        {
-            lock (m_locker)
-            {
-                var helms = Helms.Values.OfType<Helm>().ToDictionary(helm => helm.Id);
-                foreach (var status in shipStatuses)
-                {
-                    Helm helm;
-                    if (!helms.TryGetValue(status.ShipGuid, out helm))
-                    {
-                        System.Diagnostics.Trace.WriteLine(string.Format("Ship Id = {0} not found.", status.ShipGuid));
-                        continue;
-                    }
-                    foreach (var subsystemStatus in status.SubsystemStatuses)
-                        helm.Damage[(int) subsystemStatus.SubSystem] = (byte)((int)subsystemStatus.Severity*100/(int)RanmaRepairSeverity.Hard);
-                    helm.HealthChanged = true;
-                }
-            }
-        }
+        //public void SetShipsHealth(ShipStatus[] shipStatuses)
+        //{
+        //    lock (m_locker)
+        //    {
+        //        var helms = Helms.Values.OfType<Helm>().ToDictionary(helm => helm.Id);
+        //        foreach (var status in shipStatuses)
+        //        {
+        //            Helm helm;
+        //            if (!helms.TryGetValue(status.ShipGuid, out helm))
+        //            {
+        //                System.Diagnostics.Trace.WriteLine(string.Format("Ship Id = {0} not found.", status.ShipGuid));
+        //                continue;
+        //            }
+        //            foreach (var subsystemStatus in status.SubsystemStatuses)
+        //                helm.Damage[(int) subsystemStatus.SubSystem] = (byte)((int)subsystemStatus.Severity*100/(int)RanmaRepairSeverity.Hard);
+        //            helm.HealthChanged = true;
+        //        }
+        //    }
+        //}
     }
 }

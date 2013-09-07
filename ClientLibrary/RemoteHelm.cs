@@ -19,6 +19,26 @@ namespace SF.ClientLibrary
             m_that = def;
         }
 
+        public double AttackHealth
+        {
+            get { return m_that.AttackHealth; }
+        }
+
+        public double DefenseHealth
+        {
+            get { return m_that.DefenseHealth; }
+        }
+
+        public double EngineHealth
+        {
+            get { return m_that.EngineHealth; }
+        }
+
+        public double NavigationHealth
+        {
+            get { return m_that.NavigationHealth; }
+        }
+
         public double HeadingTo
         {
             get
@@ -143,14 +163,14 @@ namespace SF.ClientLibrary
             get { return m_that.Thrust; }
         }
 
+        public double Health
+        {
+            get { return (AttackHealth + DefenseHealth + EngineHealth + NavigationHealth)/4; }
+        }
+
         public ShipState State
         {
             get { return m_that.State; }
-        }
-
-        public byte[] Damage
-        {
-            get { return m_that.Damage; }
         }
 
         public Board Right

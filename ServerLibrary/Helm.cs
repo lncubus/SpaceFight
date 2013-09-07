@@ -1,5 +1,4 @@
 ﻿using System;
-using HonorInterfaces;
 using SF.Space;
 
 namespace SF.ServerLibrary
@@ -17,6 +16,56 @@ namespace SF.ServerLibrary
                 if (this.IsDead())
                     return;
                 Dynamics.RollTo = value;
+            }
+        }
+
+        public double AttackHealth
+        {
+            get; set;
+        }
+
+        public double DefenseHealth
+        {
+            get; set;
+        }
+
+        public double EngineHealth
+        {
+            get
+            {
+                return Dynamics.EngineHealth;
+            }
+            set
+            {
+                Dynamics.HealthChanged = true;
+                Dynamics.EngineHealth = value;
+            }
+        }
+        //    if (Damage[Subsystem.Reactor] == 100)
+        //        State = ShipState.Junk;
+        //    if (Damage[Subsystem.Attack] == 100 && Damage[Subsystem.Defense] == 100 && Damage[Subsystem.Navigation] == 100 && Damage[Subsystem.Wedge] == 100)
+        //        State = ShipState.Junk;
+        //    HealthChanged = false;
+        //    var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Wedge], Damage[Subsystem.Reactor]) / 100.0;
+        //    var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Navigation], Damage[Subsystem.Reactor]) / 100.0;
+        //    AttackHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Attack], Damage[Subsystem.Reactor]) / 100.0;
+        //    if (GateHealth >= 0)
+        //        GateHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Gate], Damage[Subsystem.Reactor]) / 100.0;
+        //    1 - engineDamage;
+        //    Dynamics.SteeringHealth = 1 - steeringDamage;
+        //    Dynamics.UpdateHealth(, Class);
+        //}
+
+        public double NavigationHealth
+        {
+            get
+            {
+                return Dynamics.NavigationHealth;
+            }
+            set
+            {
+                Dynamics.HealthChanged = true;
+                Dynamics.NavigationHealth = value;
             }
         }
 
@@ -50,9 +99,13 @@ namespace SF.ServerLibrary
 
         public IShip CarrierShip { get; set; }
 
-        public string Carrier { get { return CarrierShip == null ? null : CarrierShip.Name; } }
-
-        public byte[] Damage { get; set; }
+        public string Carrier
+        {
+            get
+            {
+                return CarrierShip == null ? null : CarrierShip.Name;
+            }
+        }
 
         public Board Right
         {
@@ -63,11 +116,6 @@ namespace SF.ServerLibrary
         {
             get; set;
         }
-
-        public volatile bool HealthChanged;
-
-        public double AttackHealth = 1;
-        public double GateHealth = 1;
 
         public static IHelm Load(HelmDefinition that)
         {
@@ -82,7 +130,7 @@ namespace SF.ServerLibrary
                     throw new NullReferenceException("Undefined Missile class " + that.MissileName);
             }
             var shipDynamics = new Dynamics(shipClass, that, TimeSpan.Zero);
-            return new Helm
+            var helm = new Helm
             {
                 Id = that.Id == Guid.Empty ? Guid.NewGuid() : that.Id,
                 Class = shipClass,
@@ -92,29 +140,14 @@ namespace SF.ServerLibrary
                 Missile = missileClass,
                 Missiles = that.Missiles,
                 State =  that.State,
-                Damage = that.Damage ?? new byte[Subsystem.Length],
                 Right = that.Right.Launchers != null ? that.Right : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
                 Left = that.Left.Launchers != null ? that.Left : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
-                HealthChanged = true,
-                GateHealth = shipClass.Superclass == ShipSuperclass.CLAC ? 1 : -1,
             };
-        }
-
-        public void UpdateHealth(double t)
-        {
-            if (Damage[Subsystem.Reactor] == 100)
-                State = ShipState.Junk;
-            if (Damage[Subsystem.Attack] == 100 && Damage[Subsystem.Defense] == 100 && Damage[Subsystem.Navigation] == 100 && Damage[Subsystem.Wedge] == 100)
-                State = ShipState.Junk;
-            HealthChanged = false;
-            var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Wedge], Damage[Subsystem.Reactor]) / 100.0;
-            var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Navigation], Damage[Subsystem.Reactor]) / 100.0;
-            AttackHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Attack], Damage[Subsystem.Reactor]) / 100.0;
-            if (GateHealth >= 0)
-                GateHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Gate], Damage[Subsystem.Reactor]) / 100.0;
-            Dynamics.EngineHealth = 1 - engineDamage;
-            Dynamics.SteeringHealth = 1 - steeringDamage;
-            Dynamics.UpdateHealth(t, Class);
+            helm.AttackHealth = that.AttackHealth;
+            helm.DefenseHealth = that.DefenseHealth;
+            helm.EngineHealth = that.EngineHealth;
+            helm.NavigationHealth = that.EngineHealth;
+            return helm;
         }
 
         public void UpdateWeapons(double dt)

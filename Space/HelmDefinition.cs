@@ -12,13 +12,19 @@ namespace SF.Space
         [DataMember]
         public double ThrustTo;
         [DataMember]
-        public byte[] Damage;
-        [DataMember]
         public Board Right;
         [DataMember]
         public Board Left;
         [DataMember]
         public string Carrier;
+        [DataMember]
+        public double AttackHealth;
+        [DataMember]
+        public double DefenseHealth;
+        [DataMember]
+        public double EngineHealth;
+        [DataMember]
+        public double NavigationHealth;
 
         public static HelmDefinition Store(IHelm helm)
         {
@@ -41,11 +47,14 @@ namespace SF.Space
                 State = helm.State,
                 Radius = helm.Radius,
                 Weight = helm.Weight,
-                Damage = helm.Damage ?? new byte[Subsystem.Length],
                 Description = helm.Description,
                 Right = helm.Right,
                 Left = helm.Left,
                 Carrier = helm.Carrier,
+                AttackHealth = helm.AttackHealth,
+                DefenseHealth = helm.DefenseHealth,
+                EngineHealth = helm.EngineHealth,
+                NavigationHealth = helm.NavigationHealth,
             };
         }
     }

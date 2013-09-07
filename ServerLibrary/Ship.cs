@@ -3,7 +3,7 @@ using SF.Space;
 
 namespace SF.ServerLibrary
 {
-    internal class Ship : IShip
+    internal abstract class Ship : IShip
     {
         public Guid Id { get; set; }
         public string Nation { get; set; }
@@ -12,6 +12,11 @@ namespace SF.ServerLibrary
         public double Heading { get { return Dynamics.HeadingValue; } }
         public double Roll { get { return Dynamics.RollValue; } }
         public double Thrust { get { return Dynamics.AccelerationValue; } }
+
+        public double Health
+        {
+            get { return 1; }
+        }
 
         public ShipClass Class { get; set; }
         public string ClassName
