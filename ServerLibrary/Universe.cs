@@ -277,6 +277,7 @@ namespace SF.ServerLibrary
                 arrow.HealthChanged = true;
                 arrow.CarrierShip = null;
                 arrow.Dynamics = new Dynamics(arrow.Class, arrowDef, Time);
+                arrow.Dynamics.UpdateTime(Time.TotalSeconds);
             }
         }
 

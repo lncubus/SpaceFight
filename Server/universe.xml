@@ -152,6 +152,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Афина</Name>
+      <Carrier>Золотая Лань</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -172,6 +173,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Апполон</Name>
+      <Carrier>Золотая Лань</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -192,6 +194,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Гермес</Name>
+      <Carrier>Золотая Лань</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -212,6 +215,7 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Персей</Name>
+      <Carrier>Золотая Лань</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
