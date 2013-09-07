@@ -115,6 +115,13 @@ namespace Gunner
             indicatorControl.Acceleration = ship.Acceleration;
             indicatorControl.Speed = ship.Speed;
             indicatorControl.Position = ship.Position;
+            var carried = client.GetCarriedShips();
+            if (carried != null)
+            {
+                dataGridViewLACs.RowCount = carried.Count;
+                for (int i = 0; i < carried.Count; i++)
+                    dataGridViewLACs.Rows[i].Cells[columnName.Index].Value = carried[i];
+            }
             if (target == null)
             {
                 labelBoard.Text = "Цель не выбрана";
@@ -196,6 +203,14 @@ namespace Gunner
                     e.Handled = false;
                     break;
             }
+        }
+
+        private void dataGridViewLACs_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != columnLaunch.Index)
+                return;
+            var name = (string) dataGridViewLACs.Rows[e.RowIndex].Cells[columnName.Index].Value;
+            client.Launch(name);
         }
     }
 }

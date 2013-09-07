@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
+            System.Drawing.StringFormat stringFormat2 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.indicatorControl = new SF.Controls.IndicatorControl();
@@ -41,15 +41,20 @@
             this.checkBoxFriendlyFire = new System.Windows.Forms.CheckBox();
             this.tabControlWeapons = new System.Windows.Forms.TabControl();
             this.tabPageMissiles = new System.Windows.Forms.TabPage();
-            this.tabPageLACs = new System.Windows.Forms.TabPage();
             this.tableLayoutPanelMissiles = new System.Windows.Forms.TableLayoutPanel();
             this.missileControl = new SF.Controls.MissileControl();
             this.profileButtonsPanel = new SF.Controls.ProfileButtonsPanel();
+            this.tabPageLACs = new System.Windows.Forms.TabPage();
+            this.dataGridViewLACs = new System.Windows.Forms.DataGridView();
+            this.columnLaunch = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.columnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel.SuspendLayout();
             this.panelFire.SuspendLayout();
             this.tabControlWeapons.SuspendLayout();
             this.tabPageMissiles.SuspendLayout();
             this.tableLayoutPanelMissiles.SuspendLayout();
+            this.tabPageLACs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLACs)).BeginInit();
             this.SuspendLayout();
             // 
             // timerUpdate
@@ -88,11 +93,11 @@
             // 
             // spaceGridControl
             // 
-            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
-            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
-            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
-            this.spaceGridControl.CenteredLayout = stringFormat1;
+            stringFormat2.Alignment = System.Drawing.StringAlignment.Center;
+            stringFormat2.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
+            stringFormat2.LineAlignment = System.Drawing.StringAlignment.Center;
+            stringFormat2.Trimming = System.Drawing.StringTrimming.None;
+            this.spaceGridControl.CenteredLayout = stringFormat2;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(3, 3);
             this.spaceGridControl.Missiles = null;
@@ -199,16 +204,6 @@
             this.tabPageMissiles.TabIndex = 0;
             this.tabPageMissiles.Text = "Ракеты";
             // 
-            // tabPageLACs
-            // 
-            this.tabPageLACs.BackColor = System.Drawing.Color.MintCream;
-            this.tabPageLACs.Location = new System.Drawing.Point(4, 25);
-            this.tabPageLACs.Name = "tabPageLACs";
-            this.tabPageLACs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLACs.Size = new System.Drawing.Size(241, 258);
-            this.tabPageLACs.TabIndex = 1;
-            this.tabPageLACs.Text = "ЛАК";
-            // 
             // tableLayoutPanelMissiles
             // 
             this.tableLayoutPanelMissiles.ColumnCount = 1;
@@ -244,6 +239,55 @@
             this.profileButtonsPanel.Size = new System.Drawing.Size(229, 120);
             this.profileButtonsPanel.TabIndex = 9;
             // 
+            // tabPageLACs
+            // 
+            this.tabPageLACs.BackColor = System.Drawing.Color.MintCream;
+            this.tabPageLACs.Controls.Add(this.dataGridViewLACs);
+            this.tabPageLACs.Location = new System.Drawing.Point(4, 25);
+            this.tabPageLACs.Name = "tabPageLACs";
+            this.tabPageLACs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLACs.Size = new System.Drawing.Size(241, 258);
+            this.tabPageLACs.TabIndex = 1;
+            this.tabPageLACs.Text = "ЛАК";
+            // 
+            // dataGridViewLACs
+            // 
+            this.dataGridViewLACs.AllowUserToAddRows = false;
+            this.dataGridViewLACs.AllowUserToDeleteRows = false;
+            this.dataGridViewLACs.AllowUserToResizeColumns = false;
+            this.dataGridViewLACs.AllowUserToResizeRows = false;
+            this.dataGridViewLACs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewLACs.ColumnHeadersVisible = false;
+            this.dataGridViewLACs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.columnLaunch,
+            this.columnName});
+            this.dataGridViewLACs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewLACs.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
+            this.dataGridViewLACs.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewLACs.MultiSelect = false;
+            this.dataGridViewLACs.Name = "dataGridViewLACs";
+            this.dataGridViewLACs.RowHeadersVisible = false;
+            this.dataGridViewLACs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewLACs.ShowEditingIcon = false;
+            this.dataGridViewLACs.Size = new System.Drawing.Size(235, 252);
+            this.dataGridViewLACs.TabIndex = 7;
+            this.dataGridViewLACs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewLACs_CellClick);
+            // 
+            // columnLaunch
+            // 
+            this.columnLaunch.HeaderText = "Launch";
+            this.columnLaunch.Name = "columnLaunch";
+            this.columnLaunch.Text = "Пуск";
+            this.columnLaunch.UseColumnTextForButtonValue = true;
+            this.columnLaunch.Width = 35;
+            // 
+            // columnName
+            // 
+            this.columnName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.columnName.HeaderText = "Name";
+            this.columnName.Name = "columnName";
+            this.columnName.ReadOnly = true;
+            // 
             // GunnerForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -261,6 +305,8 @@
             this.tabControlWeapons.ResumeLayout(false);
             this.tabPageMissiles.ResumeLayout(false);
             this.tableLayoutPanelMissiles.ResumeLayout(false);
+            this.tabPageLACs.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLACs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -282,6 +328,9 @@
         private SF.Controls.MissileControl missileControl;
         private SF.Controls.ProfileButtonsPanel profileButtonsPanel;
         private System.Windows.Forms.TabPage tabPageLACs;
+        private System.Windows.Forms.DataGridView dataGridViewLACs;
+        private System.Windows.Forms.DataGridViewButtonColumn columnLaunch;
+        private System.Windows.Forms.DataGridViewTextBoxColumn columnName;
     }
 }
 

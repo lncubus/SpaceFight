@@ -258,6 +258,28 @@ namespace SF.ServerLibrary
             }
         }
 
+        public void Launch(IHelm from, string name)
+        {
+            if (from.IsDead())
+                return;
+            lock (m_locker)
+            {
+                var arrow = (Helm)GetHelm(name);
+                if (arrow == null || arrow.Carrier != from.Name || arrow.IsDead())
+                    return;
+                var arrowDef = HelmDefinition.Store(arrow);
+                var angle = Random.NextAngle();
+                arrowDef.HeadingTo = arrowDef.Heading = angle;
+                arrowDef.RollTo = arrowDef.Roll = from.Roll;
+                arrowDef.ThrustTo = arrowDef.Thrust = 0;
+                arrowDef.Speed = from.Speed;
+                arrowDef.Position = from.Position + Vector.Direction(angle)*Catalog.Instance.CarrierRange/2;
+                arrow.HealthChanged = true;
+                arrow.CarrierShip = null;
+                arrow.Dynamics = new Dynamics(arrow.Class, arrowDef, Time);
+            }
+        }
+
         private IHelm GetHelm(string name)
         {
             IHelm result;

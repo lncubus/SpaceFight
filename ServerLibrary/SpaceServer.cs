@@ -68,5 +68,10 @@ namespace SF.ServerLibrary
         {
             Universe.Fire(m_helm, to, launchers);
         }
+
+        public void Launch(string name)
+        {
+            Universe.Launch(m_helm, name);
+        }
     }
 }
