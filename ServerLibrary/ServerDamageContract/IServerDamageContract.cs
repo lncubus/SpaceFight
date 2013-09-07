@@ -8,20 +8,20 @@ namespace SF.ServerLibrary.ServerDamageContract
     [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(IServerDamageCallbackContract))]
     public interface IServerDamageContract
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void ServerConnect();
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void SetAllSubsystemsStatuses(ShipStatus[] shipStatuses);
     }
 
     public interface IServerDamageCallbackContract
     {
-        [OperationContract]
-        bool DamageShip(Guid shipGuid, byte byteSeverity);
+        [OperationContract(IsOneWay = true)]
+        void DamageShip(Guid shipGuid, byte byteSeverity);
 
-        [OperationContract]
-        bool DestroyShip(Guid shipGuid);
+        [OperationContract(IsOneWay = true)]
+        void DestroyShip(Guid shipGuid);
     }
 
 }
