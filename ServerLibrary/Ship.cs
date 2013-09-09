@@ -15,8 +15,10 @@ namespace SF.ServerLibrary
 
         public double Health
         {
-            get { return 1; }
+            get { return GetHealth(); }
         }
+
+        protected abstract double GetHealth();
 
         public ShipClass Class { get; set; }
         public string ClassName

@@ -19,6 +19,11 @@ namespace SF.ServerLibrary
             }
         }
 
+        protected override double GetHealth()
+        {
+            return (AttackHealth + DefenseHealth + EngineHealth + NavigationHealth)/4;
+        }
+
         public double AttackHealth
         {
             get; set;
