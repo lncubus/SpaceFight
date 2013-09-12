@@ -1,8 +1,7 @@
 set bin=..\SpaceFight_bin
 set devenv="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com"
-if not exist %devenv% {
-set devenv="C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com"
-}
+if not exist %devenv% set devenv="C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com"
+
 %devenv% /rebuild Debug %CD%\sf.sln
 
 echo y | rmdir /S /Q %bin%
