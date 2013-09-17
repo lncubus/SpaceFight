@@ -97,6 +97,8 @@ namespace SF.Space
 
         protected void ChangeValue(ref double member, double value)
         {
+            if (value < 0)
+                value = 0;
             m_changed |= !MathUtils.NearlyEqual(member, value);
             member = value;
         }

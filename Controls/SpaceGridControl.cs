@@ -429,7 +429,7 @@ namespace SF.Controls
 
         protected void DrawShip(Graphics graphics, IShip ship)
         {
-            if (!ship.IsDead())
+            if (!ship.IsDead() && ship.State != ShipState.Junk)
             {
                 DrawVulnerableSectors(graphics, ship);
                 if (ship.Board() <= 0.5)
@@ -439,9 +439,11 @@ namespace SF.Controls
             }
             DrawShipHull(graphics, ship);
             var brush = ShipNames.Select(OwnShip, ship);
-            var text = string.IsNullOrEmpty(ship.Description) ? ship.Name : ship.Name + "\n" + ship.Description;
-            WorldDrawText(graphics, brush, ship.Position, text);
-
+            var text = new StringBuilder(ship.Name);
+            if (!string.IsNullOrEmpty(ship.Description))
+                text.AppendLine().Append(ship.Description);
+            text.AppendLine().Append(Math.Round(ship.HealthRate*100)).Append("%");
+            WorldDrawText(graphics, brush, ship.Position, text.ToString());
         }
 
         protected void DrawVulnerableSectors(Graphics graphics, IShip ship)
@@ -522,7 +524,7 @@ namespace SF.Controls
             if (!IsVisible(points))
                 return;
             graphics.DrawPolygon(pen, points);
-            if (!ship.IsDead())
+            if (ship.State != ShipState.Junk)
                 return;
             alpha = Math.PI*1/3;
             var beta = Math.PI*2/3;

@@ -347,6 +347,17 @@ namespace SF.ServerLibrary
                     foreach (Missile missile in m_missiles)
                         missile.UpdateTime(t);
                     CheckCollisions(t, dt);
+                    foreach (Helm helm in Helms.Values.Where(helm => helm.Health.Changed))
+                    {
+                        helm.Dynamics.EngineHealth = helm.Health.Engine;
+                        helm.Dynamics.NavigationHealth = helm.Health.Navigation;
+                        helm.Dynamics.UpdateHealth(t);
+                        helm.Health.ResetChanged();
+                        if (helm.InSpace() && !helm.IsDead() && helm.HealthRate <= MathUtils.Epsilon)
+                            helm.State = ShipState.Junk;
+                        if (helm.InSpace() && helm.State == ShipState.Junk && helm.HealthRate > MathUtils.Epsilon)
+                            helm.State = ShipState.Normal;
+                    }
                     tPrev = t;
                     var deleted = m_missiles.Where(missile => missile.IsDead).ToList();
                     foreach (var missile in deleted)
@@ -381,7 +392,9 @@ namespace SF.ServerLibrary
                 var target = (Helm) (missile.Target);
                 if (!target.InSpace())
                 {
-                    missile.Exploded = true;
+                    missile.Exhausted = true;
+                    System.Diagnostics.Trace.WriteLine(string.Format(
+                        "Ракета потеряла цель {0}", target.Name));
                     continue;
                 }
                 if (m_collider.HaveCollision(missile, target, dt, missile.Class.HitDistance))
@@ -393,8 +406,8 @@ namespace SF.ServerLibrary
                     if (angle > Math.PI)
                         angle = Math.PI - angle;
                     var throat = (Math.PI - angle) < Catalog.Instance.ThroatAngle/2;
-                    var skirt = angle > Math.PI - Catalog.Instance.SkirtAngle/2;
-                    System.Diagnostics.Trace.WriteLine(string.Format("Угол {0} горло = {1} юбка = {2}.", MathUtils.ToDegreesInt(angle), throat, skirt));
+                    var skirt = angle < Catalog.Instance.SkirtAngle/2;
+                    System.Diagnostics.Trace.WriteLine(string.Format("Угол {0}{1}.", MathUtils.ToDegreesInt(angle), throat ? " горло" : skirt ? " юбка" : string.Empty));
                     byte severity;
                     if (throat || skirt)
                         severity = ThroatDamage();
@@ -439,7 +452,23 @@ namespace SF.ServerLibrary
             //else
             //{
                 //target.State = ShipState.Junk;
-                target.Health.Crash();
+            var damage = severity*Random.NextDouble();
+            var subsystem = Random.Next(4);
+            switch (subsystem)
+            {
+                case 0:
+                    target.Health.Attack -= damage;
+                    break;
+                case 1:
+                    target.Health.Defense -= damage;
+                    break;
+                case 2:
+                    target.Health.Engine -= damage;
+                    break;
+                case 3:
+                    target.Health.Navigation -= damage;
+                    break;
+            }
             //}
         }
 
