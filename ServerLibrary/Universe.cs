@@ -452,23 +452,13 @@ namespace SF.ServerLibrary
             //else
             //{
                 //target.State = ShipState.Junk;
-            var damage = severity*Random.NextDouble();
-            var subsystem = Random.Next(4);
-            switch (subsystem)
-            {
-                case 0:
-                    target.Health.Attack -= damage;
-                    break;
-                case 1:
-                    target.Health.Defense -= damage;
-                    break;
-                case 2:
-                    target.Health.Engine -= damage;
-                    break;
-                case 3:
-                    target.Health.Navigation -= damage;
-                    break;
-            }
+                var health = target.Health;
+                var damage = (Random.NextDouble() + 1)/2;
+                if (damage*severity > health.Rate*health.Subsystems)
+                    health.Crash();
+                else
+                    for (var i = 0; i < severity; i++)
+                        health.Damage(damage, Random.Next(health.Subsystems));
             //}
         }
 

@@ -5,10 +5,16 @@ namespace SF.Space
     [DataContract]
     public class Health
     {
-        private double m_attack;
-        private double m_defense;
-        private double m_engine;
-        private double m_navigation;
+        public int Subsystems
+        {
+            get
+            {
+                InitializeIfNeeded();
+                return m_values.Length;
+            }
+        }
+
+        private double[] m_values;
         private bool m_changed;
 
         public Health()
@@ -21,7 +27,7 @@ namespace SF.Space
         {
             get
             {
-                return (Attack + Defense + Engine + Navigation)/4;
+                return (Attack + Defense + Engine + Navigation) / 4;
             }
         }
 
@@ -30,11 +36,13 @@ namespace SF.Space
         {
             get
             {
-                return m_attack;
+                InitializeIfNeeded();
+                return m_values[Subsystem.Attack];
             }
             set
             {
-                ChangeValue(ref m_attack, value);
+                InitializeIfNeeded();
+                ChangeValue(ref m_values[Subsystem.Attack], value);
             }
         }
 
@@ -43,11 +51,13 @@ namespace SF.Space
         {
             get
             {
-                return m_defense;
+                InitializeIfNeeded();
+                return m_values[Subsystem.Defense];
             }
             set
             {
-                ChangeValue(ref m_defense, value);
+                InitializeIfNeeded();
+                ChangeValue(ref m_values[Subsystem.Defense], value);
             }
         }
 
@@ -56,11 +66,13 @@ namespace SF.Space
         {
             get
             {
-                return m_engine;
+                InitializeIfNeeded();
+                return m_values[Subsystem.Wedge];
             }
             set
             {
-                ChangeValue(ref m_engine, value);
+                InitializeIfNeeded();
+                ChangeValue(ref m_values[Subsystem.Wedge], value);
             }
         }
 
@@ -69,11 +81,13 @@ namespace SF.Space
         {
             get
             {
-                return m_navigation;
+                InitializeIfNeeded();
+                return m_values[Subsystem.Navigation];
             }
             set
             {
-                ChangeValue(ref m_navigation, value);
+                InitializeIfNeeded();
+                ChangeValue(ref m_values[Subsystem.Navigation], value);
             }
         }
 
@@ -95,12 +109,38 @@ namespace SF.Space
             Attack = Defense = Engine = Navigation = 0;
         }
 
+        public void Damage(double damage, int subsystem)
+        {
+            InitializeIfNeeded();
+            while (Rate > 0 && damage > 0)
+            {
+                if (m_values[subsystem % Subsystems] > damage)
+                {
+                    m_values[subsystem % Subsystems] -= damage;
+                    damage = 0;
+                }
+                else
+                {
+                    damage -= m_values[subsystem % Subsystems];
+                    m_values[subsystem % Subsystems] = 0;
+                }
+                subsystem++;
+            }
+            m_changed = true;
+        }
+
         protected void ChangeValue(ref double member, double value)
         {
             if (value < 0)
                 value = 0;
             m_changed |= !MathUtils.NearlyEqual(member, value);
             member = value;
+        }
+
+        private void InitializeIfNeeded()
+        {
+            if (m_values == null || m_values.Length == 0)
+                m_values = new double[Subsystem.Navigation + 1];
         }
     }
 }
