@@ -201,7 +201,6 @@ namespace SF.ServerLibrary
 
         public void UpdateHealth(double time)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("Engine = {0}, Navigation = {1}", EngineHealth, NavigationHealth));
             if (MathUtils.NearlyEqual(EngineHealth, 0))
             {
                 Acceleration.Reset(time, 0);
@@ -215,6 +214,7 @@ namespace SF.ServerLibrary
                     Acceleration.Reset(time, maxAccel);
             }
             Heading.Respeed(time, NavigationHealth);
+            Roll.Respeed(time, NavigationHealth);
         }
         
         public void UpdateTime(double time)

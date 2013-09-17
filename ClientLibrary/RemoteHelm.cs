@@ -19,26 +19,6 @@ namespace SF.ClientLibrary
             m_that = def;
         }
 
-        public double AttackHealth
-        {
-            get { return m_that.AttackHealth; }
-        }
-
-        public double DefenseHealth
-        {
-            get { return m_that.DefenseHealth; }
-        }
-
-        public double EngineHealth
-        {
-            get { return m_that.EngineHealth; }
-        }
-
-        public double NavigationHealth
-        {
-            get { return m_that.NavigationHealth; }
-        }
-
         public double HeadingTo
         {
             get
@@ -163,9 +143,14 @@ namespace SF.ClientLibrary
             get { return m_that.Thrust; }
         }
 
-        public double Health
+        public double HealthRate
         {
-            get { return (AttackHealth + DefenseHealth + EngineHealth + NavigationHealth)/4; }
+            get { return m_that.HealthRate; }
+        }
+
+        public Health Health
+        {
+            get { return m_that.Health; }
         }
 
         public ShipState State

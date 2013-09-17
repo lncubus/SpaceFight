@@ -3,6 +3,8 @@ using SF.Space;
 
 namespace SF.ServerLibrary
 {
+    using System.Diagnostics;
+
     internal class Helm : Ship, IHelm
     {
         public double RollTo
@@ -21,58 +23,10 @@ namespace SF.ServerLibrary
 
         protected override double GetHealth()
         {
-            return (AttackHealth + DefenseHealth + EngineHealth + NavigationHealth)/4;
+            return Health.Rate;
         }
 
-        public double AttackHealth
-        {
-            get; set;
-        }
-
-        public double DefenseHealth
-        {
-            get; set;
-        }
-
-        public double EngineHealth
-        {
-            get
-            {
-                return Dynamics.EngineHealth;
-            }
-            set
-            {
-                Dynamics.HealthChanged = true;
-                Dynamics.EngineHealth = value;
-            }
-        }
-        //    if (Damage[Subsystem.Reactor] == 100)
-        //        State = ShipState.Junk;
-        //    if (Damage[Subsystem.Attack] == 100 && Damage[Subsystem.Defense] == 100 && Damage[Subsystem.Navigation] == 100 && Damage[Subsystem.Wedge] == 100)
-        //        State = ShipState.Junk;
-        //    HealthChanged = false;
-        //    var engineDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Wedge], Damage[Subsystem.Reactor]) / 100.0;
-        //    var steeringDamage = this.IsDead() ? 1.0 : Math.Max(Damage[Subsystem.Navigation], Damage[Subsystem.Reactor]) / 100.0;
-        //    AttackHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Attack], Damage[Subsystem.Reactor]) / 100.0;
-        //    if (GateHealth >= 0)
-        //        GateHealth = this.IsDead() ? 0.0 : 1.0 - Math.Max(Damage[Subsystem.Gate], Damage[Subsystem.Reactor]) / 100.0;
-        //    1 - engineDamage;
-        //    Dynamics.SteeringHealth = 1 - steeringDamage;
-        //    Dynamics.UpdateHealth(, Class);
-        //}
-
-        public double NavigationHealth
-        {
-            get
-            {
-                return Dynamics.NavigationHealth;
-            }
-            set
-            {
-                Dynamics.HealthChanged = true;
-                Dynamics.NavigationHealth = value;
-            }
-        }
+        public Health Health { get; private set; }
 
         public double HeadingTo
         {
@@ -145,13 +99,10 @@ namespace SF.ServerLibrary
                 Missile = missileClass,
                 Missiles = that.Missiles,
                 State =  that.State,
+                Health = that.Health,
                 Right = that.Right.Launchers != null ? that.Right : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
                 Left = that.Left.Launchers != null ? that.Left : new Board { Accumulator = 0, Launchers = new double[that.Missiles] },
             };
-            helm.AttackHealth = that.AttackHealth;
-            helm.DefenseHealth = that.DefenseHealth;
-            helm.EngineHealth = that.EngineHealth;
-            helm.NavigationHealth = that.EngineHealth;
             return helm;
         }
 
@@ -163,10 +114,10 @@ namespace SF.ServerLibrary
 
         private Board UpdateBoard(Board board, double dt)
         {
-            var accumulator = board.Accumulator <= 0 ? board.Accumulator : Math.Max(board.Accumulator - dt*AttackHealth, 0);
+            var accumulator = board.Accumulator <= 0 ? board.Accumulator : Math.Max(board.Accumulator - dt*this.Health.Attack, 0);
             var launchers = board.Launchers;
             for (int i = 0; i < launchers.Length; i++)
-                launchers[i] = launchers[i] <= 0 ? launchers[i] : Math.Max(launchers[i] - dt*AttackHealth, 0);
+                launchers[i] = launchers[i] <= 0 ? launchers[i] : Math.Max(launchers[i] - dt*this.Health.Attack, 0);
             return new Board
             {
                 Accumulator = accumulator,

@@ -18,7 +18,7 @@ namespace SF.Space
         double Roll { get; }
         double Thrust { get; }
 
-        double Health { get; }
+        double HealthRate { get; }
     }
 
     public enum ShipState

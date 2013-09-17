@@ -268,11 +268,12 @@ namespace SF.ServerLibrary
                     return;
                 var arrowDef = HelmDefinition.Store(arrow);
                 var angle = Random.NextAngle();
+                var distance = (1 + Random.NextDouble())/3;
                 arrowDef.HeadingTo = arrowDef.Heading = angle;
                 arrowDef.RollTo = arrowDef.Roll = from.Roll;
                 arrowDef.ThrustTo = arrowDef.Thrust = 0;
                 arrowDef.Speed = from.Speed;
-                arrowDef.Position = from.Position + Vector.Direction(angle)*Catalog.Instance.CarrierRange/2;
+                arrowDef.Position = from.Position + distance*Vector.Direction(angle)*Catalog.Instance.CarrierRange;
                 arrow.CarrierShip = null;
                 arrow.Dynamics = new Dynamics(arrow.Class, arrowDef, Time);
                 arrow.Dynamics.UpdateTime(Time.TotalSeconds);
@@ -377,18 +378,23 @@ namespace SF.ServerLibrary
                     }
             foreach (Missile missile in m_missiles)
             {
-                // TODO: more damage according to missile.Number
                 var target = (Helm) (missile.Target);
+                if (!target.InSpace())
+                {
+                    missile.Exploded = true;
+                    continue;
+                }
                 if (m_collider.HaveCollision(missile, target, dt, missile.Class.HitDistance))
                 {
                     System.Diagnostics.Trace.WriteLine(string.Format("Ракета поразила корабль {0}.", target.Name));
                     missile.Exploded = true;
-                    double angle = Math.Abs(target.Heading - missile.Heading) % (2*Math.PI);
+                    var v = missile.Speed - target.Speed;
+                    double angle = Math.Abs(target.Heading - v.Argument) % (2 * Math.PI);
                     if (angle > Math.PI)
                         angle = Math.PI - angle;
                     var throat = (Math.PI - angle) < Catalog.Instance.ThroatAngle/2;
                     var skirt = angle > Math.PI - Catalog.Instance.SkirtAngle/2;
-                    System.Diagnostics.Trace.WriteLine(string.Format("Угол {0}.", MathUtils.ToDegreesInt(angle)));
+                    System.Diagnostics.Trace.WriteLine(string.Format("Угол {0} горло = {1} юбка = {2}.", MathUtils.ToDegreesInt(angle), throat, skirt));
                     byte severity;
                     if (throat || skirt)
                         severity = ThroatDamage();
@@ -432,8 +438,8 @@ namespace SF.ServerLibrary
             //}
             //else
             //{
-            //    target.State = ShipState.Junk;
-            //    target.HealthChanged = true;
+                //target.State = ShipState.Junk;
+                target.Health.Crash();
             //}
         }
 

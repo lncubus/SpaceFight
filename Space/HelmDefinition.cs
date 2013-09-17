@@ -18,13 +18,7 @@ namespace SF.Space
         [DataMember]
         public string Carrier;
         [DataMember]
-        public double AttackHealth;
-        [DataMember]
-        public double DefenseHealth;
-        [DataMember]
-        public double EngineHealth;
-        [DataMember]
-        public double NavigationHealth;
+        public Health Health;
 
         public static HelmDefinition Store(IHelm helm)
         {
@@ -51,10 +45,8 @@ namespace SF.Space
                 Right = helm.Right,
                 Left = helm.Left,
                 Carrier = helm.Carrier,
-                AttackHealth = helm.AttackHealth,
-                DefenseHealth = helm.DefenseHealth,
-                EngineHealth = helm.EngineHealth,
-                NavigationHealth = helm.NavigationHealth,
+                Health = helm.Health,
+                HealthRate = helm.Health.Rate,
             };
         }
     }

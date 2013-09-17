@@ -169,10 +169,12 @@
           <double>0</double>
         </Launchers>
       </Left>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000011</Id>
@@ -181,7 +183,6 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Афина</Name>
-      <Carrier>Золотая Лань</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -209,10 +210,12 @@
         </Launchers>
       </Left>
       <Carrier>Золотая Лань</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000012</Id>
@@ -220,8 +223,7 @@
       <Nation>Звездное Королевство Мантикора</Nation>
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
-      <Name>Апполон</Name>
-      <Carrier>Золотая Лань</Carrier>
+      <Name>Аполлон</Name>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -249,10 +251,12 @@
         </Launchers>
       </Left>
       <Carrier>Золотая Лань</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000013</Id>
@@ -261,7 +265,6 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Гермес</Name>
-      <Carrier>Золотая Лань</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -289,10 +292,12 @@
         </Launchers>
       </Left>
       <Carrier>Золотая Лань</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0002-000000000014</Id>
@@ -328,10 +333,12 @@
         </Launchers>
       </Left>
       <Carrier>Золотая Лань</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000001</Id>
@@ -375,10 +382,12 @@
           <double>0</double>
         </Launchers>
       </Left>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000011</Id>
@@ -414,10 +423,12 @@
         </Launchers>
       </Left>
       <Carrier>Юрий Гагарин</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000012</Id>
@@ -454,10 +465,12 @@
         </Launchers>
       </Left>
       <Carrier>Юрий Гагарин</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000013</Id>
@@ -466,7 +479,6 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Кортик</Name>
-      <Carrier>Юрий Гагарин</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -495,10 +507,12 @@
         </Launchers>
       </Left>
       <Carrier>Юрий Гагарин</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
     <HelmDefinition>
       <Id>00000000-0000-0000-0001-000000000014</Id>
@@ -507,7 +521,6 @@
       <MissileName>Дротик</MissileName>
       <Missiles>3</Missiles>
       <Name>Стилет</Name>
-      <Carrier>Юрий Гагарин</Carrier>
       <Weight>15000</Weight>
       <Radius>150</Radius>
       <Heading>0</Heading>
@@ -535,10 +548,12 @@
         </Launchers>
       </Left>
       <Carrier>Юрий Гагарин</Carrier>
-      <AttackHealth>1</AttackHealth>
-      <DefenseHealth>1</DefenseHealth>
-      <EngineHealth>1</EngineHealth>
-      <NavigationHealth>1</NavigationHealth>
+      <Health>
+        <Attack>1</Attack>
+        <Defense>1</Defense>
+        <Engine>1</Engine>
+        <Navigation>1</Navigation>
+      </Health>
     </HelmDefinition>
   </ArrayOfHelmDefinition>
 </Universe>

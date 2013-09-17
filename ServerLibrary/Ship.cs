@@ -13,7 +13,7 @@ namespace SF.ServerLibrary
         public double Roll { get { return Dynamics.RollValue; } }
         public double Thrust { get { return Dynamics.AccelerationValue; } }
 
-        public double Health
+        public double HealthRate
         {
             get { return GetHealth(); }
         }
