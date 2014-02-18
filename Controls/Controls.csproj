@@ -37,44 +37,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompassControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CompassControl.Designer.cs">
-      <DependentUpon>CompassControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CurveEditorControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="IndicatorControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="IndicatorControl.Designer.cs">
-      <DependentUpon>IndicatorControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="LogonDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LogonDialog.Designer.cs">
       <DependentUpon>LogonDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MissileControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MissileControl.Designer.cs">
-      <DependentUpon>MissileControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProfileButtonsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ProfileButtonsPanel.Designer.cs">
-      <DependentUpon>ProfileButtonsPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProfileEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProfileEditorForm.Designer.cs">
-      <DependentUpon>ProfileEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommonResources.Designer.cs">
@@ -82,42 +49,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommonResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RollControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RollControl.Designer.cs">
-      <DependentUpon>RollControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="RoundControl.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ScaleControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ScaleControl.Designer.cs">
-      <DependentUpon>ScaleControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ShipControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ShipControl.Designer.cs">
-      <DependentUpon>ShipControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SpaceGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="VerticalProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CurveEditorControl.resx">
-      <DependentUpon>CurveEditorControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="IndicatorControl.resx">
-      <DependentUpon>IndicatorControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="LogonDialog.resx">
       <DependentUpon>LogonDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -125,23 +65,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="MissileControl.resx">
-      <DependentUpon>MissileControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProfileButtonsPanel.resx">
-      <DependentUpon>ProfileButtonsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProfileEditorForm.resx">
-      <DependentUpon>ProfileEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ScaleControl.resx">
-      <DependentUpon>ScaleControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ShipControl.resx">
-      <DependentUpon>ShipControl.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj">
+      <Project>{5F31C902-13E4-403D-968F-6525F08BDD67}</Project>
+      <Name>ClientLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Space\Space.csproj">
       <Project>{7B294650-E5F5-4B36-AD49-57A5CB03EA3D}</Project>
       <Name>Space</Name>

@@ -43,8 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteHelm.cs" />
+    <Compile Include="Ship.cs" />
     <Compile Include="SpaceClient.cs" />
+    <Compile Include="UniverseView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Space\Space.csproj">

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using SF.ClientLibrary;
 using SF.Space;
 using System.Diagnostics;
 
@@ -59,128 +60,129 @@ namespace SF.Controls
         /// </summary>
         public double WorldScale
         {
-            get { return m_scale; }
+            get { return _scale; }
             set
             {
-                if (m_scale == value)
+                if (_scale == value)
                     return;
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException("Scale value should be positive.");
-                m_scale = value;
+                _scale = value;
                 Invalidate();
             }
         }
-        private double m_scale = DefaultScale;
+        private double _scale = DefaultScale;
 
         /// <summary>
         /// Coordinates of the center of the grid.
         /// </summary>
         public Vector Origin
         {
-            get { return m_origin; }
+            get { return _origin; }
             set
             {
-                if (m_origin == value)
+                if (_origin == value)
                     return;
-                m_origin = value;
+                _origin = value;
                 Invalidate();
             }
         }
-        private Vector m_origin;
+        private Vector _origin;
 
         public bool StaticGrid
         {
-            get { return m_staticGrid; }
+            get { return _staticGrid; }
             set
             {
-                if (m_staticGrid == value)
+                if (_staticGrid == value)
                     return;
-                m_staticGrid = value;
+                _staticGrid = value;
                 Invalidate();
             }
         }
-        private bool m_staticGrid = true;
+        private bool _staticGrid = true;
 
         public bool Polar
         {
-            get { return m_polar; }
+            get { return _polar; }
             set
             {
-                if (m_polar == value)
+                if (_polar == value)
                     return;
-                m_polar = value;
+                _polar = value;
                 Invalidate();
             }
         }
-        private bool m_polar;
+        private bool _polar;
 
         public double Rotation
         {
-            get { return m_rotation; }
+            get { return _rotation; }
             set
             {
-                if (MathUtils.NearlyEqual(m_rotation, value))
+                if (MathUtils.NearlyEqual(_rotation, value))
                     return;
-                m_rotation = value;
+                _rotation = value;
                 Invalidate();
             }
         }
-        private double m_rotation;
+        private double _rotation;
 
         public DrawingOptions Options { get; set; }
         public SelectableObjects Selectable { get; set; }
 
-        private RectangleF m_client;
+        private RectangleF _client;
 
-        public IShip OwnShip;
+        public Ship OwnShip;
 
-        private ICollection<IShip> m_ships;
-        public ICollection<IShip> Ships
+        private IDictionary<int, Ship> _ships;
+        public IDictionary<int, Ship> Ships
         {
-            get { return m_ships; }
+            get { return _ships; }
             set
             {
-                var id = Guid.Empty;
-                if (m_selectedParticle is IShip)
-                    id = m_selectedParticle.Id;
-                m_ships = value;
-                if (id != Guid.Empty)
-                    m_selectedParticle = id == OwnShip.Id ? OwnShip : m_ships.ById(id);
+                var id = 0;
+                if (_selectedParticle is Ship)
+                    id = _selectedParticle.Id;
+                _ships = value;
+                if (id != 0)
+                    _selectedParticle = id == OwnShip.Id ? OwnShip : _ships.ById(id);
                 Invalidate();
             }
         }
 
-        private ICollection<IMissile> m_missiles;
-        public ICollection<IMissile> Missiles
+        private IDictionary<int, Missile> _missiles;
+        public IDictionary<int, Missile> Missiles
         {
-            get { return m_missiles; }
+            get { return _missiles; }
             set
             {
-                var id = Guid.Empty;
-                if (m_selectedParticle is IMissile)
-                    id = m_selectedParticle.Id;
-                m_missiles = value;
-                if (id != Guid.Empty)
-                    m_selectedParticle = m_missiles.ById(id);
+                var id = 0;
+                if (_selectedParticle is Missile)
+                    id = _selectedParticle.Id;
+                _missiles = value;
+                if (id != 0)
+                    _selectedParticle = _missiles.ById(id);
                 Invalidate();
             }
         }
 
-        private ICollection<Star> m_stars;
-        public ICollection<Star> Stars
+        private IDictionary<int, Star> _stars;
+        public IDictionary<int, Star> Stars
         {
-            get { return m_stars; }
+            get { return _stars; }
             set
             {
-                var id = Guid.Empty;
-                if (m_selectedParticle is Star)
-                    id = m_selectedParticle.Id;
-                m_stars = value;
-                if (id != Guid.Empty)
-                    m_selectedParticle = m_stars.ById(id);
+                var id = 0;
+                if (_selectedParticle is Star)
+                    id = _selectedParticle.Id;
+                _stars = value;
+                if (id != 0)
+                    _selectedParticle = _stars.ById(id);
                 Invalidate();
             }
         }
+
         public class Curve : List<Vector>
         {
             public Pen Pencil;
@@ -190,16 +192,16 @@ namespace SF.Controls
 
         public event EventHandler ParticleSelected;
 
-        private IParticle m_selectedParticle;
+        private IParticle _selectedParticle;
         public IParticle Selected
         {
             get
             {
-                return m_selectedParticle;
+                return _selectedParticle;
             }
             set
             {
-                m_selectedParticle = value;
+                _selectedParticle = value;
                 Invalidate();
                 var handler = ParticleSelected;
                 if (handler != null)
@@ -221,14 +223,14 @@ namespace SF.Controls
             if (OwnShip != null && Selectable.HasFlag(SelectableObjects.Ships))
                 particles.Add(OwnShip);
             if (Selectable.HasFlag(SelectableObjects.Ships))
-                particles.AddRange(Ships);
+                particles.AddRange(Ships.Values);
             if (Selectable.HasFlag(SelectableObjects.Stars))
-                particles.AddRange(Stars);
+                particles.AddRange(Stars.Values);
             if (Selectable.HasFlag(SelectableObjects.Missiles))
-                particles.AddRange(Missiles);
+                particles.AddRange(Missiles.Values);
             if (particles.Count == 0)
                 return null;
-            particles = particles.Where(particle => (particle.Position - p).Length - particle.Radius < WorldScale / 2).ToList();
+            particles = particles.Where(particle => (particle.Position - p).Length - particle.Radius() < WorldScale / 2).ToList();
             if (particles.Count == 0)
                 return null;
             if (particles.Count == 1)
@@ -277,9 +279,9 @@ namespace SF.Controls
 
         protected override void DrawBackgroound(PaintEventArgs e)
         {
-            m_client = new RectangleF(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
-            e.Graphics.FillRectangle(WhitePaper, m_client);
-            e.Graphics.DrawRectangles(BlackPen, new[] { m_client });
+            _client = new RectangleF(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
+            e.Graphics.FillRectangle(WhitePaper, _client);
+            e.Graphics.DrawRectangles(BlackPen, new[] { _client });
         }
 
         protected void DrawGridLines(Graphics graphics)
@@ -292,7 +294,7 @@ namespace SF.Controls
             float dpiY = scale * graphics.DpiY;
             if (Polar)
             {
-                var n = (int) (m_client.Width / (2.0 * dpiX) + m_client.Height / (2.0 * dpiY));
+                var n = (int) (_client.Width / (2.0 * dpiX) + _client.Height / (2.0 * dpiY));
                 if (n < 2)
                     n = 2;
                 for (var i = 1; i <= n; i++)
@@ -329,17 +331,17 @@ namespace SF.Controls
                     center.X -= dx;
                     center.Y += dy;
                 }
-                var n = (int) (m_client.Width / (2 * dpiX)) + 1;
+                var n = (int) (_client.Width / (2 * dpiX)) + 1;
                 for (var i = -n; i <= n; i++)
                 {
                     var x = center.X + i * dpiX;
-                    graphics.DrawLine(BlackPencil, x, m_client.Top, x, m_client.Bottom);
+                    graphics.DrawLine(BlackPencil, x, _client.Top, x, _client.Bottom);
                 }
-                n = (int) (m_client.Height / (2 * dpiY)) + 1;
+                n = (int) (_client.Height / (2 * dpiY)) + 1;
                 for (var i = -n; i <= n; i++)
                 {
                     var y = center.Y + i * dpiY;
-                    graphics.DrawLine(BlackPencil, m_client.Left, y, m_client.Right, y);
+                    graphics.DrawLine(BlackPencil, _client.Left, y, _client.Right, y);
                 }
             }
         }
@@ -347,19 +349,19 @@ namespace SF.Controls
         protected override void DrawContents(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            m_client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
+            _client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             DrawGridLines(e.Graphics);
             if (Stars != null && Stars.Count > 0)
-                foreach (var s in Stars)
+                foreach (var s in Stars.Values)
                     DrawStar(e.Graphics, s);
             if (Curves != null && Curves.Count > 0)
                 foreach (var c in Curves)
                     DrawCurve(e.Graphics, c);
             if (Missiles != null && Missiles.Count > 0)
-                foreach (var missile in Missiles)
+                foreach (var missile in Missiles.Values)
                     DrawMissile(e.Graphics, missile);
             if (Ships != null && Ships.Count > 0)
-                foreach (var ship in Ships)
+                foreach (var ship in Ships.Values)
                     DrawShip(e.Graphics, ship);
             if (OwnShip != null)
                 DrawShip(e.Graphics, OwnShip);
@@ -399,17 +401,17 @@ namespace SF.Controls
 
         protected bool IsVisible(RectangleF rect)
         {
-            return m_client.IntersectsWith(rect);
+            return _client.IntersectsWith(rect);
         }
 
         protected bool IsVisible(PointF point)
         {
-            return m_client.Contains((int)point.X, (int)point.Y);
+            return _client.Contains((int)point.X, (int)point.Y);
         }
 
         protected bool IsVisible(PointF[] points)
         {
-            return points.Any(p => m_client.Contains((int)p.X, (int)p.Y));
+            return points.Any(p => _client.Contains((int)p.X, (int)p.Y));
         }
 
         protected void DrawStar(Graphics graphics, Star star)
@@ -427,9 +429,9 @@ namespace SF.Controls
             WorldDrawText(graphics, brush, star.Position, star.Name);
         }
 
-        protected void DrawShip(Graphics graphics, IShip ship)
+        protected void DrawShip(Graphics graphics, Ship ship)
         {
-            if (!ship.IsDead() && ship.State != ShipState.Junk)
+//            if (!ship.IsDead() && ship.State != ShipState.Junk)
             {
                 DrawVulnerableSectors(graphics, ship);
                 if (ship.Board() <= 0.5)
@@ -440,13 +442,13 @@ namespace SF.Controls
             DrawShipHull(graphics, ship);
             var brush = ShipNames.Select(OwnShip, ship);
             var text = new StringBuilder(ship.Name);
-            if (!string.IsNullOrEmpty(ship.Description))
-                text.AppendLine().Append(ship.Description);
+//            if (!string.IsNullOrEmpty(ship.Description))
+//                text.AppendLine().Append(ship.Description);
             text.AppendLine().Append(Math.Round(ship.HealthRate*100)).Append("%");
             WorldDrawText(graphics, brush, ship.Position, text.ToString());
         }
 
-        protected void DrawVulnerableSectors(Graphics graphics, IShip ship)
+        protected void DrawVulnerableSectors(Graphics graphics, Ship ship)
         {
             var pen = VulnerableSectors.Select(OwnShip, ship);
             bool isMyShip = ship == OwnShip;
@@ -464,7 +466,7 @@ namespace SF.Controls
             WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading - Math.PI, Catalog.Instance.SkirtAngle);
         }
 
-        protected void DrawMissileCircle(Graphics graphics, IShip ship)
+        protected void DrawMissileCircle(Graphics graphics, Ship ship)
         {
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
@@ -493,7 +495,7 @@ namespace SF.Controls
             graphics.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
         }
 
-        protected void DrawShipWedge(Graphics graphics, IShip ship)
+        protected void DrawShipWedge(Graphics graphics, Ship ship)
         {
             double size = WorldScale / 4;
             var pen = SignalPen;
@@ -510,7 +512,7 @@ namespace SF.Controls
             graphics.DrawLine(pen, points[2], points[3]);
         }
 
-        protected void DrawShipHull(Graphics graphics, IShip ship)
+        protected void DrawShipHull(Graphics graphics, Ship ship)
         {
             var alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;
@@ -540,7 +542,7 @@ namespace SF.Controls
             graphics.DrawLine(pen, points[2], points[3]);
         }
 
-        protected void DrawMissile(Graphics graphics, IMissile missile)
+        protected void DrawMissile(Graphics graphics, Missile missile)
         {
             //const double alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;// / 8;
@@ -593,7 +595,7 @@ namespace SF.Controls
             var p = WorldToDevice(graphics, origin);
             if (rx <= 0 || ry <= 0)
                 return;
-            var max = 2 * (m_client.Width + m_client.Height);
+            var max = 2 * (_client.Width + _client.Height);
             if (IsVisible(p) && (rx + ry > max))
             {
                 rx = ry = max;
@@ -636,7 +638,7 @@ namespace SF.Controls
             public Pen Friendly { get; set; }
             public Pen Hostile { get; set; }
 
-            public Pen Select(IShip OwnShip, IShip ship)
+            public Pen Select(Ship OwnShip, Ship ship)
             {
                 if (ship == OwnShip)
                     return My;
@@ -655,7 +657,7 @@ namespace SF.Controls
             public Brush Friendly { get; set; }
             public Brush Hostile { get; set; }
 
-            public Brush Select(IShip OwnShip, IShip ship)
+            public Brush Select(Ship OwnShip, Ship ship)
             {
                 if (ship == OwnShip)
                     return My;

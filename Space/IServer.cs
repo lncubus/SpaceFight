@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace SF.Space
@@ -9,22 +8,16 @@ namespace SF.Space
     public interface IServer
     {
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        bool Login(string nation, string ship);
+        bool Login(int idShip);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = true)]
         void Logout();
 
         [OperationContract(IsInitiating = true, IsTerminating = false)]
-        void Connect(string password);
+        int Connect(string password);
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        KeyValuePair<string, string[]>[] GetShipNames();
-
-        [OperationContract(IsInitiating = false, IsTerminating = false)]
-        CatalogDefinition GetCatalog();
-
-        [OperationContract(IsInitiating = false, IsTerminating = false)]
-        View GetView();
+        ViewData GetView(int generation);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void SetHeadingTo(double value);
@@ -36,9 +29,9 @@ namespace SF.Space
         void SetThrustTo(double value);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void Fire(string to, int[] launchers);
+        void Fire(int idShipTo, int[] launchers);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void Launch(string name);
+        void Launch(int idShip);
     }
 }

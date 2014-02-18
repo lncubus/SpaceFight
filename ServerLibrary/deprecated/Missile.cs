@@ -61,6 +61,18 @@ namespace SF.ServerLibrary
             Launcher = from;
         }
 
+        internal Missile(IShip to, MissileClass missile, TimeSpan time, double distance, double angle)
+        {
+            var vector = -distance * Vector.Direction(angle);
+            Id = Guid.NewGuid();
+            Class = missile;
+            s0 = Position = to.Position + vector;
+            v0 = Speed = to.Speed;
+            t0 = Started = time.TotalSeconds;
+            Heading = angle;
+            Target = to;
+        }
+
         public void UpdateTime(double time)
         {
             if (time - Started > Class.FlyTime)

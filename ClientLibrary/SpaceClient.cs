@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.ServiceModel;
 
 namespace SF.ClientLibrary
@@ -10,19 +11,21 @@ namespace SF.ClientLibrary
     public class SpaceClient : IDisposable
     {
         public static string Password = string.Empty;
+        public const int Version = 0x0023;
         private readonly IServer Client;
         private readonly ChannelFactory<IServer> Factory;
-        private IDictionary<string, IShip> Ships;
-        private RemoteHelm Helm;
-        private IList<IMissile> Missiles;
-        private IDictionary<string, Star> Stars;
-        private IList<string> Carried; 
+        private UniverseView Universe;
 
         public SpaceClient()
         {
             Factory = new ChannelFactory<IServer>(GetType().FullName);
             Client = Factory.CreateChannel();
-            Client.Connect(Password);
+            int version = Client.Connect(Password);
+            if (version != Version)
+                throw new NotSupportedException("Server version mismatch");
+            Universe = new UniverseView();
+            ViewData view = Client.GetView(-1);
+            Universe.UpdateData(view);
         }
 
         public void Dispose()
@@ -30,78 +33,33 @@ namespace SF.ClientLibrary
             if (Client != null)
                 Client.Logout();
             Factory.Close();
-            Ships = null;
-            Missiles = null;
-            Helm = null;
-            Carried = null;
+            Universe = null;
         }
 
         public IDictionary<string, string[]> GetShipNames()
         {
             var result = new SortedDictionary<string, string[]>();
-            foreach (var pair in Client.GetShipNames())
-                result.Add(pair.Key, pair.Value);
+            foreach (var n in Universe.Nations.Values)
+            {
+                var nation = n;
+                var key = nation.Name;
+                var ships = Universe.Ships.Values.Where(ship => ship.Nation == nation);
+                var names = ships.Select(ship => ship.Name).ToList();
+                names.Sort();
+                if (names.Any())
+                    result.Add(key, names.ToArray());
+            }
             return result;
         }
 
-        public bool Login(string nation, string name)
+        public bool Login(Ship ship)
         {
-            var accepted = Client.Login(nation, name);
+            var accepted = Client.Login(ship.Id);
             if (!accepted)
                 return false;
-            Catalog.Create(Client.GetCatalog());
-            var view = Client.GetView();
-            Helm = new RemoteHelm(Client, view.Helm);
-            Ships = view.Ships.OfType<IShip>().ToDictionary(s => s.Name);
-            Missiles = view.Missiles.OfType<IMissile>().ToList();
-            Stars = view.Stars.ToDictionary(s => s.Name);
-            Carried = view.Carried.ToList();
+            ViewData view = Client.GetView(Universe.Generation);
+            Universe.UpdateData(view);
             return true;
-        }
-
-        public IHelm GetHelm()
-        {
-            return Helm;
-        }
-
-        public ICollection<IShip> GetVisibleShips()
-        {
-            return Ships.Values;
-        }
-
-        public ICollection<Star> GetStars()
-        {
-            return Stars.Values;
-        }
-
-        public ICollection<IMissile> GetVisibleMissiles()
-        {
-            return Missiles;
-        }
-
-        public IList<string> GetCarriedShips()
-        {
-            return Carried;
-        }
-
-        public void Update()
-        {
-            var view = Client.GetView();
-            Helm.Update(view.Helm);
-            Ships = view.Ships.OfType<IShip>().ToDictionary(s => s.Name);
-            Missiles = view.Missiles.OfType<IMissile>().ToList();
-            Stars = view.Stars.ToDictionary(s => s.Name);
-            Carried = view.Carried.ToList();
-        }
-
-        public void Fire(IShip ship, int[] launchers)
-        {
-            Client.Fire(ship.Name, launchers);
-        }
-
-        public void Launch(string name)
-        {
-            Client.Launch(name);
         }
     }
 }

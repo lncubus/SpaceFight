@@ -73,12 +73,17 @@ namespace Server
 
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
-            SpaceServer.Universe.Save();
+            SpaceServer.Universe.Save("1");
         }
 
         private void toolStripButtonPlay_Click(object sender, EventArgs e)
         {
             SpaceServer.Universe.IsRunning = toolStripButtonPlay.Checked;
+        }
+
+        private void toolStripButtonTest_Click(object sender, EventArgs e)
+        {
+            SpaceServer.Universe.InternalTest();
         }
     }
 }

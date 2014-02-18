@@ -16,37 +16,47 @@ namespace SF.Space
             return Math.Abs(Math.Cos(ship.Roll));
         }
 
-        public static double MissileRange(this IShip ship)
+        public static double Radius(this IParticle particle)
         {
-            if (string.IsNullOrEmpty(ship.MissileName))
-                return 0;
-            if (ship.Missile == null)
-                return Catalog.Instance.MaximumMissileRange;
-            var t = ship.Missile.FlyTime;
-            return ship.Missile.Acceleration * t * t / 2;
+            var star = particle as Star;
+            if (star != null)
+                return star.Radius;
+            return 0;
         }
 
-        public static T ById<T>(this IEnumerable<T> particles, Guid id) where T : IParticle
+        //public static double MissileRange(this IShip ship)
+        //{
+        //    //if (string.IsNullOrEmpty(ship.MissileName))
+        //    //    return 0;
+        //    //if (ship.Missile == null)
+        //    //    return Catalog.Instance.MaximumMissileRange;
+        //    //var t = ship.Missile.FlyTime;
+        //    //return ship.Missile.Acceleration * t * t / 2;
+        //}
+
+        public static T ById<T>(this IDictionary<int, T> particles, int id)
         {
-            if (id == Guid.Empty)
+            if (id == 0)
                 return default(T);
-            return particles.FirstOrDefault(i => i.Id == id);
+            T result;
+            particles.TryGetValue(id, out result);
+            return result;
         }
 
-        public static bool IsLight(this IShip ship)
-        {
-            return ship.Class.Superclass == ShipSuperclass.LAC;
-        }
+        //public static bool IsLight(this IShip ship)
+        //{
+        //    return ship.Class.Superclass == ShipSuperclass.LAC;
+        //}
 
-        public static bool InSpace(this IHelm ship)
-        {
-            return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace && string.IsNullOrEmpty(ship.Carrier);
-        }
+        //public static bool InSpace(this IHelm ship)
+        //{
+        //    return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace && string.IsNullOrEmpty(ship.Carrier);
+        //}
 
-        public static bool IsDead(this IShip ship)
-        {
-            return ship.State == ShipState.Annihilated;
-        }
+        //public static bool IsDead(this IShip ship)
+        //{
+        //    return ship.State == ShipState.Annihilated;
+        //}
 
         public static bool IsLeft(this IShip helm, IParticle target)
         {
@@ -60,6 +70,5 @@ namespace SF.Space
                 left = !left;
             return left;
         }
-
     }
 }

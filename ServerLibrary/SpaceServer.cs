@@ -10,68 +10,55 @@ namespace SF.ServerLibrary
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class SpaceServer : IServer
     {
-        public static readonly Universe Universe = new Universe("universe.xml");
+        public const int Version = 0x0023; 
+        public static readonly Universe Universe = new Universe();
+        private string Password;
+        private object ship;
 
-        private IHelm m_helm;
-
-        public bool Login(string nation, string ship)
+        public bool Login(int idShip)
         {
-            m_helm = Universe.GetHelm(nation, ship);
-            return m_helm != null;
+            return true;
         }
 
         public void Logout()
         {
-            m_helm = null;
+            ship = null;
         }
 
-        public void Connect(string password)
+        public int Connect(string password)
         {
-            m_helm = null;
+            Password = password;
+            return Version;
         }
 
-        public KeyValuePair<string, string[]>[] GetShipNames()
+        public ViewData GetView(int generation)
         {
-            return Universe.GetShipNames();
-        }
-
-        public CatalogDefinition GetCatalog()
-        {
-            return Universe.GetCatalog(m_helm.Nation);
-        }
-
-        public View GetView()
-        {
-            return Universe.GetView(m_helm);
+            throw new NotImplementedException();
         }
 
         public void SetHeadingTo(double value)
         {
-            m_helm.HeadingTo = value;
+            throw new NotImplementedException();
         }
 
         public void SetRollTo(double value)
         {
-            m_helm.RollTo = value;
+            throw new NotImplementedException();
         }
 
         public void SetThrustTo(double value)
         {
-            if (value < 0)
-                value = 0;
-            if (value > m_helm.Class.MaximumAcceleration)
-                value = m_helm.Class.MaximumAcceleration;
-            m_helm.ThrustTo = value;
+            throw new NotImplementedException();
         }
 
-        public void Fire(string to, int[] launchers)
+        public void Fire(int idShipTo, int[] launchers)
         {
-            Universe.Fire(m_helm, to, launchers);
+            throw new NotImplementedException();
         }
 
-        public void Launch(string name)
+        public void Launch(int idShip)
         {
-            Universe.Launch(m_helm, name);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System.Runtime.Serialization;
-using System.Xml.Serialization;
 
 namespace SF.Space
 {
     [DataContract]
-    public class ShipClass : NationObject, INamed
+    public class ShipClass
     {
         [DataMember]
-        public int Id { get; set; }
+        public ShipSuperclass Superclass { get; set; }
         [DataMember]
-        public ShipType Superclass { get; set; }
+        public string Nation { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
