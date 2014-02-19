@@ -36,25 +36,30 @@ namespace SF.ClientLibrary
             Universe = null;
         }
 
-        public IDictionary<string, string[]> GetShipNames()
+        public IDictionary<string, IDictionary<string, int>> GetShipRegistry()
         {
-            var result = new SortedDictionary<string, string[]>();
+            var result = new SortedDictionary<string, IDictionary<string, int>>();
             foreach (var n in Universe.Nations.Values)
             {
                 var nation = n;
                 var key = nation.Name;
-                var ships = Universe.Ships.Values.Where(ship => ship.Nation == nation);
-                var names = ships.Select(ship => ship.Name).ToList();
-                names.Sort();
-                if (names.Any())
-                    result.Add(key, names.ToArray());
+                var ships = Universe.Ships.Values.Where(ship => ship.Nation == nation).ToArray();
+                if (ships.Any())
+                {
+                    var registry = new SortedDictionary<string, int>();
+                    foreach (var ship in ships)
+                    {
+                        registry.Add(ship.Name, ship.Id);
+                    }
+                    result.Add(key, registry);
+                }
             }
             return result;
         }
 
-        public bool Login(Ship ship)
+        public bool Login(int idShip)
         {
-            var accepted = Client.Login(ship.Id);
+            var accepted = Client.Login(idShip);
             if (!accepted)
                 return false;
             ViewData view = Client.GetView(Universe.Generation);

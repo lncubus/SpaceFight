@@ -24,16 +24,7 @@ namespace Server
 
         private void ServerForm_Load(object sender, EventArgs e)
         {
-            Host = new ServiceHost(typeof(SpaceServer));
-            Host.Open();
-            if (SpaceServer.Universe == null)
-                Close();
-            else
-            {
-                ShowNode(SpaceServer.Universe);
-            }
-//            DamageHost = new ServiceHost(typeof(SF.ServerLibrary.ServerDamageContract.ShipDamageService));
-//            DamageHost.Open();
+            UpdateState();
         }
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -83,7 +74,28 @@ namespace Server
 
         private void toolStripButtonTest_Click(object sender, EventArgs e)
         {
-            SpaceServer.Universe.InternalTest();
+            Universe.InternalTest();
+        }
+
+        private void toolStripButtonLoad_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK != openFileDialog.ShowDialog())
+                return;
+            SpaceServer.Universe = Universe.Load(openFileDialog.FileName);
+            if (SpaceServer.Universe == null)
+                return;
+            Host = new ServiceHost(typeof(SpaceServer));
+            Host.Open();
+            ShowNode(SpaceServer.Universe);
+            UpdateState();
+        }
+
+        private void UpdateState()
+        {
+            bool okay = SpaceServer.Universe != null;
+            toolStripButtonPlay.Enabled = okay;
+            toolStripButtonSave.Enabled = okay;
+            toolStripButtonLoad.Enabled = !okay;
         }
     }
 }

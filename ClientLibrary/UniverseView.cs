@@ -20,7 +20,13 @@ namespace SF.ClientLibrary
         {
             if (view.PermanentView != null)
                 UpdatePermanentData(view.PermanentView);
-            //UpdateVolatileData(view.VolatileView);
+            UpdateVolatileData(view.VolatileView);
+        }
+
+        private void UpdateVolatileData(VolatileViewData volatileViewData)
+        {
+            foreach (var ship in volatileViewData.Ships)
+                Ships[ship.Id].UpdateData(ship);
         }
 
         private void UpdatePermanentData(PermanentViewData permanentViewData)
@@ -32,27 +38,13 @@ namespace SF.ClientLibrary
             ShipClasses = permanentViewData.ShipClasses.ToDictionary(data => data.Id);
             MissileClasses = permanentViewData.MissileClasses.ToDictionary(data => data.Id);
             Stars = permanentViewData.Stars.ToDictionary(data => data.Id);
-            Ships = permanentViewData.Ships.Select(CreateShip).ToDictionary(ship => ship.Id);
-            ApplyNations(ShipClasses.Values);
-            ApplyNations(MissileClasses.Values);
-            ApplyNations(Stars.Values);
-            ApplyNations(Ships.Values);
+            Ships = permanentViewData.Ships.Select(data => new Ship(data)).ToDictionary(ship => ship.Id);
+            ShipClasses.Values.ApplyNations(Nations);
+            MissileClasses.Values.ApplyNations(Nations);
+            Stars.Values.ApplyNations(Nations);
+            Ships.Values.ApplyNations(Nations);
             foreach (var ship in Ships.Values)
                 ship.Class = ShipClasses[ship.IdClass];
-        }
-
-        private Ship CreateShip(PermanentShipData def)
-        {
-            return new Ship(def);
-        }
-
-        private void ApplyNations(IEnumerable<NationObject> objects)
-        {
-            foreach (var nationObject in objects)
-            {
-                int id = nationObject.IdNation;
-                nationObject.Nation = id == 0 ? null : Nations[id];
-            }
         }
     }
 }

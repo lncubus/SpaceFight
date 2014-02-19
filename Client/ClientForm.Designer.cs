@@ -33,9 +33,6 @@
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.spaceGridControl = new SF.Controls.SpaceGridControl();
-            this.shipControl = new SF.Controls.ShipControl();
-            this.scaleControl = new SF.Controls.ScaleControl();
-            this.indicatorControl = new SF.Controls.IndicatorControl();
             this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,9 +48,6 @@
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel.Controls.Add(this.spaceGridControl, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.shipControl, 1, 1);
-            this.tableLayoutPanel.Controls.Add(this.scaleControl, 1, 0);
-            this.tableLayoutPanel.Controls.Add(this.indicatorControl, 1, 2);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -89,38 +83,6 @@
             this.spaceGridControl.TabIndex = 0;
             this.spaceGridControl.WorldScale = 2000000D;
             // 
-            // shipControl
-            // 
-            this.shipControl.AutoSize = true;
-            this.shipControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.shipControl.Helm = null;
-            this.shipControl.Location = new System.Drawing.Point(542, 38);
-            this.shipControl.Name = "shipControl";
-            this.shipControl.ReadOnly = false;
-            this.shipControl.Size = new System.Drawing.Size(249, 415);
-            this.shipControl.TabIndex = 2;
-            // 
-            // scaleControl
-            // 
-            this.scaleControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.scaleControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scaleControl.Location = new System.Drawing.Point(542, 3);
-            this.scaleControl.MaxValue = 5000000000D;
-            this.scaleControl.MinValue = 500D;
-            this.scaleControl.Name = "scaleControl";
-            this.scaleControl.Size = new System.Drawing.Size(249, 29);
-            this.scaleControl.TabIndex = 3;
-            this.scaleControl.Unit = "км";
-            this.scaleControl.Value = 2000000D;
-            // 
-            // indicatorControl
-            // 
-            this.indicatorControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.indicatorControl.Location = new System.Drawing.Point(542, 459);
-            this.indicatorControl.Name = "indicatorControl";
-            this.indicatorControl.Size = new System.Drawing.Size(249, 126);
-            this.indicatorControl.TabIndex = 4;
-            // 
             // ClientForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -131,7 +93,6 @@
             this.KeyPreview = true;
             this.Name = "ClientForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ClientForm_KeyPress);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -143,9 +104,6 @@
         private System.Windows.Forms.Timer timerUpdate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private SF.Controls.SpaceGridControl spaceGridControl;
-        private SF.Controls.ShipControl shipControl;
-        private SF.Controls.ScaleControl scaleControl;
-        private SF.Controls.IndicatorControl indicatorControl;
     }
 }
 

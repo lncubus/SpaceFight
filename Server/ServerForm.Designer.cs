@@ -33,11 +33,11 @@
             this.toolStripButtonPlay = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonTest = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.toolStripButtonLoad = new System.Windows.Forms.ToolStripButton();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -92,6 +92,14 @@
             this.toolStripButtonTest.Text = "Test";
             this.toolStripButtonTest.Click += new System.EventHandler(this.toolStripButtonTest_Click);
             // 
+            // toolStripButtonLoad
+            // 
+            this.toolStripButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLoad.Name = "toolStripButtonLoad";
+            this.toolStripButtonLoad.Size = new System.Drawing.Size(46, 22);
+            this.toolStripButtonLoad.Text = "Load...";
+            this.toolStripButtonLoad.Click += new System.EventHandler(this.toolStripButtonLoad_Click);
+            // 
             // splitContainer
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -128,16 +136,10 @@
             this.propertyGrid.Size = new System.Drawing.Size(259, 357);
             this.propertyGrid.TabIndex = 0;
             // 
-            // toolStripButtonLoad
+            // openFileDialog
             // 
-            this.toolStripButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonLoad.Name = "toolStripButtonLoad";
-            this.toolStripButtonLoad.Size = new System.Drawing.Size(46, 22);
-            this.toolStripButtonLoad.Text = "Load...";
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog.DefaultExt = "*.xml";
+            this.openFileDialog.Filter = "XML Files|*.xml|All Files|*.*";
             // 
             // ServerForm
             // 
@@ -174,7 +176,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonPlay;
         private System.Windows.Forms.ToolStripButton toolStripButtonTest;
         private System.Windows.Forms.ToolStripButton toolStripButtonLoad;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
 
     }
 }

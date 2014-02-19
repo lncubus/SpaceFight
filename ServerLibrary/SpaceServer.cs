@@ -11,7 +11,7 @@ namespace SF.ServerLibrary
     public class SpaceServer : IServer
     {
         public const int Version = 0x0023; 
-        public static readonly Universe Universe = new Universe();
+        public static Universe Universe;
         private string Password;
         private object ship;
 

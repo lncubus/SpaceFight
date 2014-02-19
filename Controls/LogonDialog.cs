@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using SF.Space;
+using System.Collections.Generic;
 
 namespace SF.Controls
 {
+
     public partial class LogonDialog : Form
     {
         public LogonDialog()
@@ -17,29 +13,17 @@ namespace SF.Controls
             InitializeComponent();
         }
 
-        public class Logon
-        {
-            public string Nation;
-            public string ShipName;
-            public string Password;
-        }
+        private IDictionary<string, IDictionary<string, int>> ShipNames;
 
-        private IDictionary<string, string[]> ShipNames;
-
-        public static Logon Execute(IDictionary<string, string[]> ships)
+        public static int Execute(IDictionary<string, IDictionary<string, int>> ships)
         {
             var dialog = new LogonDialog
             {
                 ShipNames = ships,
             };
             if (dialog.ShowDialog() != DialogResult.OK)
-                return null;
-            return new Logon
-            {
-                Nation = dialog.comboBoxState.Text,
-                ShipName = dialog.comboBoxShip.Text,
-                Password = string.Empty,
-            };
+                return 0;
+            return ships[dialog.comboBoxState.Text][dialog.comboBoxShip.Text];
         }
 
         private void buttonOkay_Click(object sender, EventArgs e)
@@ -61,7 +45,7 @@ namespace SF.Controls
             string nation = comboBoxState.Text;
             if (string.IsNullOrEmpty(nation))
                 return;
-            comboBoxShip.Items.AddRange(ShipNames[nation]);
+            comboBoxShip.Items.AddRange(ShipNames[nation].Keys.ToArray());
         }
 
         private void comboBoxShip_SelectedValueChanged(object sender, EventArgs e)

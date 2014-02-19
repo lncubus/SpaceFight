@@ -24,6 +24,15 @@ namespace SF.Space
             return 0;
         }
 
+        public static void ApplyNations(this IEnumerable<NationObject> objects, IDictionary<int, Nation> nations)
+        {
+            foreach (var nationObject in objects)
+            {
+                int id = nationObject.IdNation;
+                nationObject.Nation = id == 0 ? null : nations[id];
+            }
+        }
+
         //public static double MissileRange(this IShip ship)
         //{
         //    //if (string.IsNullOrEmpty(ship.MissileName))
