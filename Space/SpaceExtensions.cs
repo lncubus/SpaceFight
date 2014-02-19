@@ -53,10 +53,10 @@ namespace SF.Space
         //    return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace && string.IsNullOrEmpty(ship.Carrier);
         //}
 
-        //public static bool IsDead(this IShip ship)
-        //{
-        //    return ship.State == ShipState.Annihilated;
-        //}
+        public static bool IsDead(this IShip ship)
+        {
+            return ship.HealthRate <= 0;
+        }
 
         public static bool IsLeft(this IShip helm, IParticle target)
         {

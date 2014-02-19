@@ -73,6 +73,18 @@ namespace SF.Controls
         }
         private double _scale = DefaultScale;
 
+        public ConstantData Constants
+        {
+            get { return _constants; }
+            set
+            {
+                _constants = value;
+                Invalidate();
+            }
+        }
+
+        private ConstantData _constants;
+
         /// <summary>
         /// Coordinates of the center of the grid.
         /// </summary>
@@ -128,7 +140,17 @@ namespace SF.Controls
         }
         private double _rotation;
 
-        public DrawingOptions Options { get; set; }
+        public DrawingOptions Options
+        {
+            get { return _options; }
+            set
+            {
+                _options = value;
+                Invalidate();
+            }
+        }
+        private DrawingOptions _options;
+
         public SelectableObjects Selectable { get; set; }
 
         private RectangleF _client;
@@ -192,7 +214,6 @@ namespace SF.Controls
 
         public event EventHandler ParticleSelected;
 
-        private IParticle _selectedParticle;
         public IParticle Selected
         {
             get
@@ -208,6 +229,7 @@ namespace SF.Controls
                     handler(this, EventArgs.Empty);
             }
         }
+        private IParticle _selectedParticle;
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
@@ -431,7 +453,7 @@ namespace SF.Controls
 
         protected void DrawShip(Graphics graphics, Ship ship)
         {
-//            if (!ship.IsDead() && ship.State != ShipState.Junk)
+            if (!ship.IsDead())
             {
                 DrawVulnerableSectors(graphics, ship);
                 if (ship.Board() <= 0.5)
@@ -454,16 +476,16 @@ namespace SF.Controls
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
             bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
-            var range = (isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
-                Catalog.Instance.MaximumMissileRange : OwnShip.MissileRange();
-            if (Options.HasFlag(DrawingOptions.FriendlySectorsByMyMissileRange) && OwnShip != null && OwnShip.Class != null)
-                range = OwnShip.MissileRange();
+            var range = //(isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
+                Constants.MaximumMissileRange;// : OwnShip.MissileRange();
+            //if (Options.HasFlag(DrawingOptions.FriendlySectorsByMyMissileRange) && OwnShip != null && OwnShip.Class != null)
+            //    range = OwnShip.MissileRange();
             if ((isMyShip && !Options.HasFlag(DrawingOptions.MyVulnerableSectors)) ||
                 (isFriendlyShip && !Options.HasFlag(DrawingOptions.FriendlyVulnerableSectors)) ||
                 (isHostileShip && !Options.HasFlag(DrawingOptions.HostileVulnerableSectors)))
                 return;
-            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading, Catalog.Instance.ThroatAngle);
-            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading - Math.PI, Catalog.Instance.SkirtAngle);
+            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading, Constants.DefaultThroatAngle);
+            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading - Math.PI, Constants.DefaultSkirtAngle);
         }
 
         protected void DrawMissileCircle(Graphics graphics, Ship ship)
@@ -476,13 +498,14 @@ namespace SF.Controls
                 (isHostileShip && !Options.HasFlag(DrawingOptions.HostileMissileCircles)))
                 return;
             var pen = MissileCircles.Select(OwnShip, ship);
-            var range = (OwnShip != null && OwnShip.Nation != ship.Nation) ? Catalog.Instance.MaximumMissileRange : ship.MissileRange();
+            var range = Constants.MaximumMissileRange;
+                //(OwnShip != null && OwnShip.Nation != ship.Nation) ? Catalog.Instance.MaximumMissileRange : ship.MissileRange();
             WorldDrawCircle(graphics, pen, ship.Position, range);
         }
 
         protected void DrawSelection(Graphics graphics, IParticle p)
         {
-            var size = (float)Math.Max(1.0F / 4, p.Radius / WorldScale);
+            var size = (float)Math.Max(1.0F / 4, p.Radius() / WorldScale);
             var pen = BlackPen;
             var position = WorldToDevice(graphics, p.Position);
             var rect = new RectangleF
@@ -526,7 +549,7 @@ namespace SF.Controls
             if (!IsVisible(points))
                 return;
             graphics.DrawPolygon(pen, points);
-            if (ship.State != ShipState.Junk)
+            if (!ship.IsDead())
                 return;
             alpha = Math.PI*1/3;
             var beta = Math.PI*2/3;
