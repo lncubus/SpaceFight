@@ -30,6 +30,7 @@ namespace SF.ServerLibrary
         public IDictionary<int, ShipClass> ShipClasses { get; private set; }
         public IDictionary<int, MissileClass> MissileClasses { get; private set; }
         public IDictionary<int, Ship> Ships { get; private set; }
+        public IDictionary<int, Missile> Missiles { get; private set; }
 
         private static string SerializeObject<T>(T instance)
         {
@@ -88,8 +89,19 @@ namespace SF.ServerLibrary
                Ships = p.Ships.Select(data => new Ship(data)).ToDictionary(ship => ship.Id),
             };
             u.Initialize();
-//            u.UpdateVolatileData(view.VolatileView);
+            u.UpdateVolatileData(view.VolatileView);
             return u;
+        }
+
+        public void Save(string filename)
+        {
+            var view = new ViewData
+            {
+                PermanentView = GetPermanentData(),
+                VolatileView = GetVolatileData(),
+            };
+            string xml = SerializeObject(view);
+            File.WriteAllText(filename, xml, Encoding.Unicode);
         }
 
         private void Initialize()
@@ -103,8 +115,16 @@ namespace SF.ServerLibrary
                 ship.Class = ShipClasses[ship.IdClass];
         }
 
-        public void Save(string filename)
+        private void UpdateVolatileData(VolatileViewData v)
         {
+            lock (m_locker)
+            {
+                foreach (var ship in Ships.Values)
+                    ship.VolatileShip = null;
+                foreach (var ship in v.Ships)
+                    Ships[ship.Id].VolatileShip = ship;
+                Missiles = v.Missiles.ToDictionary(missile => missile.Id);
+            }
         }
 
         public bool IsRunning
@@ -176,6 +196,7 @@ namespace SF.ServerLibrary
                 {
                     Time = this.Time,
                     Ships = this.Ships.Values.Select(ship => ship.VolatileShip).ToArray(),
+                    Missiles = this.Missiles.Values.ToArray(),
                 };
             }
         }

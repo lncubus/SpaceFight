@@ -20,7 +20,6 @@ namespace Server
         }
 
         private ServiceHost Host { get; set; }
-        private ServiceHost DamageHost { get; set; }
 
         private void ServerForm_Load(object sender, EventArgs e)
         {
@@ -31,8 +30,6 @@ namespace Server
         {
             if (Host != null)
                 Host.Close();
-            if (DamageHost != null)
-                DamageHost.Close();
         }
 
         private TreeNode ShowNode(object thing, TreeNode parentNode = null)
@@ -62,11 +59,6 @@ namespace Server
             propertyGrid.SelectedObject = node.Tag;
         }
 
-        private void toolStripButtonSave_Click(object sender, EventArgs e)
-        {
-            SpaceServer.Universe.Save("1");
-        }
-
         private void toolStripButtonPlay_Click(object sender, EventArgs e)
         {
             SpaceServer.Universe.IsRunning = toolStripButtonPlay.Checked;
@@ -88,6 +80,14 @@ namespace Server
             Host.Open();
             ShowNode(SpaceServer.Universe);
             UpdateState();
+        }
+
+        private void toolStripButtonSave_Click(object sender, EventArgs e)
+        {
+            var u = SpaceServer.Universe;
+            if (u == null || DialogResult.OK != saveFileDialog.ShowDialog())
+                return;
+            SpaceServer.Universe.Save(saveFileDialog.FileName);
         }
 
         private void UpdateState()

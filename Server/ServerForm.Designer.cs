@@ -38,6 +38,7 @@
             this.treeView = new System.Windows.Forms.TreeView();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -56,10 +57,10 @@
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonPlay,
+            this.toolStripButtonLoad,
             this.toolStripButtonSave,
-            this.toolStripButtonTest,
-            this.toolStripButtonLoad});
+            this.toolStripButtonPlay,
+            this.toolStripButtonTest});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(511, 25);
@@ -79,8 +80,8 @@
             // 
             this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonSave.Name = "toolStripButtonSave";
-            this.toolStripButtonSave.Size = new System.Drawing.Size(35, 22);
-            this.toolStripButtonSave.Text = "Save";
+            this.toolStripButtonSave.Size = new System.Drawing.Size(43, 22);
+            this.toolStripButtonSave.Text = "Save..";
             this.toolStripButtonSave.ToolTipText = "Save the Universe";
             this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
             // 
@@ -96,8 +97,8 @@
             // 
             this.toolStripButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonLoad.Name = "toolStripButtonLoad";
-            this.toolStripButtonLoad.Size = new System.Drawing.Size(46, 22);
-            this.toolStripButtonLoad.Text = "Load...";
+            this.toolStripButtonLoad.Size = new System.Drawing.Size(42, 22);
+            this.toolStripButtonLoad.Text = "Load..";
             this.toolStripButtonLoad.Click += new System.EventHandler(this.toolStripButtonLoad_Click);
             // 
             // splitContainer
@@ -140,6 +141,13 @@
             // 
             this.openFileDialog.DefaultExt = "*.xml";
             this.openFileDialog.Filter = "XML Files|*.xml|All Files|*.*";
+            this.openFileDialog.SupportMultiDottedExtensions = true;
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.DefaultExt = "xml";
+            this.saveFileDialog.Filter = "XML Files|*.xml|All Files|*.*";
+            this.saveFileDialog.SupportMultiDottedExtensions = true;
             // 
             // ServerForm
             // 
@@ -177,6 +185,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonTest;
         private System.Windows.Forms.ToolStripButton toolStripButtonLoad;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
 
     }
 }

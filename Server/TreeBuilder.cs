@@ -102,6 +102,9 @@ namespace Server
                     AddCollectionNodes(enumNode, childCollection, name);
                 else
                 {
+                    string secondName = CreateTreeNodeText(pair.Value);
+                    if (!string.IsNullOrEmpty(secondName))
+                        name = secondName + " - " + name;
                     TreeNode childNode = CreateTreeNode(pair.Value, name);
                     if (childNode == null)
                         continue;

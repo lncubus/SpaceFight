@@ -36,7 +36,7 @@ namespace SF.ServerLibrary
             if (Universe == null)
                 return null;
             PermanentViewData p = Universe.Generation == generation ? null : Universe.GetPermanentData();
-            VolatileViewData v = generation > 0 ? null : Universe.GetVolatileData();
+            VolatileViewData v = generation >= 0 ? null : Universe.GetVolatileData();
             return new ViewData
             {
                 PermanentView = p, 
