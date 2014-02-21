@@ -24,12 +24,12 @@ namespace SF.Space
             return 0;
         }
 
-        public static void ApplyNations(this IEnumerable<NationObject> objects, IDictionary<int, Nation> nations)
+        public static void ApplyNations(this IEnumerable<INationObject> objects, IDictionary<int, Nation> nations)
         {
-            foreach (var nationObject in objects)
+            foreach (var INationObject in objects)
             {
-                int id = nationObject.IdNation;
-                nationObject.Nation = id == 0 ? null : nations[id];
+                int id = INationObject.IdNation;
+                INationObject.Nation = id == 0 ? null : nations[id];
             }
         }
 

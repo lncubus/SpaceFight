@@ -9,8 +9,7 @@ echo y | rmdir /S /Q %bin%
 mkdir %bin%\server
 mkdir %bin%\client
 
-copy /Y Gunner\bin\Debug\*.* %bin%\client > nul
-copy /Y Pilot\bin\Debug\*.* %bin%\client > nul
+copy /Y Client\bin\Debug\*.* %bin%\client > nul
 copy /Y Server\bin\Debug\*.* %bin%\server > nul
 echo y | del %bin%\client\*.vshost.* > nul
 echo y | del %bin%\server\*.vshost.* > nul

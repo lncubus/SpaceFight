@@ -48,6 +48,7 @@
     <Compile Include="IShip.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="MissileClass.cs" />
+    <Compile Include="Ship.cs" />
     <Compile Include="ShipClass.cs" />
     <Compile Include="SpaceExtensions.cs" />
     <Compile Include="Superclasses.cs" />

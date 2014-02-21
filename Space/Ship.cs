@@ -1,15 +1,13 @@
-﻿using SF.Space;
-
-namespace SF.ClientLibrary
+﻿namespace SF.Space
 {
     public class Ship : INationObject, IShip
     {
-        private readonly PermanentShipData p;
+        public readonly PermanentShipData PermanentShip;
         private VolatileShipData v;
 
         public Ship(PermanentShipData def)
         {
-            p = def;
+            PermanentShip = def;
         }
 
         public void UpdateData(VolatileShipData update)
@@ -19,17 +17,31 @@ namespace SF.ClientLibrary
 
         public int Id
         {
-            get { return p.Id; }
+            get { return PermanentShip.Id; }
         }
 
         public string Name
         {
-            get { return p.Name; }
+            get { return PermanentShip.Name; }
+        }
+
+        public int IdNation 
+        {
+            get
+            {
+                return PermanentShip.IdNation;
+            }
+        }
+
+        public Nation Nation
+        {
+            get { return PermanentShip.Nation; }
+            set { PermanentShip.Nation = value; }
         }
 
         public int IdClass
         {
-            get { return p.IdClass; }
+            get { return PermanentShip.IdClass; }
         }
 
         public ShipClass Class

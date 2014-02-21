@@ -4,12 +4,17 @@ using System.Xml.Serialization;
 namespace SF.Space
 {
     [DataContract]
-    public class ShipClass : NationObject, INamed
+    public class ShipClass : INationObject, INamed
     {
         [DataMember]
         public int Id { get; set; }
         [DataMember]
         public ShipType Superclass { get; set; }
+        [DataMember]
+        public int IdNation { get; set; }
+        [XmlIgnore]
+        [IgnoreDataMember]
+        public Nation Nation { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]

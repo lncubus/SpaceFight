@@ -1,9 +1,12 @@
 ﻿using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace SF.Space
 {
+
+
     [DataContract]
-    public class PermanentShipData : NationObject, INamed
+    public class PermanentShipData : INationObject, INamed
     {
         [DataMember]
         public int Id { get; set; }
@@ -11,5 +14,10 @@ namespace SF.Space
         public string Name { get; set; }
         [DataMember]
         public int IdClass { get; set; }
+        [DataMember]
+        public int IdNation { get; set; }
+        [XmlIgnore]
+        [IgnoreDataMember]
+        public Nation Nation { get; set; }
     }
 }

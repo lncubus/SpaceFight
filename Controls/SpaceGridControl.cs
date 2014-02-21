@@ -244,11 +244,11 @@ namespace SF.Controls
             var particles = new List<IParticle>();
             if (OwnShip != null && Selectable.HasFlag(SelectableObjects.Ships))
                 particles.Add(OwnShip);
-            if (Selectable.HasFlag(SelectableObjects.Ships))
+            if (Ships != null && Selectable.HasFlag(SelectableObjects.Ships))
                 particles.AddRange(Ships.Values);
-            if (Selectable.HasFlag(SelectableObjects.Stars))
+            if (Stars != null && Selectable.HasFlag(SelectableObjects.Stars))
                 particles.AddRange(Stars.Values);
-            if (Selectable.HasFlag(SelectableObjects.Missiles))
+            if (Missiles != null && Selectable.HasFlag(SelectableObjects.Missiles))
                 particles.AddRange(Missiles.Values);
             if (particles.Count == 0)
                 return null;
