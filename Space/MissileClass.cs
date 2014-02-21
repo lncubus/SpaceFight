@@ -1,9 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace SF.Space
 {
     [DataContract]
-    public class MissileClass : NationObject, INamed
+    public class MissileClass : INationObject, INamed
     {
         [DataMember]
         public int Id { get; set; }
@@ -17,5 +18,9 @@ namespace SF.Space
         public double Targeting { get; set; }
         [DataMember]
         public double HitDistance { get; set; }
+        [DataMember]
+        public int IdNation { get; set; }
+        [XmlIgnore]
+        public Nation Nation { get; set; }
     }
 }

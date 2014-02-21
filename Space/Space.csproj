@@ -42,11 +42,11 @@
   <ItemGroup>
     <Compile Include="ConstantData.cs" />
     <Compile Include="INamed.cs" />
+    <Compile Include="INationObject.cs" />
     <Compile Include="IParticle.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IShip.cs" />
     <Compile Include="MathUtils.cs" />
-    <Compile Include="NationObject.cs" />
     <Compile Include="MissileClass.cs" />
     <Compile Include="ShipClass.cs" />
     <Compile Include="SpaceExtensions.cs" />

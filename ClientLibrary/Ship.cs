@@ -2,7 +2,7 @@
 
 namespace SF.ClientLibrary
 {
-    public class Ship : NationObject, IShip
+    public class Ship : INationObject, IShip
     {
         private readonly PermanentShipData p;
         private VolatileShipData v;

@@ -20,7 +20,8 @@ namespace SF.ClientLibrary
         {
             if (view.PermanentView != null)
                 UpdatePermanentData(view.PermanentView);
-            UpdateVolatileData(view.VolatileView);
+            if (view.VolatileView != null)
+                UpdateVolatileData(view.VolatileView);
         }
 
         private void UpdateVolatileData(VolatileViewData volatileViewData)

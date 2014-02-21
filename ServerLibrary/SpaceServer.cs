@@ -33,7 +33,15 @@ namespace SF.ServerLibrary
 
         public ViewData GetView(int generation)
         {
-            throw new NotImplementedException();
+            if (Universe == null)
+                return null;
+            PermanentViewData p = Universe.Generation == generation ? null : Universe.GetPermanentData();
+            VolatileViewData v = generation > 0 ? null : Universe.GetVolatileData();
+            return new ViewData
+            {
+                PermanentView = p, 
+                VolatileView = v,
+            };
         }
 
         public void SetHeadingTo(double value)

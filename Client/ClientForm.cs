@@ -32,6 +32,7 @@ namespace Client
 
         //private IHelm helm;
         private SF.ClientLibrary.SpaceClient client;
+        private SF.ClientLibrary.UniverseView view;
 
         //private const int TrajectorySize = 250;
         //private SpaceGridControl.Curve Trajectory = new SpaceGridControl.Curve
@@ -75,11 +76,11 @@ namespace Client
 
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
-            //if (helm == null)
-            //{
-            //    timerUpdate.Enabled = false;
-            //    Login();
-            //}
+            if (client == null)
+            {
+                timerUpdate.Enabled = false;
+                Login();
+            }
             //if (helm == null)
             //    return;
             //client.Update();

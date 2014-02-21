@@ -149,5 +149,28 @@ namespace SF.ServerLibrary
         public static void InternalTest()
         {
         }
+
+        public VolatileViewData GetVolatileData()
+        {
+            return null;
+        }
+
+        public PermanentViewData GetPermanentData()
+        {
+            lock (m_locker)
+            {
+                return new PermanentViewData
+                {
+                    Generation = this.Generation,
+                    Time = this.Time,
+                    Constants = this.Constants,
+                    Nations = this.Nations.Values.ToArray(),
+                    Stars = this.Stars.Values.ToArray(),
+                    ShipClasses = this.ShipClasses.Values.ToArray(),
+                    MissileClasses = this.MissileClasses.Values.ToArray(),
+                    Ships = this.Ships.Values.Select(ship => ship.PermanentShip).ToArray(),
+                };
+            }
+        }
     }
 }

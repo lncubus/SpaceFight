@@ -4,32 +4,33 @@ namespace SF.ServerLibrary
 {
     public class Ship : NationObject, IShip
     {
-        private readonly PermanentShipData p;
+        public readonly PermanentShipData PermanentShip;
         private VolatileShipData v;
 
         public Ship(PermanentShipData def)
         {
-            this.p = def;
+            PermanentShip = def;
+            IdNation = PermanentShip.IdNation;
         }
 
         public void UpdateData(VolatileShipData update)
         {
-            this.v = update;
+            v = update;
         }
 
         public int Id
         {
-            get { return this.p.Id; }
+            get { return PermanentShip.Id; }
         }
 
         public string Name
         {
-            get { return this.p.Name; }
+            get { return PermanentShip.Name; }
         }
 
         public int IdClass
         {
-            get { return this.p.IdClass; }
+            get { return PermanentShip.IdClass; }
         }
 
         public ShipClass Class
@@ -40,37 +41,37 @@ namespace SF.ServerLibrary
 
         public Vector Position
         {
-            get { return this.v == null ? Vector.Zero : this.v.Position; }
+            get { return v == null ? Vector.Zero : v.Position; }
         }
 
         public Vector Speed
         {
-            get { return this.v == null ? Vector.Zero : this.v.Speed; }
+            get { return v == null ? Vector.Zero : v.Speed; }
         }
 
         public Vector Acceleration
         {
-            get { return this.v == null ? Vector.Zero : this.v.Acceleration; }
+            get { return v == null ? Vector.Zero : v.Acceleration; }
         }
 
         public double Heading
         {
-            get { return this.v == null ? 0 : this.v.Heading; }
+            get { return v == null ? 0 : v.Heading; }
         }
 
         public double Roll
         {
-            get { return this.v == null ? 0 : this.v.Roll; }
+            get { return v == null ? 0 : v.Roll; }
         }
 
         public double Thrust
         {
-            get { return this.v == null ? 0 : this.v.Thrust; }
+            get { return v == null ? 0 : v.Thrust; }
         }
 
         public double HealthRate
         {
-            get { return this.v == null ? 0 : this.v.HealthRate; }
+            get { return v == null ? 0 : v.HealthRate; }
         }
     }
 }
