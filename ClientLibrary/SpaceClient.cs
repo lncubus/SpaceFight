@@ -14,7 +14,7 @@ namespace SF.ClientLibrary
         public const int Version = 0x0023;
         private readonly IServer Client;
         private readonly ChannelFactory<IServer> Factory;
-        private UniverseView Universe;
+        public UniverseView Universe { get; private set; }
 
         public SpaceClient()
         {

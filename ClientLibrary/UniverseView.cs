@@ -16,6 +16,7 @@ namespace SF.ClientLibrary
         public IDictionary<int, MissileClass> MissileClasses;
         public IDictionary<int, Star> Stars;
         public IDictionary<int, Ship> Ships;
+        public IDictionary<int, Missile> Missiles;
         public void UpdateData(ViewData view)
         {
             if (view.PermanentView != null)
@@ -26,8 +27,11 @@ namespace SF.ClientLibrary
 
         private void UpdateVolatileData(VolatileViewData volatileViewData)
         {
+            foreach (var ship in Ships.Values)
+                ship.VolatileShip = null;
             foreach (var ship in volatileViewData.Ships)
                 Ships[ship.Id].VolatileShip = ship;
+            Missiles = volatileViewData.Missiles.ToDictionary(missile => missile.Id);
         }
 
         private void UpdatePermanentData(PermanentViewData permanentViewData)

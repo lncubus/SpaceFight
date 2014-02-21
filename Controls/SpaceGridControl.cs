@@ -168,7 +168,7 @@ namespace SF.Controls
                     id = _selectedParticle.Id;
                 _ships = value;
                 if (id != 0)
-                    _selectedParticle = id == OwnShip.Id ? OwnShip : _ships.ById(id);
+                    _selectedParticle = _ships.ById(id);
                 Invalidate();
             }
         }
@@ -242,8 +242,6 @@ namespace SF.Controls
             Graphics g = CreateGraphics();
             var p = DeviceToWorld(g, point);
             var particles = new List<IParticle>();
-            if (OwnShip != null && Selectable.HasFlag(SelectableObjects.Ships))
-                particles.Add(OwnShip);
             if (Ships != null && Selectable.HasFlag(SelectableObjects.Ships))
                 particles.AddRange(Ships.Values);
             if (Stars != null && Selectable.HasFlag(SelectableObjects.Stars))

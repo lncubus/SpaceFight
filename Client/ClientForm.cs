@@ -54,22 +54,12 @@ namespace Client
         {
             client = new SF.ClientLibrary.SpaceClient();
             var credentials = LogonDialog.Execute(client.GetShipRegistry());
-            if (credentials == 0)
+            if (credentials == 0 || !client.Login(credentials) || client.Universe == null)
             {
                 Close();
                 return;
             }
-            if (!client.Login(credentials))
-            {
-                Close();
-                return;
-            }
-            //shipControl.Helm = helm = client.GetHelm();
-            //Text = helm.Name;
-            //spaceGridControl.OwnShip = helm;
-            //spaceGridControl.Curves.Add(Trajectory);
-            //spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
-            //scaleControl.Value = Catalog.Instance.DefaultScale;
+            UpdatePermanentData();
             tableLayoutPanel.Visible = true;
             timerUpdate.Enabled = true;
         }
@@ -81,6 +71,27 @@ namespace Client
                 timerUpdate.Enabled = false;
                 Login();
             }
+            if (client == null || client.Universe == null)
+                return;
+            UpdateData();
+        }
+
+        private void UpdatePermanentData()
+        {
+            spaceGridControl.Constants = client.Universe.Constants;
+            spaceGridControl.WorldScale = client.Universe.Constants.DefaultScale;
+            spaceGridControl.Stars = client.Universe.Stars;
+        }
+
+        private void UpdateData()
+        {
+            //shipControl.Helm = helm = client.GetHelm();
+            //Text = helm.Name;
+            spaceGridControl.Ships = client.Universe.Ships;
+            spaceGridControl.Missiles = client.Universe.Missiles;
+            //spaceGridControl.Curves.Add(Trajectory);
+            //spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
+            //scaleControl.Value = Catalog.Instance.DefaultScale;
             //if (helm == null)
             //    return;
             //client.Update();
