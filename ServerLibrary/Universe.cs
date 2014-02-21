@@ -102,8 +102,8 @@ namespace SF.ServerLibrary
             foreach (var ship in Ships.Values)
                 ship.Class = ShipClasses[ship.IdClass];
         }
-        
-        public void Save(string name)
+
+        public void Save(string filename)
         {
         }
 
@@ -150,11 +150,6 @@ namespace SF.ServerLibrary
         {
         }
 
-        public VolatileViewData GetVolatileData()
-        {
-            return null;
-        }
-
         public PermanentViewData GetPermanentData()
         {
             lock (m_locker)
@@ -172,5 +167,18 @@ namespace SF.ServerLibrary
                 };
             }
         }
+
+        public VolatileViewData GetVolatileData()
+        {
+            lock (m_locker)
+            {
+                return new VolatileViewData
+                {
+                    Time = this.Time,
+                    Ships = this.Ships.Values.Select(ship => ship.VolatileShip).ToArray(),
+                };
+            }
+        }
+    
     }
 }

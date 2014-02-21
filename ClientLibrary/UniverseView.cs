@@ -27,7 +27,7 @@ namespace SF.ClientLibrary
         private void UpdateVolatileData(VolatileViewData volatileViewData)
         {
             foreach (var ship in volatileViewData.Ships)
-                Ships[ship.Id].UpdateData(ship);
+                Ships[ship.Id].VolatileShip = ship;
         }
 
         private void UpdatePermanentData(PermanentViewData permanentViewData)

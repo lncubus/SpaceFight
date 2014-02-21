@@ -10,6 +10,9 @@ namespace SF.Space
         public int Id { get; set; }
         [DataMember]
         public int IdNation { get; set; }
+        [XmlIgnore]
+        [IgnoreDataMember]
+        public Nation Nation { get; set; }
         [DataMember]
         public StarType StarClass { get; set; }
         [DataMember]
@@ -18,9 +21,6 @@ namespace SF.Space
         public double Radius { get; set; }
         [DataMember]
         public Vector Position { get; set; }
-        [XmlIgnore]
-        [IgnoreDataMember]
-        public Nation Nation { get; set; }
         public Vector Speed
         {
             get { return Vector.Zero; }

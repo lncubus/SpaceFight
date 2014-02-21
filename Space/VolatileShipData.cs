@@ -3,7 +3,7 @@
 namespace SF.Space
 {
     [DataContract]
-    public class VolatileShipData
+    public class VolatileShipData : IShip
     {
         [DataMember]
         public int Id { get; set; }

@@ -3,16 +3,11 @@
     public class Ship : INationObject, IShip
     {
         public readonly PermanentShipData PermanentShip;
-        private VolatileShipData v;
+        public VolatileShipData VolatileShip;
 
         public Ship(PermanentShipData def)
         {
             PermanentShip = def;
-        }
-
-        public void UpdateData(VolatileShipData update)
-        {
-            v = update;
         }
 
         public int Id
@@ -27,10 +22,7 @@
 
         public int IdNation 
         {
-            get
-            {
-                return PermanentShip.IdNation;
-            }
+            get { return PermanentShip.IdNation; }
         }
 
         public Nation Nation
@@ -44,45 +36,41 @@
             get { return PermanentShip.IdClass; }
         }
 
-        public ShipClass Class
-        {
-            get;
-            set;
-        }
+        public ShipClass Class { get; set; }
 
         public Vector Position
         {
-            get { return v == null ? Vector.Zero : v.Position; }
+            get { return VolatileShip == null ? Vector.Zero : VolatileShip.Position; }
         }
 
         public Vector Speed
         {
-            get { return v == null ? Vector.Zero : v.Speed; }
+            get { return VolatileShip == null ? Vector.Zero : VolatileShip.Speed; }
         }
 
         public Vector Acceleration
         {
-            get { return v == null ? Vector.Zero : v.Acceleration; }
+            get { return VolatileShip == null ? Vector.Zero : VolatileShip.Acceleration; }
         }
 
         public double Heading
         {
-            get { return v == null ? 0 : v.Heading; }
+            get { return VolatileShip == null ? 0 : VolatileShip.Heading; }
         }
 
         public double Roll
         {
-            get { return v == null ? 0 : v.Roll; }
+            get { return VolatileShip == null ? 0 : VolatileShip.Roll; }
         }
 
         public double Thrust
         {
-            get { return v == null ? 0 : v.Thrust; }
+            get { return VolatileShip == null ? 0 : VolatileShip.Thrust; }
         }
 
         public double HealthRate
         {
-            get { return v == null ? 0 : v.HealthRate; }
+            get { return VolatileShip == null ? 0 : VolatileShip.HealthRate; }
         }
     }
 }

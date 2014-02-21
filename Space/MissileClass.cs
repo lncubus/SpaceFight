@@ -10,6 +10,9 @@ namespace SF.Space
         public int Id { get; set; }
         [DataMember]
         public int IdNation { get; set; }
+        [XmlIgnore]
+        [IgnoreDataMember]
+        public Nation Nation { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
@@ -20,8 +23,5 @@ namespace SF.Space
         public double Targeting { get; set; }
         [DataMember]
         public double HitDistance { get; set; }
-        [XmlIgnore]
-        [IgnoreDataMember]
-        public Nation Nation { get; set; }
     }
 }

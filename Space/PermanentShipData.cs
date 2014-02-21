@@ -3,8 +3,6 @@ using System.Xml.Serialization;
 
 namespace SF.Space
 {
-
-
     [DataContract]
     public class PermanentShipData : INationObject, INamed
     {
