@@ -16,9 +16,9 @@ namespace Client
         public ClientForm()
         {
             InitializeComponent();
-            tableLayoutPanel.Visible = false;
+            spaceGridControl.Visible = false;
             timerUpdate.Enabled = true;
-            //scaleControl.OnValueChanged += scaleControl_ValueChanged;
+            scaleControl.OnValueChanged += scaleControl_ValueChanged;
             spaceGridControl.Options = 
                 SpaceGridControl.DrawingOptions.FriendlyMissileCircles | SpaceGridControl.DrawingOptions.FriendlyVulnerableSectors |
                 SpaceGridControl.DrawingOptions.HostileVulnerableSectors |
@@ -60,7 +60,7 @@ namespace Client
                 return;
             }
             UpdatePermanentData();
-            tableLayoutPanel.Visible = true;
+            spaceGridControl.Visible = true;
             timerUpdate.Enabled = true;
         }
 
@@ -81,9 +81,15 @@ namespace Client
             }
         }
 
+        private void scaleControl_ValueChanged(object sender, EventArgs e)
+        {
+            spaceGridControl.WorldScale = scaleControl.Value;
+        }
+
         private void UpdatePermanentData()
         {
             spaceGridControl.Constants = client.Universe.Constants;
+            scaleControl.Value = client.Universe.Constants.DefaultScale;
             spaceGridControl.WorldScale = client.Universe.Constants.DefaultScale;
             spaceGridControl.Stars = client.Universe.Stars;
         }
