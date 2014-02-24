@@ -73,7 +73,10 @@ namespace Client
             }
             if (client != null && client.Universe != null)
             {
+                int generation = client.Universe.Generation;
                 client.UpdateView();
+                if (client.Universe.Generation != generation)
+                    UpdatePermanentData();
                 UpdateData();
             }
         }
