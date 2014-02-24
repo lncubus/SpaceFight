@@ -24,7 +24,7 @@ namespace Client
                 SpaceGridControl.DrawingOptions.HostileVulnerableSectors |
                 SpaceGridControl.DrawingOptions.MyMissileCircles | SpaceGridControl.DrawingOptions.MyVulnerableSectors;
             spaceGridControl.Selectable =
-                SpaceGridControl.SelectableObjects.Missiles | 
+//                SpaceGridControl.SelectableObjects.Missiles | 
                 SpaceGridControl.SelectableObjects.Stars |
                 SpaceGridControl.SelectableObjects.Ships;
             Controls.Add(labelMessage);
@@ -32,7 +32,6 @@ namespace Client
 
         //private IHelm helm;
         private SF.ClientLibrary.SpaceClient client;
-        private SF.ClientLibrary.UniverseView view;
 
         //private const int TrajectorySize = 250;
         //private SpaceGridControl.Curve Trajectory = new SpaceGridControl.Curve
@@ -54,7 +53,8 @@ namespace Client
         {
             client = new SF.ClientLibrary.SpaceClient();
             var credentials = LogonDialog.Execute(client.GetShipRegistry());
-            if (credentials == 0 || !client.Login(credentials) || client.Universe == null)
+            bool okay = credentials != 0 && client.Login(credentials);
+            if (!okay)
             {
                 Close();
                 return;
@@ -71,9 +71,11 @@ namespace Client
                 timerUpdate.Enabled = false;
                 Login();
             }
-            if (client == null || client.Universe == null)
-                return;
-            UpdateData();
+            if (client != null && client.Universe != null)
+            {
+                client.UpdateView();
+                UpdateData();
+            }
         }
 
         private void UpdatePermanentData()
@@ -81,6 +83,7 @@ namespace Client
             spaceGridControl.Constants = client.Universe.Constants;
             spaceGridControl.WorldScale = client.Universe.Constants.DefaultScale;
             spaceGridControl.Stars = client.Universe.Stars;
+            spaceGridControl.OwnShip = client.Universe.Ship;
         }
 
         private void UpdateData()
@@ -89,6 +92,8 @@ namespace Client
             //Text = helm.Name;
             spaceGridControl.Ships = client.Universe.Ships;
             spaceGridControl.Missiles = client.Universe.Missiles;
+            if (client.Universe.Ship != null)
+                spaceGridControl.Origin = client.Universe.Ship.Position;
             //spaceGridControl.Curves.Add(Trajectory);
             //spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
             //scaleControl.Value = Catalog.Instance.DefaultScale;

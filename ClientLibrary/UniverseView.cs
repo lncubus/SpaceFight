@@ -17,6 +17,8 @@ namespace SF.ClientLibrary
         public IDictionary<int, Star> Stars;
         public IDictionary<int, Ship> Ships;
         public IDictionary<int, Missile> Missiles;
+        public Ship Ship;
+
         public void UpdateData(ViewData view)
         {
             if (view.PermanentView != null)

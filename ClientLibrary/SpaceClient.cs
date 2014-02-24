@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.ServiceModel;
 
 namespace SF.ClientLibrary
@@ -62,9 +61,21 @@ namespace SF.ClientLibrary
             var accepted = Client.Login(idShip);
             if (!accepted)
                 return false;
-            ViewData view = Client.GetView(Universe.Generation);
-            Universe.UpdateData(view);
+            Universe.Ship = Universe.Ships[idShip];
             return true;
+        }
+
+        public void UpdateView()
+        {
+            var w = new System.Diagnostics.Stopwatch();
+            w.Start();
+            ViewData view = Client.GetView(Universe.Generation);
+            w.Stop();
+            System.Diagnostics.Debug.WriteLine(string.Format("Client.GetView : {0} ms", w.ElapsedMilliseconds));
+            w.Restart();
+            Universe.UpdateData(view);
+            w.Stop();
+            System.Diagnostics.Debug.WriteLine(string.Format("UniverseView.UpdateData : {0} ms", w.ElapsedMilliseconds));
         }
     }
 }

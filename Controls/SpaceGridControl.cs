@@ -82,7 +82,6 @@ namespace SF.Controls
                 Invalidate();
             }
         }
-
         private ConstantData _constants;
 
         /// <summary>
@@ -382,7 +381,8 @@ namespace SF.Controls
                     DrawMissile(e.Graphics, missile);
             if (Ships != null && Ships.Count > 0)
                 foreach (var ship in Ships.Values)
-                    DrawShip(e.Graphics, ship);
+                    if (ship != OwnShip)
+                        DrawShip(e.Graphics, ship);
             if (OwnShip != null)
                 DrawShip(e.Graphics, OwnShip);
             if (Selected != null)

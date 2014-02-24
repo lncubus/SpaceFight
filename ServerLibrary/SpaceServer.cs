@@ -13,11 +13,14 @@ namespace SF.ServerLibrary
         public const int Version = 0x0023; 
         public static Universe Universe;
         private string Password;
-        private object ship;
+        private Ship ship;
 
         public bool Login(int idShip)
         {
-            return true;
+            if (Universe == null)
+                return false;
+            Universe.Ships.TryGetValue(idShip, out ship);
+            return ship != null;
         }
 
         public void Logout()
@@ -36,7 +39,7 @@ namespace SF.ServerLibrary
             if (Universe == null)
                 return null;
             PermanentViewData p = Universe.Generation == generation ? null : Universe.GetPermanentData();
-            VolatileViewData v = generation >= 0 ? null : Universe.GetVolatileData();
+            VolatileViewData v = ship == null ? null : Universe.GetVolatileData();
             return new ViewData
             {
                 PermanentView = p, 
