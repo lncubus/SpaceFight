@@ -4,6 +4,7 @@
     {
         public readonly PermanentShipData PermanentShip;
         public VolatileShipData VolatileShip;
+        public ControlShipData ControlShip;
 
         public Ship(PermanentShipData def)
         {
@@ -72,5 +73,45 @@
         {
             get { return VolatileShip == null ? 0 : VolatileShip.HealthRate; }
         }
+
+        public double RollTo
+        {
+            get
+            {
+                return ControlShip == null ? Roll : ControlShip.RollTo;
+            }
+            set
+            {
+                if (ControlShip != null)
+                    ControlShip.RollTo = value;
+            }
+        }
+
+        public double HeadingTo
+        {
+            get
+            {
+                return ControlShip == null ? Heading : ControlShip.HeadingTo;
+            }
+            set
+            {
+                if (ControlShip != null)
+                    ControlShip.HeadingTo = value;
+            }
+        }
+
+        public double ThrustTo
+        {
+            get
+            {
+                return ControlShip == null ? Thrust : ControlShip.ThrustTo;
+            }
+            set
+            {
+                if (ControlShip != null)
+                    ControlShip.ThrustTo = value;
+            }
+        }
+    
     }
 }

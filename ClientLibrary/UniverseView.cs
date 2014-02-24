@@ -8,27 +8,33 @@ namespace SF.ClientLibrary
 {
     public class UniverseView
     {
-        public TimeSpan Time;
-        public int Generation;
-        public ConstantData Constants;
-        public IDictionary<int, Nation> Nations;
-        public IDictionary<int, ShipClass> ShipClasses;
-        public IDictionary<int, MissileClass> MissileClasses;
-        public IDictionary<int, Star> Stars;
-        public IDictionary<int, Ship> Ships;
-        public IDictionary<int, Missile> Missiles;
-        public Ship Ship;
+        public TimeSpan Time { get; private set; }
+        public int Generation { get; private set; }
+        public ConstantData Constants { get; private set; }
+        public IDictionary<int, Nation> Nations { get; private set; }
+        public IDictionary<int, ShipClass> ShipClasses { get; private set; }
+        public IDictionary<int, MissileClass> MissileClasses { get; private set; }
+        public IDictionary<int, Star> Stars { get; private set; }
+        public IDictionary<int, Ship> Ships { get; private set; }
+        public IDictionary<int, Missile> Missiles { get; private set; }
+        public Ship Ship { get; private set; }
 
-        public void UpdateData(ViewData view)
+        public void UpdateData(ClientData view)
         {
-            if (view.PermanentView != null)
-                UpdatePermanentData(view.PermanentView);
-            if (view.VolatileView != null)
-                UpdateVolatileData(view.VolatileView);
+            if (view.Permanent != null)
+                UpdatePermanentData(view.Permanent);
+            if (view.Volatile != null)
+                UpdateVolatileData(view.Volatile);
+            if (view.Navigation != null)
+            {
+                Ship = Ships[view.Navigation.Id];
+                Ship.ControlShip = view.Navigation;
+            }
         }
 
         private void UpdateVolatileData(VolatileViewData volatileViewData)
         {
+            Time = volatileViewData.Time;
             foreach (var ship in Ships.Values)
                 ship.VolatileShip = null;
             foreach (var ship in volatileViewData.Ships)

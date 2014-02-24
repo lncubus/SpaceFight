@@ -40,7 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientData.cs" />
     <Compile Include="ConstantData.cs" />
+    <Compile Include="ControlShipData.cs" />
+    <Compile Include="ControlsViewData.cs" />
     <Compile Include="INamed.cs" />
     <Compile Include="INationObject.cs" />
     <Compile Include="IParticle.cs" />
@@ -48,6 +51,7 @@
     <Compile Include="IShip.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="MissileClass.cs" />
+    <Compile Include="ServerData.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipClass.cs" />
     <Compile Include="SpaceExtensions.cs" />
@@ -59,7 +63,6 @@
     <Compile Include="PermanentViewData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vector3.cs" />
-    <Compile Include="ViewData.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="VolatileShipData.cs" />
     <Compile Include="VolatileViewData.cs" />

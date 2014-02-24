@@ -76,8 +76,8 @@ namespace SF.ServerLibrary
         public static Universe Load(string filename)
         {
             string xml = File.ReadAllText(filename, Encoding.Unicode);
-            ViewData view = DeserializeObject<ViewData>(xml);
-            PermanentViewData p = view.PermanentView;
+            ServerData view = DeserializeObject<ServerData>(xml);
+            PermanentViewData p = view.Permanent;
             Universe u = new Universe
             {
                Constants = p.Constants,
@@ -89,19 +89,24 @@ namespace SF.ServerLibrary
                Ships = p.Ships.Select(data => new Ship(data)).ToDictionary(ship => ship.Id),
             };
             u.Initialize();
-            u.UpdateVolatileData(view.VolatileView);
+            u.UpdateControlsData(view.Controls);
+            u.UpdateVolatileData(view.Volatile);
             return u;
         }
 
         public void Save(string filename)
         {
-            var view = new ViewData
+            lock (m_locker)
             {
-                PermanentView = GetPermanentData(),
-                VolatileView = GetVolatileData(),
-            };
-            string xml = SerializeObject(view);
-            File.WriteAllText(filename, xml, Encoding.Unicode);
+                var view = new ServerData
+                {
+                    Permanent = GetPermanentData(),
+                    Volatile = GetVolatileData(),
+                    Controls = GetControlsData(),
+                };
+                string xml = SerializeObject(view);
+                File.WriteAllText(filename, xml, Encoding.Unicode);
+            }
         }
 
         private void Initialize()
@@ -115,6 +120,18 @@ namespace SF.ServerLibrary
                 ship.Class = ShipClasses[ship.IdClass];
         }
 
+        private void UpdateControlsData(ControlsViewData v)
+        {
+            lock (m_locker)
+            {
+                foreach (var ship in Ships.Values)
+                    ship.ControlShip = null;
+                foreach (var ship in v.Ships)
+                    Ships[ship.Id].ControlShip = ship;
+//              Missiles = v.Missiles.ToDictionary(missile => missile.Id);
+            }
+        }
+
         private void UpdateVolatileData(VolatileViewData v)
         {
             lock (m_locker)
@@ -122,7 +139,12 @@ namespace SF.ServerLibrary
                 foreach (var ship in Ships.Values)
                     ship.VolatileShip = null;
                 foreach (var ship in v.Ships)
-                    Ships[ship.Id].VolatileShip = ship;
+                {
+                    var s = Ships[ship.Id];
+                    s.VolatileShip = ship;
+                    if (s.ControlShip == null)
+                        s.ControlShip = new ControlShipData(ship);
+                }
                 Missiles = v.Missiles.ToDictionary(missile => missile.Id);
             }
         }
@@ -200,6 +222,16 @@ namespace SF.ServerLibrary
                 };
             }
         }
-    
+
+        private ControlsViewData GetControlsData()
+        {
+            lock (m_locker)
+            {
+                return new ControlsViewData
+                {
+                    Ships = this.Ships.Values.Select(ship => ship.ControlShip).ToArray(),
+                };
+            }
+        }
     }
 }

@@ -86,7 +86,6 @@ namespace Client
             spaceGridControl.Constants = client.Universe.Constants;
             spaceGridControl.WorldScale = client.Universe.Constants.DefaultScale;
             spaceGridControl.Stars = client.Universe.Stars;
-            spaceGridControl.OwnShip = client.Universe.Ship;
         }
 
         private void UpdateData()
@@ -96,7 +95,10 @@ namespace Client
             spaceGridControl.Ships = client.Universe.Ships;
             spaceGridControl.Missiles = client.Universe.Missiles;
             if (client.Universe.Ship != null)
+            {
+                spaceGridControl.OwnShip = client.Universe.Ship;
                 spaceGridControl.Origin = client.Universe.Ship.Position;
+            }
             //spaceGridControl.Curves.Add(Trajectory);
             //spaceGridControl.WorldScale = Catalog.Instance.DefaultScale;
             //scaleControl.Value = Catalog.Instance.DefaultScale;

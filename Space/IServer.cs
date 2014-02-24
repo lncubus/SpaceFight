@@ -17,7 +17,7 @@ namespace SF.Space
         int Connect(string password);
 
         [OperationContract(IsInitiating = false, IsTerminating = false)]
-        ViewData GetView(int generation);
+        ClientData GetView(int generation);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void SetHeadingTo(double value);

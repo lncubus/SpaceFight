@@ -34,32 +34,34 @@ namespace SF.ServerLibrary
             return Version;
         }
 
-        public ViewData GetView(int generation)
+        public ClientData GetView(int generation)
         {
             if (Universe == null)
                 return null;
             PermanentViewData p = Universe.Generation == generation ? null : Universe.GetPermanentData();
             VolatileViewData v = ship == null ? null : Universe.GetVolatileData();
-            return new ViewData
+            ControlShipData c = ship == null ? null : ship.ControlShip;
+            return new ClientData
             {
-                PermanentView = p, 
-                VolatileView = v,
+                Permanent = p, 
+                Volatile = v,
+                Navigation = c,
             };
         }
 
         public void SetHeadingTo(double value)
         {
-            throw new NotImplementedException();
+            ship.HeadingTo = value;
         }
 
         public void SetRollTo(double value)
         {
-            throw new NotImplementedException();
+            ship.RollTo = value;
         }
 
         public void SetThrustTo(double value)
         {
-            throw new NotImplementedException();
+            ship.ThrustTo = value;
         }
 
         public void Fire(int idShipTo, int[] launchers)

@@ -23,7 +23,7 @@ namespace SF.ClientLibrary
             if (version != Version)
                 throw new NotSupportedException("Server version mismatch");
             Universe = new UniverseView();
-            ViewData view = Client.GetView(-1);
+            ClientData view = Client.GetView(-1);
             Universe.UpdateData(view);
         }
 
@@ -61,7 +61,6 @@ namespace SF.ClientLibrary
             var accepted = Client.Login(idShip);
             if (!accepted)
                 return false;
-            Universe.Ship = Universe.Ships[idShip];
             return true;
         }
 
@@ -69,7 +68,7 @@ namespace SF.ClientLibrary
         {
             var w = new System.Diagnostics.Stopwatch();
             w.Start();
-            ViewData view = Client.GetView(Universe.Generation);
+            ClientData view = Client.GetView(Universe.Generation);
             w.Stop();
             System.Diagnostics.Debug.WriteLine("Client.GetView : {0} ms", w.ElapsedMilliseconds);
             Universe.UpdateData(view);
