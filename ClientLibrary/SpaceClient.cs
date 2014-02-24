@@ -71,11 +71,8 @@ namespace SF.ClientLibrary
             w.Start();
             ViewData view = Client.GetView(Universe.Generation);
             w.Stop();
-            System.Diagnostics.Debug.WriteLine(string.Format("Client.GetView : {0} ms", w.ElapsedMilliseconds));
-            w.Restart();
+            System.Diagnostics.Debug.WriteLine("Client.GetView : {0} ms", w.ElapsedMilliseconds);
             Universe.UpdateData(view);
-            w.Stop();
-            System.Diagnostics.Debug.WriteLine(string.Format("UniverseView.UpdateData : {0} ms", w.ElapsedMilliseconds));
         }
     }
 }
