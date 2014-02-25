@@ -15,6 +15,11 @@ namespace SF.Space
             return value.ToString("N0") + (string.IsNullOrEmpty(unit) ? string.Empty : (" " + unit));
         }
 
+        public static int Gold(int n)
+        {
+            return n * 618 / 1000;
+        }
+
         public static int Round(double a)
         {
             return (int)Math.Round(a);

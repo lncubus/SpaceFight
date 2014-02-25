@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.Drawing.StringFormat stringFormat2 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.spaceGridControl = new SF.Controls.SpaceGridControl();
+            this.spaceGridControl = new SF.Controls.NavigationControl();
             this.scaleControl = new SF.Controls.ScaleControl();
             this.SuspendLayout();
             // 
@@ -97,7 +97,7 @@
         #endregion
 
         private System.Windows.Forms.Timer timerUpdate;
-        private SF.Controls.SpaceGridControl spaceGridControl;
+        private SF.Controls.NavigationControl spaceGridControl;
         private SF.Controls.ScaleControl scaleControl;
     }
 }

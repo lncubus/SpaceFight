@@ -27,7 +27,6 @@ namespace Client
 //                SpaceGridControl.SelectableObjects.Missiles | 
                 SpaceGridControl.SelectableObjects.Stars |
                 SpaceGridControl.SelectableObjects.Ships;
-            SetPalette(Palette.Default);
             Controls.Add(labelMessage);
         }
 
@@ -72,6 +71,7 @@ namespace Client
             UpdatePermanentData();
             spaceGridControl.Visible = true;
             timerUpdate.Enabled = true;
+            SetPalette(Palette.Black);
         }
 
         private void timerUpdate_Tick(object sender, EventArgs e)
