@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{B668966B-5AC1-4C6A-93FA-BA1BE7E47A31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gunner", "Gunner\Gunner.csproj", "{5EF6BBD6-8122-47C4-A2AE-6149F46560A2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerLibrary", "ServerLibrary\ServerLibrary.csproj", "{D5E65F6F-9CE3-4A5B-9C6E-C51E1A11EA09}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientLibrary", "ClientLibrary\ClientLibrary.csproj", "{5F31C902-13E4-403D-968F-6525F08BDD67}"
@@ -25,10 +23,6 @@ Global
 		{B668966B-5AC1-4C6A-93FA-BA1BE7E47A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B668966B-5AC1-4C6A-93FA-BA1BE7E47A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B668966B-5AC1-4C6A-93FA-BA1BE7E47A31}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EF6BBD6-8122-47C4-A2AE-6149F46560A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EF6BBD6-8122-47C4-A2AE-6149F46560A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EF6BBD6-8122-47C4-A2AE-6149F46560A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EF6BBD6-8122-47C4-A2AE-6149F46560A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5E65F6F-9CE3-4A5B-9C6E-C51E1A11EA09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D5E65F6F-9CE3-4A5B-9C6E-C51E1A11EA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5E65F6F-9CE3-4A5B-9C6E-C51E1A11EA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
