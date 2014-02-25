@@ -66,11 +66,10 @@ namespace SF.ClientLibrary
 
         public void UpdateView()
         {
-            var w = new System.Diagnostics.Stopwatch();
-            w.Start();
+//            var w = new System.Diagnostics.Stopwatch();
+//            w.Start();
             ClientData view = Client.GetView(Universe.Generation);
-            w.Stop();
-            System.Diagnostics.Debug.WriteLine("Client.GetView : {0} ms", w.ElapsedMilliseconds);
+//            w.Stop();
             Universe.UpdateData(view);
         }
     }

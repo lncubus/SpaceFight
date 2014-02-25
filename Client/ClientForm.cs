@@ -71,7 +71,7 @@ namespace Client
             UpdatePermanentData();
             spaceGridControl.Visible = true;
             timerUpdate.Enabled = true;
-            SetPalette(Palette.Black);
+            //SetPalette(Palette.Black);
         }
 
         private void timerUpdate_Tick(object sender, EventArgs e)

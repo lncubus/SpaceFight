@@ -14,6 +14,8 @@ namespace Server
 {
     public partial class ServerForm : Form
     {
+        public static string PreloadFileName;
+
         public ServerForm()
         {
             InitializeComponent();
@@ -24,6 +26,8 @@ namespace Server
         private void ServerForm_Load(object sender, EventArgs e)
         {
             UpdateState();
+            if (!string.IsNullOrEmpty(PreloadFileName))
+                LoadUniverse(PreloadFileName);
         }
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -73,9 +77,16 @@ namespace Server
         {
             if (DialogResult.OK != openFileDialog.ShowDialog())
                 return;
-            SpaceServer.Universe = Universe.Load(openFileDialog.FileName);
+            LoadUniverse(openFileDialog.FileName);
+        }
+
+        private void LoadUniverse(string filename)
+        {
+            SpaceServer.Universe = Universe.Load(filename);
             if (SpaceServer.Universe == null)
+            {
                 return;
+            }
             Host = new ServiceHost(typeof(SpaceServer));
             Host.Open();
             ShowNode(SpaceServer.Universe);
