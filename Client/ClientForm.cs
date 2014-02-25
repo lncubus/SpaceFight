@@ -17,6 +17,7 @@ namespace Client
         {
             InitializeComponent();
             spaceGridControl.Visible = false;
+            scaleControl.Visible = false;
             timerUpdate.Enabled = true;
             scaleControl.OnValueChanged += scaleControl_ValueChanged;
             spaceGridControl.Options = 
@@ -30,9 +31,9 @@ namespace Client
             Controls.Add(labelMessage);
         }
 
-        private void SetPalette(Palette palette)
+        private void SetPalette(PaletteDefinition palette)
         {
-            spaceGridControl.Palette = palette;
+            spaceGridControl.SetPalette(palette);
             scaleControl.BackColor = palette.BackColor;
             scaleControl.ButtonBackColor = palette.SecondaryBackColor;
             scaleControl.ForeColor = palette.ForeColor;
@@ -70,8 +71,9 @@ namespace Client
             }
             UpdatePermanentData();
             spaceGridControl.Visible = true;
+            scaleControl.Visible = true;
             timerUpdate.Enabled = true;
-            //SetPalette(Palette.Black);
+            //SetPalette(PaletteDefinition.Black);
         }
 
         private void timerUpdate_Tick(object sender, EventArgs e)

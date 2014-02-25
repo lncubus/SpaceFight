@@ -1,11 +1,8 @@
-﻿using SF.Space;
+﻿using System.Drawing;
+using SF.Space;
 
 namespace SF.Controls
 {
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-
     public class ColorSelector<T>
     {
         public T Default { get; set; }
@@ -27,10 +24,11 @@ namespace SF.Controls
         }
     }
 
-    public class Palette
+    public class PaletteDefinition
     {
         public Brush WhitePaper;
         public Brush BlackInk;
+        public Brush ControlPaper;
         public Pen BlackPencil;
         public Pen BlackPen;
         public Pen NavyPen;
@@ -39,15 +37,16 @@ namespace SF.Controls
         public ColorSelector<Pen> MissileCircles;
         public ColorSelector<Pen> ShipHulls;
         public ColorSelector<Brush> ShipNames;
-        public Color BackColor = Color.Black;
-        public Color SecondaryBackColor = Color.DarkGray;
-        public Color ForeColor = Color.White;
-        public Color SecondaryForeColor = Color.White;
+        public Color BackColor;
+        public Color SecondaryBackColor;
+        public Color ForeColor;
+        public Color SecondaryForeColor;
 
-        public static Palette Default = new Palette()
+        public static PaletteDefinition White = new PaletteDefinition()
         {
             WhitePaper = Brushes.White,
             BlackInk = Brushes.Black,
+            ControlPaper = Brushes.AliceBlue,
             BlackPencil = Pens.DarkGray,
             BlackPen = Pens.Black,
             NavyPen = Pens.Navy,
@@ -90,13 +89,14 @@ namespace SF.Controls
             },
         };
 
-        public static Palette Black = new Palette
+        public static PaletteDefinition Black = new PaletteDefinition
             {
                 ForeColor = Color.White,
                 SecondaryForeColor = Color.White,
                 BackColor = Color.Black,
                 SecondaryBackColor = Color.DarkGray,
                 BlackInk = Brushes.WhiteSmoke,
+                ControlPaper = Brushes.Gray,
                 BlackPencil = Pens.LightBlue,
                 BlackPen = Pens.WhiteSmoke,
                 NavyPen = Pens.MediumTurquoise,

@@ -23,16 +23,16 @@ namespace SF.Controls
             Y = 1.0F/12,
         };
 
-        public Palette Palette
+        public PaletteDefinition Palette
         {
             get { return _palette; }
-            set
-            {
-                _palette = value;
-                Invalidate();
-            }
         }
-        private Palette _palette = Palette.Default;
+        private PaletteDefinition _palette = PaletteDefinition.White;
+        public void SetPalette(PaletteDefinition palette)
+        {
+            _palette = palette;
+            Invalidate();
+        }
 
         /// <summary>
         /// Kilometers per inch

@@ -1,4 +1,6 @@
-﻿namespace Client
+﻿using SF.Controls;
+
+namespace Client
 {
     partial class ClientForm
     {
@@ -29,7 +31,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Drawing.StringFormat stringFormat2 = new System.Drawing.StringFormat();
+            System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
+            SF.Controls.PaletteDefinition paletteDefinition1 = new SF.Controls.PaletteDefinition();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.spaceGridControl = new SF.Controls.NavigationControl();
             this.scaleControl = new SF.Controls.ScaleControl();
@@ -42,11 +45,11 @@
             // 
             // spaceGridControl
             // 
-            stringFormat2.Alignment = System.Drawing.StringAlignment.Center;
-            stringFormat2.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
-            stringFormat2.LineAlignment = System.Drawing.StringAlignment.Center;
-            stringFormat2.Trimming = System.Drawing.StringTrimming.None;
-            this.spaceGridControl.CenteredLayout = stringFormat2;
+            stringFormat1.Alignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.HotkeyPrefix = System.Drawing.Text.HotkeyPrefix.None;
+            stringFormat1.LineAlignment = System.Drawing.StringAlignment.Center;
+            stringFormat1.Trimming = System.Drawing.StringTrimming.None;
+            this.spaceGridControl.CenteredLayout = stringFormat1;
             this.spaceGridControl.Constants = null;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(0, 0);
@@ -70,6 +73,8 @@
             this.scaleControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.scaleControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.scaleControl.BackColor = System.Drawing.Color.Transparent;
+            this.scaleControl.ButtonBackColor = System.Drawing.Color.White;
+            this.scaleControl.ButtonForeColor = System.Drawing.SystemColors.ControlText;
             this.scaleControl.Location = new System.Drawing.Point(591, 12);
             this.scaleControl.MaxValue = 5000000000D;
             this.scaleControl.MinValue = 1000D;
@@ -82,7 +87,7 @@
             // ClientForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.AliceBlue;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(794, 588);
             this.Controls.Add(this.scaleControl);
             this.Controls.Add(this.spaceGridControl);
