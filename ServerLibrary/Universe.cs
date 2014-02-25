@@ -32,42 +32,6 @@ namespace SF.ServerLibrary
         public IDictionary<int, Ship> Ships { get; private set; }
         public IDictionary<int, Missile> Missiles { get; private set; }
 
-        private static string SerializeObject<T>(T instance)
-        {
-            var serializer = new XmlSerializer(instance.GetType());
-            var writer = new StringWriter();
-            serializer.Serialize(writer, instance);
-            writer.Close();
-            return writer.ToString();
-        }
-
-        private static T DeserializeObject<T>(string source)
-        {
-            var serializer = new XmlSerializer(typeof(T));
-            var reader = new StringReader(source);
-            var read = (T)serializer.Deserialize(reader);
-            reader.Close();
-            return read;
-        }
-
-        private static string SerializeCollection<T>(IEnumerable<T> collection)
-        {
-            var list = collection.ToArray();
-            var serializer = new XmlSerializer(list.GetType());
-            var writer = new StringWriter();
-            serializer.Serialize(writer, list);
-            writer.Close();
-            return writer.ToString();
-        }
-
-        private static U[] DeserializeCollection<U>(string source)
-        {
-            var serializer = new XmlSerializer(typeof(U[]));
-            var reader = new StringReader(source);
-            var read = (U[])serializer.Deserialize(reader);
-            return read;
-        }
-
         private Universe()
         {
             m_backgroundWorker = new Thread(TimingThreadStart) { IsBackground = true };
@@ -76,7 +40,7 @@ namespace SF.ServerLibrary
         public static Universe Load(string filename)
         {
             string xml = File.ReadAllText(filename, Encoding.Unicode);
-            ServerData view = DeserializeObject<ServerData>(xml);
+            ServerData view = Xml.DeserializeObject<ServerData>(xml);
             PermanentViewData p = view.Permanent;
             Universe u = new Universe
             {
@@ -104,7 +68,7 @@ namespace SF.ServerLibrary
                     Volatile = GetVolatileData(),
                     Controls = GetControlsData(),
                 };
-                string xml = SerializeObject(view);
+                string xml = Xml.SerializeObject(view);
                 File.WriteAllText(filename, xml, Encoding.Unicode);
             }
         }

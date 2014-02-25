@@ -66,6 +66,7 @@
     <Compile Include="Missile.cs" />
     <Compile Include="VolatileShipData.cs" />
     <Compile Include="VolatileViewData.cs" />
+    <Compile Include="Xml.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -27,7 +27,17 @@ namespace Client
 //                SpaceGridControl.SelectableObjects.Missiles | 
                 SpaceGridControl.SelectableObjects.Stars |
                 SpaceGridControl.SelectableObjects.Ships;
+            SetPalette(Palette.Default);
             Controls.Add(labelMessage);
+        }
+
+        private void SetPalette(Palette palette)
+        {
+            spaceGridControl.Palette = palette;
+            scaleControl.BackColor = palette.BackColor;
+            scaleControl.ButtonBackColor = palette.SecondaryBackColor;
+            scaleControl.ForeColor = palette.ForeColor;
+            scaleControl.ButtonForeColor = palette.SecondaryForeColor;
         }
 
         //private IHelm helm;

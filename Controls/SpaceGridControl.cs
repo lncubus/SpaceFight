@@ -23,37 +23,16 @@ namespace SF.Controls
             Y = 1.0F/12,
         };
 
-        public readonly PenSet VulnerableSectors =
-            new PenSet
+        public Palette Palette
+        {
+            get { return _palette; }
+            set
             {
-                My = Pens.Firebrick,
-                Friendly = Pens.DarkGray,
-                Hostile = Pens.DarkGray,
-            };
-
-        public readonly PenSet MissileCircles =
-            new PenSet
-            {
-                My = Pens.Navy,
-                Friendly = Pens.DarkGray,
-                Hostile = Pens.DarkRed,
-            };
-
-        public readonly PenSet ShipHulls =
-            new PenSet
-            {
-                My = Pens.Navy,
-                Friendly = Pens.Navy,
-                Hostile = Pens.Firebrick,
-            };
-
-        public readonly BrushSet ShipNames =
-            new BrushSet
-            {
-                My = Brushes.Black,
-                Friendly = Brushes.Navy,
-                Hostile = Brushes.Firebrick,
-            };
+                _palette = value;
+                Invalidate();
+            }
+        }
+        private Palette _palette = Palette.Default;
 
         /// <summary>
         /// Kilometers per inch
@@ -299,8 +278,8 @@ namespace SF.Controls
         protected override void DrawBackgroound(PaintEventArgs e)
         {
             _client = new RectangleF(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
-            e.Graphics.FillRectangle(WhitePaper, _client);
-            e.Graphics.DrawRectangles(BlackPen, new[] { _client });
+            e.Graphics.FillRectangle(Palette.WhitePaper, _client);
+            e.Graphics.DrawRectangles(Palette.BlackPen, new[] { _client });
         }
 
         protected void DrawGridLines(Graphics graphics)
@@ -317,7 +296,7 @@ namespace SF.Controls
                 if (n < 2)
                     n = 2;
                 for (var i = 1; i <= n; i++)
-                    graphics.DrawEllipse(BlackPencil, m_center.X - i * dpiX, m_center.Y - i * dpiY, 2 * i * dpiX, 2 * i * dpiY);
+                    graphics.DrawEllipse(Palette.BlackPencil, m_center.X - i * dpiX, m_center.Y - i * dpiY, 2 * i * dpiX, 2 * i * dpiY);
                 const int N = 12;
                 for (int i = 1; i <= N; i++)
                 {
@@ -326,7 +305,7 @@ namespace SF.Controls
                         X = (float)(m_center.X + dpiX * n * Math.Cos(2 * Math.PI * i / N)),
                         Y = (float)(m_center.Y + dpiY * n * Math.Sin(2 * Math.PI * i / N))
                     };
-                    graphics.DrawLine(BlackPencil, m_center, p);
+                    graphics.DrawLine(Palette.BlackPencil, m_center, p);
                     p = new PointF
                     {
                         X = (float)(m_center.X + dpiX * n * Math.Cos(2 * Math.PI * (i + 0.5) / N)),
@@ -337,7 +316,7 @@ namespace SF.Controls
                         X = (float)(m_center.X + 2 * dpiX * Math.Cos(2 * Math.PI * (i + 0.5) / N)),
                         Y = (float)(m_center.Y + 2 * dpiY * Math.Sin(2 * Math.PI * (i + 0.5) / N))
                     };
-                    graphics.DrawLine(BlackPencil, p, q);
+                    graphics.DrawLine(Palette.BlackPencil, p, q);
                 }
             }
             else
@@ -354,13 +333,13 @@ namespace SF.Controls
                 for (var i = -n; i <= n; i++)
                 {
                     var x = center.X + i * dpiX;
-                    graphics.DrawLine(BlackPencil, x, _client.Top, x, _client.Bottom);
+                    graphics.DrawLine(Palette.BlackPencil, x, _client.Top, x, _client.Bottom);
                 }
                 n = (int) (_client.Height / (2 * dpiY)) + 1;
                 for (var i = -n; i <= n; i++)
                 {
                     var y = center.Y + i * dpiY;
-                    graphics.DrawLine(BlackPencil, _client.Left, y, _client.Right, y);
+                    graphics.DrawLine(Palette.BlackPencil, _client.Left, y, _client.Right, y);
                 }
             }
         }
@@ -436,8 +415,8 @@ namespace SF.Controls
 
         protected void DrawStar(Graphics graphics, Star star)
         {
-            var pen = SignalPen;
-            var brush = BlackInk;
+            var pen = Palette.SignalPen;
+            var brush = Palette.BlackInk;
             var rx = Math.Max(WorldToDevice(graphics.DpiX, star.Radius), graphics.DpiX / 32);
             var ry = Math.Max(WorldToDevice(graphics.DpiY, star.Radius), graphics.DpiY / 32);
             var p = WorldToDevice(graphics, star.Position);
@@ -460,7 +439,7 @@ namespace SF.Controls
                     DrawMissileCircle(graphics, ship);
             }
             DrawShipHull(graphics, ship);
-            var brush = ShipNames.Select(OwnShip, ship);
+            var brush = Palette.ShipNames.Select(OwnShip, ship);
             var text = new StringBuilder(ship.Name);
 //            if (!string.IsNullOrEmpty(ship.Description))
 //                text.AppendLine().Append(ship.Description);
@@ -470,7 +449,7 @@ namespace SF.Controls
 
         protected void DrawVulnerableSectors(Graphics graphics, Ship ship)
         {
-            var pen = VulnerableSectors.Select(OwnShip, ship);
+            var pen = Palette.VulnerableSectors.Select(OwnShip, ship);
             bool isMyShip = ship == OwnShip;
             bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
             bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
@@ -495,7 +474,7 @@ namespace SF.Controls
                 (isFriendlyShip && !Options.HasFlag(DrawingOptions.FriendlyMissileCircles)) ||
                 (isHostileShip && !Options.HasFlag(DrawingOptions.HostileMissileCircles)))
                 return;
-            var pen = MissileCircles.Select(OwnShip, ship);
+            var pen = Palette.MissileCircles.Select(OwnShip, ship);
             var range = Constants.MaximumMissileRange;
                 //(OwnShip != null && OwnShip.Nation != ship.Nation) ? Catalog.Instance.MaximumMissileRange : ship.MissileRange();
             WorldDrawCircle(graphics, pen, ship.Position, range);
@@ -504,7 +483,7 @@ namespace SF.Controls
         protected void DrawSelection(Graphics graphics, IParticle p)
         {
             var size = (float)Math.Max(1.0F / 4, p.Radius() / WorldScale);
-            var pen = BlackPen;
+            var pen = Palette.BlackPen;
             var position = WorldToDevice(graphics, p.Position);
             var rect = new RectangleF
             {
@@ -519,7 +498,7 @@ namespace SF.Controls
         protected void DrawShipWedge(Graphics graphics, Ship ship)
         {
             double size = WorldScale / 4;
-            var pen = SignalPen;
+            var pen = Palette.SignalPen;
             var points = new[]
                 {
                     WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading + Math.PI / 4) * size),
@@ -537,7 +516,7 @@ namespace SF.Controls
         {
             var alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;
-            var pen = ShipHulls.Select(OwnShip, ship);
+            var pen = Palette.ShipHulls.Select(OwnShip, ship);
             var points = new[]
                 {
                     WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading) * size),
@@ -551,7 +530,7 @@ namespace SF.Controls
                 return;
             alpha = Math.PI*1/3;
             var beta = Math.PI*2/3;
-            pen = SignalPen;
+            pen = Palette.SignalPen;
             points = new[]
                 {
                     WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading + alpha) * size),
@@ -567,7 +546,7 @@ namespace SF.Controls
         {
             //const double alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;// / 8;
-            var pen = SignalPen;
+            var pen = Palette.SignalPen;
                 //OwnShip != null && missile.Nation == OwnShip.Nation ? ShipHulls.Friendly : ShipHulls.Hostile;
             var a = missile.Acceleration;
             if (a.Length > MathUtils.Epsilon)
@@ -651,43 +630,5 @@ namespace SF.Controls
             Stars = 0x02,
             Missiles = 0x04,
         };
-
-        public class PenSet
-        {
-            public Pen Default = Pens.Black;
-            public Pen My { get; set; }
-            public Pen Friendly { get; set; }
-            public Pen Hostile { get; set; }
-
-            public Pen Select(Ship OwnShip, Ship ship)
-            {
-                if (ship == OwnShip)
-                    return My;
-                if (OwnShip != null && ship.Nation == OwnShip.Nation)
-                    return Friendly;
-                if (OwnShip != null && ship.Nation != OwnShip.Nation)
-                    return Hostile;
-                return Default;
-            }
-        }
-
-        public class BrushSet
-        {
-            public Brush Default = Brushes.Black;
-            public Brush My { get; set; }
-            public Brush Friendly { get; set; }
-            public Brush Hostile { get; set; }
-
-            public Brush Select(Ship OwnShip, Ship ship)
-            {
-                if (ship == OwnShip)
-                    return My;
-                if (OwnShip != null && ship.Nation == OwnShip.Nation)
-                    return Friendly;
-                if (OwnShip != null && ship.Nation != OwnShip.Nation)
-                    return Hostile;
-                return Default;
-            }
-        }
     }
 }

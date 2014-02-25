@@ -43,6 +43,32 @@ namespace SF.Controls
         public double MaxValue { get; set; }
         public double MinValue { get; set; }
 
+        public Color ButtonForeColor
+        {
+            get
+            {
+                return buttonZoomIn.ForeColor;
+            }
+            set
+            {
+                buttonZoomIn.ForeColor = value;
+                buttonZoomOut.ForeColor = value;
+            }
+        }
+
+        public Color ButtonBackColor
+        {
+            get
+            {
+                return buttonZoomIn.BackColor;
+            }
+            set
+            {
+                buttonZoomIn.BackColor = value;
+                buttonZoomOut.BackColor = value;
+            }
+        }
+
         public double Value
         {
             get

@@ -8,24 +8,12 @@ namespace SF.Controls
     public class RoundControl : UserControl
     {
 	    public bool ReadOnly { get; set; }
-        public Brush WhitePaper { get; set; }
-        public Brush BlackInk { get; set; }
-        public Pen BlackPencil { get; set; }
-        public Pen BlackPen { get; set; }
-        public Pen NavyPen { get; set; }
-        public Pen SignalPen { get; set; }
         public StringFormat CenteredLayout { get; set; }
 
         public RoundControl()
         {
             DoubleBuffered = true;
             Size = new System.Drawing.Size(200, 200);
-            WhitePaper = Brushes.White;
-            BlackInk = Brushes.Black;
-            BlackPencil = Pens.DarkGray;
-            BlackPen = Pens.Black;
-            NavyPen = Pens.Navy;
-            SignalPen = Pens.Firebrick;
             CenteredLayout = new StringFormat
             {
                 Alignment = StringAlignment.Center,
