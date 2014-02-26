@@ -33,6 +33,8 @@ namespace SF.Controls
         public Pen BlackPen;
         public Pen NavyPen;
         public Pen SignalPen;
+        public Brush NavyBrush;
+        public Brush SignalBrush;
         public ColorSelector<Pen> VulnerableSectors;
         public ColorSelector<Pen> MissileCircles;
         public ColorSelector<Pen> ShipHulls;
@@ -51,6 +53,8 @@ namespace SF.Controls
             BlackPen = Pens.Black,
             NavyPen = Pens.Navy,
             SignalPen = Pens.Firebrick,
+            NavyBrush = Brushes.Navy,
+            SignalBrush = Brushes.Firebrick,
             BackColor = Color.WhiteSmoke,
             SecondaryBackColor = Color.LightGray,
             ForeColor = Color.Black,
@@ -101,7 +105,9 @@ namespace SF.Controls
                 BlackPen = Pens.WhiteSmoke,
                 NavyPen = Pens.MediumTurquoise,
                 SignalPen = Pens.LightCoral,
-                WhitePaper = Brushes.Black,
+                NavyBrush = Brushes.MediumTurquoise,
+                SignalBrush = Brushes.LightCoral,
+                WhitePaper = Brushes.DarkSlateGray,
                 MissileCircles = new ColorSelector<Pen>
                 {
                     Default = Pens.LightGray,

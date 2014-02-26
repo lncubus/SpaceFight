@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using SF.Space;
 
 namespace SF.Controls
@@ -41,9 +40,9 @@ namespace SF.Controls
 
         protected override void DrawContents(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             base.DrawContents(e);
-            if (OwnShip == null)
+            if (Universe == null || Universe.Ship == null)
                 return;
             Calculate();
 //            e.Graphics.DrawEllipse(Palette.WhitePaper, bigField);
@@ -76,10 +75,16 @@ namespace SF.Controls
                     e.Graphics.DrawLine(pen, GetXY(r3, a), GetXY(r4, a));
                 }
             }
-            int h = MathUtils.ToDegreesInt(OwnShip.Heading);
-            int hTo = MathUtils.ToDegreesInt(OwnShip.HeadingTo);
-            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
-            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
+
+//            int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
+//            int hTo = MathUtils.ToDegreesInt(Universe.Ship.HeadingTo);
+////            Palette.NavyPen
+//            var arrow = new GraphicsPath();
+//            arrow.AddArc(smallField, h - 5, h + 5);
+//            arrow.AddLines(new[] { GetXY(r1, h - 5), GetXY(r4, h), GetXY(r1, h + 5)});
+//            e.Graphics.FillPath(Palette.NavyBrush, arrow);
+//            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
+//            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
             //e.Graphics.DrawString("N", Font, Palette.BlackInk, GetXY(smallRadius, 0), CenteredLayout);
             //e.Graphics.DrawString("W", Font, Palette.BlackInk, GetXY(smallRadius, -90), CenteredLayout);
             //e.Graphics.DrawString("S", Font, Palette.BlackInk, GetXY(smallRadius, 180), CenteredLayout);

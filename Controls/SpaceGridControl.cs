@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using SF.ClientLibrary;
 using SF.Space;
-using System.Diagnostics;
 
 namespace SF.Controls
 {
@@ -52,16 +52,7 @@ namespace SF.Controls
         }
         private double _scale = DefaultScale;
 
-        public ConstantData Constants
-        {
-            get { return _constants; }
-            set
-            {
-                _constants = value;
-                Invalidate();
-            }
-        }
-        private ConstantData _constants;
+        public UniverseView Universe;
 
         /// <summary>
         /// Coordinates of the center of the grid.
@@ -133,56 +124,6 @@ namespace SF.Controls
 
         private RectangleF _client;
 
-        public Ship OwnShip;
-
-        private IDictionary<int, Ship> _ships;
-        public IDictionary<int, Ship> Ships
-        {
-            get { return _ships; }
-            set
-            {
-                var id = 0;
-                if (_selectedParticle is Ship)
-                    id = _selectedParticle.Id;
-                _ships = value;
-                if (id != 0)
-                    _selectedParticle = _ships.ById(id);
-                Invalidate();
-            }
-        }
-
-        private IDictionary<int, Missile> _missiles;
-        public IDictionary<int, Missile> Missiles
-        {
-            get { return _missiles; }
-            set
-            {
-                var id = 0;
-                if (_selectedParticle is Missile)
-                    id = _selectedParticle.Id;
-                _missiles = value;
-                if (id != 0)
-                    _selectedParticle = _missiles.ById(id);
-                Invalidate();
-            }
-        }
-
-        private IDictionary<int, Star> _stars;
-        public IDictionary<int, Star> Stars
-        {
-            get { return _stars; }
-            set
-            {
-                var id = 0;
-                if (_selectedParticle is Star)
-                    id = _selectedParticle.Id;
-                _stars = value;
-                if (id != 0)
-                    _selectedParticle = _stars.ById(id);
-                Invalidate();
-            }
-        }
-
         public class Curve : List<Vector>
         {
             public Pen Pencil;
@@ -196,18 +137,33 @@ namespace SF.Controls
         {
             get
             {
-                return _selectedParticle;
+                return Universe.ById(_typeSelected, _idSelected);
             }
             set
             {
-                _selectedParticle = value;
+                if (value == null)
+                {
+                    _idSelected = 0;
+                    _typeSelected = ParticleType.None;
+                    return;
+                }
+                if (value is Star)
+                    _typeSelected = ParticleType.Star;
+                else if (value is Ship)
+                    _typeSelected = ParticleType.Ship;
+                else if (value is Missile)
+                    _typeSelected = ParticleType.Missile;
+                else
+                    throw new InvalidCastException("Unknown particle type.");
+                _idSelected = value.Id;
                 Invalidate();
                 var handler = ParticleSelected;
                 if (handler != null)
                     handler(this, EventArgs.Empty);
             }
         }
-        private IParticle _selectedParticle;
+        private int _idSelected;
+        private ParticleType _typeSelected;
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
@@ -217,15 +173,17 @@ namespace SF.Controls
 
         private IParticle SelectParticle(Point point)
         {
+            if (Universe == null)
+                return null;
             Graphics g = CreateGraphics();
             var p = DeviceToWorld(g, point);
             var particles = new List<IParticle>();
-            if (Ships != null && Selectable.HasFlag(SelectableObjects.Ships))
-                particles.AddRange(Ships.Values);
-            if (Stars != null && Selectable.HasFlag(SelectableObjects.Stars))
-                particles.AddRange(Stars.Values);
-            if (Missiles != null && Selectable.HasFlag(SelectableObjects.Missiles))
-                particles.AddRange(Missiles.Values);
+            if (Universe.Ships != null && Selectable.HasFlag(SelectableObjects.Ships))
+                particles.AddRange(Universe.Ships.Values);
+            if (Universe.Stars != null && Selectable.HasFlag(SelectableObjects.Stars))
+                particles.AddRange(Universe.Stars.Values);
+            if (Universe.Missiles != null && Selectable.HasFlag(SelectableObjects.Missiles))
+                particles.AddRange(Universe.Missiles.Values);
             if (particles.Count == 0)
                 return null;
             particles = particles.Where(particle => (particle.Position - p).Length - particle.Radius() < WorldScale / 2).ToList();
@@ -349,21 +307,23 @@ namespace SF.Controls
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             _client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
             DrawGridLines(e.Graphics);
-            if (Stars != null && Stars.Count > 0)
-                foreach (var s in Stars.Values)
+            if (Universe == null)
+                return;
+            if (Universe.Stars != null && Universe.Stars.Count > 0)
+                foreach (var s in Universe.Stars.Values)
                     DrawStar(e.Graphics, s);
             if (Curves != null && Curves.Count > 0)
                 foreach (var c in Curves)
                     DrawCurve(e.Graphics, c);
-            if (Missiles != null && Missiles.Count > 0)
-                foreach (var missile in Missiles.Values)
+            if (Universe.Missiles != null && Universe.Missiles.Count > 0)
+                foreach (var missile in Universe.Missiles.Values)
                     DrawMissile(e.Graphics, missile);
-            if (Ships != null && Ships.Count > 0)
-                foreach (var ship in Ships.Values)
-                    if (ship != OwnShip)
+            if (Universe.Ships != null && Universe.Ships.Count > 0)
+                foreach (var ship in Universe.Ships.Values)
+                    if (ship != Universe.Ship)
                         DrawShip(e.Graphics, ship);
-            if (OwnShip != null)
-                DrawShip(e.Graphics, OwnShip);
+            if (Universe.Ship != null)
+                DrawShip(e.Graphics, Universe.Ship);
             if (Selected != null)
                 DrawSelection(e.Graphics, Selected);
         }
@@ -439,7 +399,7 @@ namespace SF.Controls
                     DrawMissileCircle(graphics, ship);
             }
             DrawShipHull(graphics, ship);
-            var brush = Palette.ShipNames.Select(OwnShip, ship);
+            var brush = Palette.ShipNames.Select(Universe.Ship, ship);
             var text = new StringBuilder(ship.Name);
 //            if (!string.IsNullOrEmpty(ship.Description))
 //                text.AppendLine().Append(ship.Description);
@@ -449,33 +409,33 @@ namespace SF.Controls
 
         protected void DrawVulnerableSectors(Graphics graphics, Ship ship)
         {
-            var pen = Palette.VulnerableSectors.Select(OwnShip, ship);
-            bool isMyShip = ship == OwnShip;
-            bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
-            bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
+            var pen = Palette.VulnerableSectors.Select(Universe.Ship, ship);
+            bool isMyShip = ship == Universe.Ship;
+            bool isFriendlyShip = !isMyShip && (Universe.Ship != null && Universe.Ship.Nation == ship.Nation);
+            bool isHostileShip = (Universe.Ship != null && Universe.Ship.Nation != ship.Nation);
             var range = //(isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
-                Constants.MaximumMissileRange;// : OwnShip.MissileRange();
+                Universe.Constants.MaximumMissileRange;// : OwnShip.MissileRange();
             //if (Options.HasFlag(DrawingOptions.FriendlySectorsByMyMissileRange) && OwnShip != null && OwnShip.Class != null)
             //    range = OwnShip.MissileRange();
             if ((isMyShip && !Options.HasFlag(DrawingOptions.MyVulnerableSectors)) ||
                 (isFriendlyShip && !Options.HasFlag(DrawingOptions.FriendlyVulnerableSectors)) ||
                 (isHostileShip && !Options.HasFlag(DrawingOptions.HostileVulnerableSectors)))
                 return;
-            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading, Constants.DefaultThroatAngle);
-            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading - Math.PI, Constants.DefaultSkirtAngle);
+            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading, Universe.Constants.DefaultThroatAngle);
+            WorldDrawPie(graphics, pen, ship.Position, range, ship.Heading - Math.PI, Universe.Constants.DefaultSkirtAngle);
         }
 
         protected void DrawMissileCircle(Graphics graphics, Ship ship)
         {
-            bool isMyShip = ship == OwnShip;
-            bool isFriendlyShip = !isMyShip && (OwnShip != null && OwnShip.Nation == ship.Nation);
-            bool isHostileShip = (OwnShip != null && OwnShip.Nation != ship.Nation);
+            bool isMyShip = ship == Universe.Ship;
+            bool isFriendlyShip = !isMyShip && (Universe.Ship != null && Universe.Ship.Nation == ship.Nation);
+            bool isHostileShip = (Universe.Ship != null && Universe.Ship.Nation != ship.Nation);
             if ((isMyShip && !Options.HasFlag(DrawingOptions.MyMissileCircles)) ||
                 (isFriendlyShip && !Options.HasFlag(DrawingOptions.FriendlyMissileCircles)) ||
                 (isHostileShip && !Options.HasFlag(DrawingOptions.HostileMissileCircles)))
                 return;
-            var pen = Palette.MissileCircles.Select(OwnShip, ship);
-            var range = Constants.MaximumMissileRange;
+            var pen = Palette.MissileCircles.Select(Universe.Ship, ship);
+            var range = Universe.Constants.MaximumMissileRange;
                 //(OwnShip != null && OwnShip.Nation != ship.Nation) ? Catalog.Instance.MaximumMissileRange : ship.MissileRange();
             WorldDrawCircle(graphics, pen, ship.Position, range);
         }
@@ -516,7 +476,7 @@ namespace SF.Controls
         {
             var alpha = Math.PI * 11 / 12;
             double size = WorldScale / 6;
-            var pen = Palette.ShipHulls.Select(OwnShip, ship);
+            var pen = Palette.ShipHulls.Select(Universe.Ship, ship);
             var points = new[]
                 {
                     WorldToDevice(graphics, ship.Position + Vector.Direction(ship.Heading) * size),
@@ -606,29 +566,5 @@ namespace SF.Controls
                     (float)MathUtils.ToDegrees(medianAngle - sweepAngle/ 2 - Math.PI / 2 - Rotation),
                     (float)MathUtils.ToDegrees(sweepAngle));
         }
-
-
-        [Flags]
-        public enum DrawingOptions
-        {
-            None = 0,
-            NoGrid = 0x01,
-            MyMissileCircles = 0x02,
-            FriendlyMissileCircles = 0x04,
-            HostileMissileCircles = 0x08,
-            MyVulnerableSectors = 0x10,
-            FriendlyVulnerableSectors = 0x20,
-            HostileVulnerableSectors = 0x40,
-            FriendlySectorsByMyMissileRange = 0x1000
-        };
-
-        [Flags]
-        public enum SelectableObjects
-        {
-            None = 0,
-            Ships = 0x01,
-            Stars = 0x02,
-            Missiles = 0x04,
-        };
     }
 }

@@ -59,5 +59,21 @@ namespace SF.ClientLibrary
             foreach (var ship in Ships.Values)
                 ship.Class = ShipClasses[ship.IdClass];
         }
+
+        public IParticle ById(ParticleType type, int id)
+        {
+            if (id == 0)
+                return null;
+            switch (type)
+            {
+                case ParticleType.Star:
+                    return Stars.ById(id);
+                case ParticleType.Ship:
+                    return Ships.ById(id);
+                case ParticleType.Missile:
+                    return Missiles.ById(id);
+            }
+            throw new IndexOutOfRangeException("Unknown particle type.");
+        }
     }
 }
