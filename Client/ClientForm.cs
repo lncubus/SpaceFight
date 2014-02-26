@@ -17,9 +17,10 @@ namespace Client
         {
             InitializeComponent();
             spaceGridControl.Visible = false;
-            scaleControl.Visible = false;
+//            scaleControl.Visible = false;
+            toolStrip.Visible = false;
             timerUpdate.Enabled = true;
-            scaleControl.OnValueChanged += scaleControl_ValueChanged;
+//            scaleControl.OnValueChanged += scaleControl_ValueChanged;
             spaceGridControl.Options = 
                 SpaceGridControl.DrawingOptions.FriendlyMissileCircles | SpaceGridControl.DrawingOptions.FriendlyVulnerableSectors |
                 SpaceGridControl.DrawingOptions.HostileVulnerableSectors |
@@ -34,10 +35,12 @@ namespace Client
         private void SetPalette(PaletteDefinition palette)
         {
             spaceGridControl.SetPalette(palette);
-            scaleControl.BackColor = palette.BackColor;
-            scaleControl.ButtonBackColor = palette.SecondaryBackColor;
-            scaleControl.ForeColor = palette.ForeColor;
-            scaleControl.ButtonForeColor = palette.SecondaryForeColor;
+            toolStrip.BackColor = palette.BackColor;
+            toolStrip.ForeColor = palette.ForeColor;
+            //scaleControl.BackColor = palette.BackColor;
+            //scaleControl.ButtonBackColor = palette.SecondaryBackColor;
+            //scaleControl.ForeColor = palette.ForeColor;
+            //scaleControl.ButtonForeColor = palette.SecondaryForeColor;
         }
 
         //private IHelm helm;
@@ -71,7 +74,8 @@ namespace Client
             }
             UpdatePermanentData();
             spaceGridControl.Visible = true;
-            scaleControl.Visible = true;
+//            scaleControl.Visible = true;
+            toolStrip.Visible = true;
             timerUpdate.Enabled = true;
             //SetPalette(PaletteDefinition.Black);
         }
@@ -93,15 +97,15 @@ namespace Client
             }
         }
 
-        private void scaleControl_ValueChanged(object sender, EventArgs e)
-        {
-            spaceGridControl.WorldScale = scaleControl.Value;
-        }
+        //private void scaleControl_ValueChanged(object sender, EventArgs e)
+        //{
+        //    spaceGridControl.WorldScale = scaleControl.Value;
+        //}
 
         private void UpdatePermanentData()
         {
             spaceGridControl.Constants = client.Universe.Constants;
-            scaleControl.Value = client.Universe.Constants.DefaultScale;
+//            scaleControl.Value = client.Universe.Constants.DefaultScale;
             spaceGridControl.WorldScale = client.Universe.Constants.DefaultScale;
             spaceGridControl.Stars = client.Universe.Stars;
         }
@@ -127,6 +131,16 @@ namespace Client
             //if (helm != null)
             //    GetData();
             //spaceGridControl.Invalidate();
+        }
+
+        private void miWhite_Click(object sender, EventArgs e)
+        {
+            SetPalette(PaletteDefinition.White);
+        }
+
+        private void miBlack_Click(object sender, EventArgs e)
+        {
+            SetPalette(PaletteDefinition.Black);
         }
     }
 }
