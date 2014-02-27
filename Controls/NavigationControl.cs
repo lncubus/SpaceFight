@@ -78,8 +78,12 @@ namespace SF.Controls
             }
             int h = MathUtils.ToDegreesInt(OwnShip.Heading);
             int hTo = MathUtils.ToDegreesInt(OwnShip.HeadingTo);
-            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
-            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
+            var arrowHead = new[] { GetXY(r4, h + 5), GetXY(r1, h), GetXY(r4, h - 5) };
+            var arrowHeadTo = new[] { GetXY(r1, hTo + 5), GetXY(r4, hTo), GetXY(r1, hTo - 5) };
+//            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
+//            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
+            e.Graphics.DrawLines(Palette.NavyPen, arrowHead);
+            e.Graphics.DrawLines(Palette.SignalPen, arrowHeadTo);
             //e.Graphics.DrawString("N", Font, Palette.BlackInk, GetXY(smallRadius, 0), CenteredLayout);
             //e.Graphics.DrawString("W", Font, Palette.BlackInk, GetXY(smallRadius, -90), CenteredLayout);
             //e.Graphics.DrawString("S", Font, Palette.BlackInk, GetXY(smallRadius, 180), CenteredLayout);
