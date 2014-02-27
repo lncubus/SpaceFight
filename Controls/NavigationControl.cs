@@ -39,33 +39,35 @@ namespace SF.Controls
             bigField.Inflate(-margin, -margin);
             smallField = bigField;
             smallField.Inflate(-bandWidth, -bandWidth);
+            int rollRadius = m_size / 8;
             rollField = new Rectangle
             {
-                //X = bandWidth,
-                //Y = ClientRectangle.Height,
-                //Width = 
+                X = margin,
+                Y = ClientRectangle.Height - (margin + 2 * rollRadius),
+                Width = 2*rollRadius,
+                Height = 2 * rollRadius,
             };
             var path = new GraphicsPath();
             path.AddEllipse(bigField);
             path.AddEllipse(smallField);
             compass = new Region(path);
             path = new GraphicsPath();
-            path.AddEllipse();
-            roller = new Region();
-            roller.Union();
+            path.AddEllipse(rollField);
+            roller = new Region(path);
         }
 
         protected override void DrawContents(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             base.DrawContents(e);
-            if (Universe == null || Universe.Ship == null)
-                return;
             Calculate();
 //            e.Graphics.DrawEllipse(Palette.WhitePaper, bigField);
-            e.Graphics.FillPath(Palette.ControlPaper, path);
+            e.Graphics.FillRegion(Palette.ControlPaper, compass);
+//            e.Graphics.FillPath(path);
             e.Graphics.DrawEllipse(Palette.BlackPen, bigField);
             e.Graphics.DrawEllipse(Palette.BlackPen, smallField);
+            e.Graphics.FillRegion(Palette.ControlPaper, roller);
+            e.Graphics.DrawEllipse(Palette.BlackPen, rollField);
             const int N = 12;
             var smallRadius = halfSize - bandWidth;
             for (int i = 1; i <= N; i++)
@@ -89,8 +91,10 @@ namespace SF.Controls
                     e.Graphics.DrawLine(pen, GetXY(r3, a), GetXY(r4, a));
                 }
             }
-            int h = MathUtils.ToDegreesInt(OwnShip.Heading);
-            int hTo = MathUtils.ToDegreesInt(OwnShip.HeadingTo);
+            if (Universe == null || Universe.Ship == null)
+                return;
+            int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
+            int hTo = MathUtils.ToDegreesInt(Universe.Ship.HeadingTo);
             var arrowHead = new[] { GetXY(r4, h + 5), GetXY(r1, h), GetXY(r4, h - 5) };
             var arrowHeadTo = new[] { GetXY(r1, hTo + 5), GetXY(r4, hTo), GetXY(r1, hTo - 5) };
 //            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
