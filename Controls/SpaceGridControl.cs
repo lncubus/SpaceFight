@@ -137,7 +137,7 @@ namespace SF.Controls
         {
             get
             {
-                return Universe.ById(_typeSelected, _idSelected);
+                return Universe == null ? null : Universe.ById(_typeSelected, _idSelected);
             }
             set
             {

@@ -20,6 +20,9 @@ namespace SF.Controls
         private int margin;
         private Rectangle bigField;
         private Rectangle smallField;
+        private Rectangle rollField;
+        private Region compass;
+        private Region roller;
 
         private void Calculate()
         {
@@ -36,6 +39,20 @@ namespace SF.Controls
             bigField.Inflate(-margin, -margin);
             smallField = bigField;
             smallField.Inflate(-bandWidth, -bandWidth);
+            rollField = new Rectangle
+            {
+                //X = bandWidth,
+                //Y = ClientRectangle.Height,
+                //Width = 
+            };
+            var path = new GraphicsPath();
+            path.AddEllipse(bigField);
+            path.AddEllipse(smallField);
+            compass = new Region(path);
+            path = new GraphicsPath();
+            path.AddEllipse();
+            roller = new Region();
+            roller.Union();
         }
 
         protected override void DrawContents(PaintEventArgs e)
@@ -46,9 +63,6 @@ namespace SF.Controls
                 return;
             Calculate();
 //            e.Graphics.DrawEllipse(Palette.WhitePaper, bigField);
-            var path = new GraphicsPath();
-            path.AddEllipse(bigField);
-            path.AddEllipse(smallField);
             e.Graphics.FillPath(Palette.ControlPaper, path);
             e.Graphics.DrawEllipse(Palette.BlackPen, bigField);
             e.Graphics.DrawEllipse(Palette.BlackPen, smallField);
