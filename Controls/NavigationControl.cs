@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using SF.Space;
 
 namespace SF.Controls
@@ -21,6 +20,9 @@ namespace SF.Controls
         private int margin;
         private Rectangle bigField;
         private Rectangle smallField;
+        private Rectangle rollField;
+        private Region compass;
+        private Region roller;
 
         private void Calculate()
         {
@@ -37,19 +39,30 @@ namespace SF.Controls
             bigField.Inflate(-margin, -margin);
             smallField = bigField;
             smallField.Inflate(-bandWidth, -bandWidth);
+            rollField = new Rectangle
+            {
+                //X = bandWidth,
+                //Y = ClientRectangle.Height,
+                //Width = 
+            };
+            var path = new GraphicsPath();
+            path.AddEllipse(bigField);
+            path.AddEllipse(smallField);
+            compass = new Region(path);
+            path = new GraphicsPath();
+            path.AddEllipse();
+            roller = new Region();
+            roller.Union();
         }
 
         protected override void DrawContents(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             base.DrawContents(e);
-            if (OwnShip == null)
+            if (Universe == null || Universe.Ship == null)
                 return;
             Calculate();
 //            e.Graphics.DrawEllipse(Palette.WhitePaper, bigField);
-            var path = new GraphicsPath();
-            path.AddEllipse(bigField);
-            path.AddEllipse(smallField);
             e.Graphics.FillPath(Palette.ControlPaper, path);
             e.Graphics.DrawEllipse(Palette.BlackPen, bigField);
             e.Graphics.DrawEllipse(Palette.BlackPen, smallField);
@@ -84,6 +97,16 @@ namespace SF.Controls
 //            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
             e.Graphics.DrawLines(Palette.NavyPen, arrowHead);
             e.Graphics.DrawLines(Palette.SignalPen, arrowHeadTo);
+
+//            int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
+//            int hTo = MathUtils.ToDegreesInt(Universe.Ship.HeadingTo);
+////            Palette.NavyPen
+//            var arrow = new GraphicsPath();
+//            arrow.AddArc(smallField, h - 5, h + 5);
+//            arrow.AddLines(new[] { GetXY(r1, h - 5), GetXY(r4, h), GetXY(r1, h + 5)});
+//            e.Graphics.FillPath(Palette.NavyBrush, arrow);
+//            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
+//            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
             //e.Graphics.DrawString("N", Font, Palette.BlackInk, GetXY(smallRadius, 0), CenteredLayout);
             //e.Graphics.DrawString("W", Font, Palette.BlackInk, GetXY(smallRadius, -90), CenteredLayout);
             //e.Graphics.DrawString("S", Font, Palette.BlackInk, GetXY(smallRadius, 180), CenteredLayout);

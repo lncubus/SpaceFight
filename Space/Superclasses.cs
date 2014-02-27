@@ -1,4 +1,6 @@
-﻿namespace SF.Space
+﻿using System;
+
+namespace SF.Space
 {
     public enum ShipType
     {
@@ -14,4 +16,35 @@
         Gas = 4,
         Star = 8,
     }
+
+    public enum ParticleType
+    {
+        None = 0,
+        Ship = 1,
+        Star = 2,
+        Missile = 3,
+    }
+
+    [Flags]
+    public enum DrawingOptions
+    {
+        None = 0,
+        NoGrid = 0x01,
+        MyMissileCircles = 0x02,
+        FriendlyMissileCircles = 0x04,
+        HostileMissileCircles = 0x08,
+        MyVulnerableSectors = 0x10,
+        FriendlyVulnerableSectors = 0x20,
+        HostileVulnerableSectors = 0x40,
+        FriendlySectorsByMyMissileRange = 0x1000
+    };
+
+    [Flags]
+    public enum SelectableObjects
+    {
+        None = 0,
+        Ships = 0x01,
+        Stars = 0x02,
+        Missiles = 0x04,
+    };
 }
