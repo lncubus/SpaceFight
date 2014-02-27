@@ -84,13 +84,12 @@ namespace SF.Controls
             Invalidate();
         }
 
-        protected Point GetXY(int radius, int deg)
+        protected static Point GetXY(Point center, int radius, double angle)
         {
-            double a = MathUtils.ToRadians(deg);
             return new Point
             {
-                X = (int)(m_center.X + Math.Sin(a) * radius),
-                Y = (int)(m_center.Y - Math.Cos(a) * radius)
+                X = (int)(center.X + Math.Sin(angle) * radius),
+                Y = (int)(center.Y - Math.Cos(angle) * radius)
             };
         }
 
