@@ -56,12 +56,6 @@
     <Compile Include="RoundControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ScaleControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ScaleControl.Designer.cs">
-      <DependentUpon>ScaleControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="SpaceGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -74,9 +68,6 @@
     <EmbeddedResource Include="CommonResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ScaleControl.resx">
-      <DependentUpon>ScaleControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,27 @@ namespace SF.Controls
         private Region roller;
         private Rectangle[] bands;
         private int[] bandRadius;
-        private Rectangle plusButton, minusButton;
+        private Rectangle plusButton, minusButton, scaleLabel;
+        private Point[] scaleRuler;
+
+        private string unit = "км";
+        public string Unit
+        {
+            get
+            {
+                return unit;
+            }
+            set
+            {
+                unit = value;
+                Invalidate();
+            }
+        }
+
+        public const double DefaultMinScaleValue = 1000;
+        public const double DefaultMaxScaleValue = 5000000000;
+        public double MinScaleValue = DefaultMinScaleValue;
+        public double MaxScaleValue = DefaultMaxScaleValue;
 
         private void Calculate()
         {
@@ -43,6 +63,13 @@ namespace SF.Controls
                     Height = 2 * r,
                 };
             }
+            scaleLabel = new Rectangle
+            {
+                X = ClientRectangle.Right - 3*margin - DpiX,
+                Y = margin,
+                Width = DpiX + margin,
+                Height = margin,
+            };
             minusButton = new Rectangle
             {
                 X = ClientRectangle.Right - 2*margin,
@@ -56,6 +83,15 @@ namespace SF.Controls
                 Y = margin,
                 Width = margin,
                 Height = margin,
+            };
+            var x0 = ClientRectangle.Right - margin*5/2 - DpiX;
+            var x1 = ClientRectangle.Right - margin*5/2;
+            scaleRuler = new []
+            {
+                new Point(x0, 3*margin/2),
+                new Point(x0, 2*margin),
+                new Point(x1, 2*margin),
+                new Point(x1, 3*margin/2),
             };
             //smallField = bigField;
             //smallField.Inflate(-bandWidth, -bandWidth);
@@ -93,13 +129,13 @@ namespace SF.Controls
             e.Graphics.FillRectangle(Palette.ControlPaper, plusButton);
             e.Graphics.FillRectangle(Palette.ControlPaper, minusButton);
             base.DrawContents(e);
-            //roller.GetRegionScans()
             DrawCompassFace(e);
             DrawRolloverFace(e);
-            e.Graphics.DrawRectangle(Palette.BlackPen, plusButton);
-            e.Graphics.DrawRectangle(Palette.BlackPen, minusButton);
-            e.Graphics.DrawString("+", Font, Palette.BlackInk, plusButton, CenteredLayout);
-            e.Graphics.DrawString("-", Font, Palette.BlackInk, minusButton, CenteredLayout);
+            DrawScaleControl(e);
+            var heading = (Universe == null || Universe.Ship == null) ? 1.0 : Universe.Ship.Heading;
+            var headingTo = (Universe == null || Universe.Ship == null) ? 1.1 : Universe.Ship.HeadingTo;
+            DrawArrow(e.Graphics, Palette.NavyPen, bandRadius[2], bandRadius[3], heading, Math.PI/16);
+            DrawArrow(e.Graphics, Palette.NavyPen, bandRadius[2], bandRadius[1], headingTo, Math.PI / 16);
             if (Universe == null || Universe.Ship == null)
                 return;
             //int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
@@ -110,22 +146,67 @@ namespace SF.Controls
             //            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
             //e.Graphics.DrawLines(Palette.NavyPen, arrowHead);
             //e.Graphics.DrawLines(Palette.SignalPen, arrowHeadTo);
-//            int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
-//            int hTo = MathUtils.ToDegreesInt(Universe.Ship.HeadingTo);
-////            Palette.NavyPen
-//            var arrow = new GraphicsPath();
-//            arrow.AddArc(smallField, h - 5, h + 5);
-//            arrow.AddLines(new[] { GetXY(r1, h - 5), GetXY(r4, h), GetXY(r1, h + 5)});
-//            e.Graphics.FillPath(Palette.NavyBrush, arrow);
-//            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
-//            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
+            //            int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
+            //            int hTo = MathUtils.ToDegreesInt(Universe.Ship.HeadingTo);
+            ////            Palette.NavyPen
+            //            var arrow = new GraphicsPath();
+            //            arrow.AddArc(smallField, h - 5, h + 5);
+            //            arrow.AddLines(new[] { GetXY(r1, h - 5), GetXY(r4, h), GetXY(r1, h + 5)});
+            //            e.Graphics.FillPath(Palette.NavyBrush, arrow);
+            //            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
+            //            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
             //e.Graphics.DrawString("N", Font, Palette.BlackInk, GetXY(smallRadius, 0), CenteredLayout);
             //e.Graphics.DrawString("W", Font, Palette.BlackInk, GetXY(smallRadius, -90), CenteredLayout);
             //e.Graphics.DrawString("S", Font, Palette.BlackInk, GetXY(smallRadius, 180), CenteredLayout);
             //e.Graphics.DrawString("E", Font, Palette.BlackInk, GetXY(smallRadius, 90), CenteredLayout);
-//            DrawArrow(e.Graphics, Palette.SupportPen, m_bigRadius, m_bigRadius, Secondary, 174);
-//            DrawArrow(e.Graphics, Palette.NavyPen, m_bigRadius, m_bigRadius, Heading, 170);
-//            DrawArrow(e.Graphics, Palette.SignalPen, m_bigRadius, m_halfSize, HeadingTo, 10);
+
+            //            DrawArrow(e.Graphics, Palette.SupportPen, m_bigRadius, m_bigRadius, Secondary, 174);
+            //            DrawArrow(e.Graphics, Palette.NavyPen, m_bigRadius, m_bigRadius, Heading, 170);
+            //            DrawArrow(e.Graphics, Palette.SignalPen, m_bigRadius, m_halfSize, HeadingTo, 10);
+        }
+
+        public void DrawArrow(Graphics g, Pen pen, int headRadius, int tailRadius, double head, double sweep)
+        {
+            var left = GetXY(m_center, tailRadius, head - sweep);
+            var right = GetXY(m_center, tailRadius, head + sweep);
+            var point = GetXY(m_center, headRadius, head);
+            var path = new GraphicsPath();
+            var tailRect = new Rectangle
+            {
+                X = m_center.X - tailRadius,
+                Y = m_center.Y - tailRadius,
+                Width = 2 * tailRadius,
+                Height = 2 * tailRadius,
+            };
+            path.AddLines(new[] { left, point, right });
+//            g.DrawLines(pen, new[] { left, point, right });
+            path.AddArc(tailRect, (float)MathUtils.ToDegrees(head - sweep - Math.PI / 2), (float)MathUtils.ToDegrees(2 * sweep));
+            g.FillPath(Palette.NavyBrush, path);
+
+//            g.DrawArc(Palette.SignalPen, tailRect, 90, 15);
+//            g.DrawArc(Palette.SignalPen, tailRect, (float)MathUtils.ToDegrees(-head), (float)MathUtils.ToDegrees(-sweep));
+//            path.AddArc(tailRect, (float)MathUtils.ToDegrees(-head), (float)MathUtils.ToDegrees(sweep));
+//            path.AddArc(tailRect, 90, 15);
+            //path.CloseFigure();
+            //var middle = new Point
+            //{
+            //    X = (left.X + right.X) / 2,
+            //    Y = (left.Y + right.Y) / 2
+            //};
+//            g.DrawPath(Palette.SignalPen, path);
+            //new Point[] { left, point, right });
+            //g.DrawLine(pen, middle, point);
+        }
+
+        private void DrawScaleControl(PaintEventArgs e)
+        {
+            var scale = MathUtils.NumberToText(WorldScale, unit);
+            e.Graphics.DrawRectangle(Palette.BlackPen, plusButton);
+            e.Graphics.DrawRectangle(Palette.BlackPen, minusButton);
+            e.Graphics.DrawString("+", Font, Palette.BlackInk, plusButton, CenteredLayout);
+            e.Graphics.DrawString("-", Font, Palette.BlackInk, minusButton, CenteredLayout);
+            e.Graphics.DrawString(scale, Font, Palette.BlackInk, scaleLabel, CenteredLayout);
+            e.Graphics.DrawLines(Palette.BlackPen, scaleRuler);
         }
 
         private void DrawRolloverFace(PaintEventArgs e)
@@ -164,12 +245,12 @@ namespace SF.Controls
             }
         }
 
-        protected override void MouseHit(Point point, double alpha)
+        protected override void MouseHit(Point point, double alpha, MouseEventType type)
         {
-            base.MouseHit(point, alpha);
-            if (plusButton.Contains(point))
+            base.MouseHit(point, alpha, type);
+            if (plusButton.Contains(point) && type == MouseEventType.MouseUp)
                 ZoomIn();
-            else if (minusButton.Contains(point))
+            else if (minusButton.Contains(point) && type == MouseEventType.MouseUp)
                 ZoomOut();
             else if (compass.IsVisible(point))
                 CompassHit(alpha);
@@ -189,12 +270,56 @@ namespace SF.Controls
 
         private void ZoomIn()
         {
-            //throw new NotImplementedException();
+            if (WorldScale <= MinScaleValue)
+            {
+                WorldScale = MinScaleValue;
+                return;
+            }
+            if (WorldScale > MaxScaleValue)
+            {
+                WorldScale = MaxScaleValue;
+                return;
+            }
+            int zeros = (int)Math.Truncate(Math.Log10(WorldScale));
+            double exponent = Math.Pow(10, zeros);
+            double first = WorldScale / exponent;
+            if (first < 1)
+                WorldScale = MinScaleValue;
+            else if (first < 1.5)
+                WorldScale = 0.5 * exponent;
+            else if (first < 3.5)
+                WorldScale = exponent;
+            else if (first < 6.5)
+                WorldScale = 2 * exponent;
+            else
+                WorldScale = 5 * exponent;
         }
 
         private void ZoomOut()
         {
-            //throw new NotImplementedException();
+            if (WorldScale < MinScaleValue)
+            {
+                WorldScale = MinScaleValue;
+                return;
+            }
+            if (WorldScale >= MaxScaleValue)
+            {
+                WorldScale = MaxScaleValue;
+                return;
+            }
+            int zeros = (int)Math.Truncate(Math.Log10(WorldScale));
+            double exponent = Math.Pow(10, zeros);
+            double first = WorldScale / exponent;
+            if (first < 1)
+                WorldScale = MinScaleValue;
+            else if (first < 1.5)
+                WorldScale = 2 * exponent;
+            else if (first < 3.5)
+                WorldScale = 5 * exponent;
+            else if (first < 6.5)
+                WorldScale = 10 * exponent;
+            else
+                WorldScale = 20 * exponent;
         }
     }
 }

@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Windows.Forms;
 using MathUtils = SF.Space.MathUtils;
+using MouseEventType = SF.Space.MouseEventType;
 
 namespace SF.Controls
 {
+
     public class RoundControl : UserControl
     {
 	    public bool ReadOnly { get; set; }
@@ -44,7 +46,7 @@ namespace SF.Controls
             base.OnMouseDown(e);
             if (ReadOnly || e.Button != System.Windows.Forms.MouseButtons.Left)
                 return;
-            MouseHit(e.Location);
+            MouseHit(e.Location, MouseEventType.MouseDown);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
@@ -52,7 +54,7 @@ namespace SF.Controls
             base.OnMouseUp(e);
             if (ReadOnly || e.Button != System.Windows.Forms.MouseButtons.Left)
                 return;
-            MouseHit(e.Location);
+            MouseHit(e.Location, MouseEventType.MouseUp);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -60,7 +62,7 @@ namespace SF.Controls
             base.OnMouseMove(e);
             if (ReadOnly || e.Button != System.Windows.Forms.MouseButtons.Left)
                 return;
-            MouseHit(e.Location);
+            MouseHit(e.Location, MouseEventType.MouseMove);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -75,15 +77,6 @@ namespace SF.Controls
             DrawContents(e);
         }
 
-        protected void ChangeValue(ref int member, int value, EventHandler handler)
-        {
-            bool changed = member != value;
-            member = value;
-            if (changed && handler != null)
-                handler(this, EventArgs.Empty);
-            Invalidate();
-        }
-
         protected static Point GetXY(Point center, int radius, double angle)
         {
             return new Point
@@ -93,17 +86,17 @@ namespace SF.Controls
             };
         }
 
-        private void MouseHit(Point point)
+        private void MouseHit(Point point, MouseEventType t)
         {
             int x = point.X - m_center.X;
             int y = point.Y - m_center.Y;
             if (x == 0 && y == 0)
                 return;
             var alpha = Math.Atan2(x, -y);
-            MouseHit(point, alpha);
+            MouseHit(point, alpha, t);
         }
 
-        protected virtual void MouseHit(Point point, double alpha)
+        protected virtual void MouseHit(Point point, double alpha, MouseEventType t)
         {
         }
 

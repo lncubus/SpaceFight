@@ -25,6 +25,13 @@ namespace SF.Space
         Missile = 3,
     }
 
+    public enum MouseEventType
+    {
+        MouseMove = 0,
+        MouseUp = 1,
+        MouseDown = 2,
+    }
+
     [Flags]
     public enum DrawingOptions
     {
