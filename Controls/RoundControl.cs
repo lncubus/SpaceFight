@@ -100,11 +100,10 @@ namespace SF.Controls
             if (x == 0 && y == 0)
                 return;
             var alpha = Math.Atan2(x, -y);
-            var degrees = MathUtils.ToDegreesInt(alpha);
-            MouseHit(point, degrees);
+            MouseHit(point, alpha);
         }
 
-        protected virtual void MouseHit(Point point, int degrees)
+        protected virtual void MouseHit(Point point, double alpha)
         {
         }
 

@@ -18,16 +18,18 @@ namespace SF.Controls
             return n;
         }
 
+        private int DpiX, DpiY;
         private int margin;
         private Region compass;
         private Region roller;
         private Rectangle[] bands;
         private int[] bandRadius;
+        private Rectangle plusButton, minusButton;
 
         private void Calculate()
         {
             margin = m_size / 24;
-            bandRadius = new int[6];
+            bandRadius = new int[8];
             bands = new Rectangle[bandRadius.Length];
             for (int i = 0; i < bandRadius.Length; i++)
             {
@@ -41,6 +43,20 @@ namespace SF.Controls
                     Height = 2 * r,
                 };
             }
+            minusButton = new Rectangle
+            {
+                X = ClientRectangle.Right - 2*margin,
+                Y = margin,
+                Width = margin,
+                Height = margin,
+            };
+            plusButton = new Rectangle
+            {
+                X = ClientRectangle.Right - 4*margin - DpiX,
+                Y = margin,
+                Width = margin,
+                Height = margin,
+            };
             //smallField = bigField;
             //smallField.Inflate(-bandWidth, -bandWidth);
             //rollRadius = m_size/6;
@@ -61,21 +77,29 @@ namespace SF.Controls
             path.AddEllipse(bands[3]);
             compass = new Region(path);
             path = new GraphicsPath();
-            path.AddEllipse(bands[3]);
             path.AddEllipse(bands[5]);
+            path.AddEllipse(bands[7]);
             roller = new Region(path);
         }
 
         protected override void DrawContents(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            DpiX = (int)e.Graphics.DpiX;
+            DpiY = (int)e.Graphics.DpiY;
             Calculate();
             e.Graphics.FillRegion(Palette.ControlPaper, compass);
             e.Graphics.FillRegion(Palette.ControlPaper, roller);
-            //roller.GetRegionScans()
+            e.Graphics.FillRectangle(Palette.ControlPaper, plusButton);
+            e.Graphics.FillRectangle(Palette.ControlPaper, minusButton);
             base.DrawContents(e);
+            //roller.GetRegionScans()
             DrawCompassFace(e);
             DrawRolloverFace(e);
+            e.Graphics.DrawRectangle(Palette.BlackPen, plusButton);
+            e.Graphics.DrawRectangle(Palette.BlackPen, minusButton);
+            e.Graphics.DrawString("+", Font, Palette.BlackInk, plusButton, CenteredLayout);
+            e.Graphics.DrawString("-", Font, Palette.BlackInk, minusButton, CenteredLayout);
             if (Universe == null || Universe.Ship == null)
                 return;
             //int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
@@ -106,12 +130,12 @@ namespace SF.Controls
 
         private void DrawRolloverFace(PaintEventArgs e)
         {
-            e.Graphics.DrawEllipse(Palette.BlackPen, bands[3]);
             e.Graphics.DrawEllipse(Palette.BlackPen, bands[5]);
-            e.Graphics.DrawString("0", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], 0), CenteredLayout);
-            e.Graphics.DrawString("-90", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], -Math.PI / 2), CenteredLayout);
-            e.Graphics.DrawString("180", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], Math.PI), CenteredLayout);
-            e.Graphics.DrawString("90", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], Math.PI / 2), CenteredLayout);
+            e.Graphics.DrawEllipse(Palette.BlackPen, bands[7]);
+            e.Graphics.DrawString("0", Font, Palette.BlackInk, GetXY(m_center, bandRadius[6], 0), CenteredLayout);
+            e.Graphics.DrawString("-90", Font, Palette.BlackInk, GetXY(m_center, bandRadius[6], -Math.PI / 2), CenteredLayout);
+            e.Graphics.DrawString("180", Font, Palette.BlackInk, GetXY(m_center, bandRadius[6], Math.PI), CenteredLayout);
+            e.Graphics.DrawString("90", Font, Palette.BlackInk, GetXY(m_center, bandRadius[6], Math.PI / 2), CenteredLayout);
         }
 
         private void DrawCompassFace(PaintEventArgs e)
@@ -138,6 +162,39 @@ namespace SF.Controls
                     e.Graphics.DrawLine(pen, GetXY(m_center, r3, a), GetXY(m_center, bandRadius[3], a));
                 }
             }
+        }
+
+        protected override void MouseHit(Point point, double alpha)
+        {
+            base.MouseHit(point, alpha);
+            if (plusButton.Contains(point))
+                ZoomIn();
+            else if (minusButton.Contains(point))
+                ZoomOut();
+            else if (compass.IsVisible(point))
+                CompassHit(alpha);
+            else if (roller.IsVisible(point))
+                RollHit(alpha);
+        }
+
+        private void CompassHit(double alpha)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void RollHit(double alpha)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void ZoomIn()
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void ZoomOut()
+        {
+            //throw new NotImplementedException();
         }
     }
 }
