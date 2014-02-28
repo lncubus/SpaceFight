@@ -33,16 +33,11 @@ namespace SF.Controls
         public Pen BlackPen;
         public Pen NavyPen;
         public Pen SignalPen;
-        public Brush NavyBrush;
-        public Brush SignalBrush;
+        public Pen SecondPen;
         public ColorSelector<Pen> VulnerableSectors;
         public ColorSelector<Pen> MissileCircles;
         public ColorSelector<Pen> ShipHulls;
         public ColorSelector<Brush> ShipNames;
-        public Color BackColor;
-        public Color SecondaryBackColor;
-        public Color ForeColor;
-        public Color SecondaryForeColor;
 
         public static PaletteDefinition White = new PaletteDefinition()
         {
@@ -53,12 +48,7 @@ namespace SF.Controls
             BlackPen = Pens.Black,
             NavyPen = Pens.Navy,
             SignalPen = Pens.Firebrick,
-            NavyBrush = Brushes.Navy,
-            SignalBrush = Brushes.Firebrick,
-            BackColor = Color.WhiteSmoke,
-            SecondaryBackColor = Color.LightGray,
-            ForeColor = Color.Black,
-            SecondaryForeColor = Color.Black,
+            SecondPen = Pens.DarkGreen,
             VulnerableSectors = new ColorSelector<Pen>
             {
                 Default = Pens.Black,
@@ -95,18 +85,13 @@ namespace SF.Controls
 
         public static PaletteDefinition Black = new PaletteDefinition
             {
-                ForeColor = Color.White,
-                SecondaryForeColor = Color.White,
-                BackColor = Color.Black,
-                SecondaryBackColor = Color.DarkGray,
                 BlackInk = Brushes.WhiteSmoke,
                 ControlPaper = Brushes.Gray,
                 BlackPencil = Pens.LightBlue,
                 BlackPen = Pens.WhiteSmoke,
                 NavyPen = Pens.MediumTurquoise,
                 SignalPen = Pens.LightCoral,
-                NavyBrush = Brushes.MediumTurquoise,
-                SignalBrush = Brushes.LightCoral,
+                SecondPen = Pens.Chartreuse,
                 WhitePaper = Brushes.DarkSlateGray,
                 MissileCircles = new ColorSelector<Pen>
                 {
