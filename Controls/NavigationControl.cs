@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using SF.Space;
 
 namespace SF.Controls
@@ -17,51 +18,51 @@ namespace SF.Controls
             return n;
         }
 
-        private int halfSize;
-        private int bandWidth;
         private int margin;
-        private Rectangle bigField;
-        private Rectangle smallField;
-        private Rectangle rollField;
-        private Point rollCenter;
-        private int rollRadius;
         private Region compass;
         private Region roller;
+        private Rectangle[] bands;
+        private int[] bandRadius;
 
         private void Calculate()
         {
-            halfSize = m_size / 2;
-            bigField = new Rectangle
+            margin = m_size / 24;
+            bandRadius = new int[6];
+            bands = new Rectangle[bandRadius.Length];
+            for (int i = 0; i < bandRadius.Length; i++)
             {
-                X = m_center.X - halfSize,
-                Y = m_center.Y - halfSize,
-                Width = m_size,
-                Height = m_size,
-            };
-            bandWidth = m_size/12;
-            margin = bandWidth/2;
-            bigField.Inflate(-margin, -margin);
-            smallField = bigField;
-            smallField.Inflate(-bandWidth, -bandWidth);
-            rollRadius = m_size/6;
-            rollCenter = new Point
-            {
-                X = margin + rollRadius,
-                Y = ClientRectangle.Height - (margin + rollRadius),
-            };
-            rollField = new Rectangle
-            {
-                X = margin,
-                Y = ClientRectangle.Height - (margin + 2*rollRadius),
-                Width = 2*rollRadius,
-                Height = 2*rollRadius,
-            };
+                var r = m_size/2 - margin*i;
+                bandRadius[i] = r;
+                bands[i] = new Rectangle
+                {
+                    X = m_center.X - r,
+                    Y = m_center.Y - r,
+                    Width = 2 * r,
+                    Height = 2 * r,
+                };
+            }
+            //smallField = bigField;
+            //smallField.Inflate(-bandWidth, -bandWidth);
+            //rollRadius = m_size/6;
+            //rollCenter = new Point
+            //{
+            //    X = margin + rollRadius,
+            //    Y = ClientRectangle.Height - (margin + rollRadius),
+            //};
+            //rollField = new Rectangle
+            //{
+            //    X = margin,
+            //    Y = ClientRectangle.Height - (margin + 2*rollRadius),
+            //    Width = 2*rollRadius,
+            //    Height = 2*rollRadius,
+            //};
             var path = new GraphicsPath();
-            path.AddEllipse(bigField);
-            path.AddEllipse(smallField);
+            path.AddEllipse(bands[1]);
+            path.AddEllipse(bands[3]);
             compass = new Region(path);
             path = new GraphicsPath();
-            path.AddEllipse(rollField);
+            path.AddEllipse(bands[3]);
+            path.AddEllipse(bands[5]);
             roller = new Region(path);
         }
 
@@ -71,10 +72,9 @@ namespace SF.Controls
             Calculate();
             e.Graphics.FillRegion(Palette.ControlPaper, compass);
             e.Graphics.FillRegion(Palette.ControlPaper, roller);
+            //roller.GetRegionScans()
             base.DrawContents(e);
-            int r1 = halfSize - bandWidth - margin;
-            int r4 = halfSize - margin;
-            DrawCompassFace(e, r1, r4);
+            DrawCompassFace(e);
             DrawRolloverFace(e);
             if (Universe == null || Universe.Ship == null)
                 return;
@@ -106,37 +106,36 @@ namespace SF.Controls
 
         private void DrawRolloverFace(PaintEventArgs e)
         {
-            e.Graphics.DrawEllipse(Palette.BlackPen, rollField);
-            var smallRadius = rollRadius*4/5;
-            e.Graphics.DrawString("0", Font, Palette.BlackInk, GetXY(rollCenter, smallRadius, 0), CenteredLayout);
-            e.Graphics.DrawString("-90", Font, Palette.BlackInk, GetXY(rollCenter, smallRadius, -Math.PI/2), CenteredLayout);
-            e.Graphics.DrawString("180", Font, Palette.BlackInk, GetXY(rollCenter, smallRadius, Math.PI), CenteredLayout);
-            e.Graphics.DrawString("90", Font, Palette.BlackInk, GetXY(rollCenter, smallRadius, Math.PI/2), CenteredLayout);
+            e.Graphics.DrawEllipse(Palette.BlackPen, bands[3]);
+            e.Graphics.DrawEllipse(Palette.BlackPen, bands[5]);
+            e.Graphics.DrawString("0", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], 0), CenteredLayout);
+            e.Graphics.DrawString("-90", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], -Math.PI / 2), CenteredLayout);
+            e.Graphics.DrawString("180", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], Math.PI), CenteredLayout);
+            e.Graphics.DrawString("90", Font, Palette.BlackInk, GetXY(m_center, bandRadius[4], Math.PI / 2), CenteredLayout);
         }
 
-        private void DrawCompassFace(PaintEventArgs e, int r1, int r4)
+        private void DrawCompassFace(PaintEventArgs e)
         {
-            e.Graphics.DrawEllipse(Palette.BlackPen, bigField);
-            e.Graphics.DrawEllipse(Palette.BlackPen, smallField);
+            e.Graphics.DrawEllipse(Palette.BlackPen, bands[1]);
+            e.Graphics.DrawEllipse(Palette.BlackPen, bands[3]);
             const int N = 12;
-            var smallRadius = halfSize - bandWidth;
             for (int i = 1; i <= N; i++)
             {
-                var p = GetXY(m_center, smallRadius, 2*i*Math.PI/N);
+                var p = GetXY(m_center, bandRadius[2], 2*i*Math.PI/N);
                 e.Graphics.DrawString(i.ToString(), Font, Palette.BlackInk, p, CenteredLayout);
             }
-            var r2 = r1 + bandWidth/4;
-            var r3 = r4 - bandWidth/4;
+            var r2 = bandRadius[1] - margin/2;
+            var r3 = bandRadius[3] + margin/2;
             for (int i = 0; i < N*2; i++)
             {
                 var pen = Palette.BlackPencil;
                 var a = i*Math.PI/N;
                 if (i%2 == 1)
-                    e.Graphics.DrawLine(pen, GetXY(m_center, r1, a), GetXY(m_center, r4, a));
+                    e.Graphics.DrawLine(pen, GetXY(m_center, bandRadius[1], a), GetXY(m_center, bandRadius[3], a));
                 else
                 {
-                    e.Graphics.DrawLine(pen, GetXY(m_center, r1, a), GetXY(m_center, r2, a));
-                    e.Graphics.DrawLine(pen, GetXY(m_center, r3, a), GetXY(m_center, r4, a));
+                    e.Graphics.DrawLine(pen, GetXY(m_center, bandRadius[1], a), GetXY(m_center, r2, a));
+                    e.Graphics.DrawLine(pen, GetXY(m_center, r3, a), GetXY(m_center, bandRadius[3], a));
                 }
             }
         }
