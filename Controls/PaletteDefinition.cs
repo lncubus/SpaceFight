@@ -34,6 +34,8 @@ namespace SF.Controls
         public Pen NavyPen;
         public Pen SignalPen;
         public Pen SecondPen;
+        public Pen LeftPen = Pens.LightCoral;
+        public Pen RightPen = Pens.LawnGreen;
         public ColorSelector<Pen> VulnerableSectors;
         public ColorSelector<Pen> MissileCircles;
         public ColorSelector<Pen> ShipHulls;

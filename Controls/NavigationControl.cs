@@ -21,6 +21,8 @@ namespace SF.Controls
         private int DpiX, DpiY;
         private int margin;
         private Region compass;
+        private Region thruster;
+        private GraphicsPath thrusterPath;
         private Region roller;
         private Rectangle plusButton, minusButton, scaleLabel;
         private Point[] scaleRuler;
@@ -98,14 +100,31 @@ namespace SF.Controls
                 new Point(x1, 2*margin),
                 new Point(x1, 3*margin/2),
             };
+            var b1 = BandN(1);
+            var b3 = BandN(3);
+            var b5 = BandN(5);
+            var b7 = BandN(7);
             var path = new GraphicsPath();
-            path.AddEllipse(BandN(1));
-            path.AddEllipse(BandN(3));
+            path.AddEllipse(b1);
+            path.AddEllipse(b3);
             compass = new Region(path);
             path = new GraphicsPath();
-            path.AddEllipse(BandN(5));
-            path.AddEllipse(BandN(7));
+            path.AddEllipse(b5);
+            path.AddEllipse(b7);
             roller = new Region(path);
+            path = new GraphicsPath();
+            path.AddLine(m_center.X, b5.Top, m_center.X, b3.Top);
+            path.AddArc(b3, -90, 180);
+            var p = new[]
+            {
+                new Point(m_center.X, b3.Bottom),
+                new Point(m_center.X - margin, m_center.Y + BandRadius(4)),
+                new Point(m_center.X, b5.Bottom),
+            };
+            path.AddLines(p);
+            path.AddArc(b5, 90, -180);
+            thruster = new Region(path);
+            thrusterPath = path;
         }
 
         protected override void DrawContents(PaintEventArgs e)
@@ -115,24 +134,33 @@ namespace SF.Controls
             DpiY = (int)e.Graphics.DpiY;
             Calculate();
             e.Graphics.FillRegion(Palette.ControlPaper, compass);
+            e.Graphics.FillRegion(Palette.ControlPaper, thruster);
             e.Graphics.FillRegion(Palette.ControlPaper, roller);
             e.Graphics.FillRectangle(Palette.ControlPaper, plusButton);
             e.Graphics.FillRectangle(Palette.ControlPaper, minusButton);
             base.DrawContents(e);
-            DrawCompassFace(e);
-            DrawRolloverFace(e);
-            DrawScaleControl(e);
+
             var heading = (Universe == null || Universe.Ship == null) ? 1.0 : Universe.Ship.Heading;
             var headingTo = (Universe == null || Universe.Ship == null) ? 1.1 : Universe.Ship.HeadingTo;
             var speed = (Universe == null || Universe.Ship == null) ? Vector.Direction(1.3) : Universe.Ship.Speed;
             var roll = (Universe == null || Universe.Ship == null) ? 2.7 : Universe.Ship.Roll;
             var rollTo = (Universe == null || Universe.Ship == null) ? 2.9 : Universe.Ship.RollTo;
+            var thrust = (Universe == null || Universe.Ship == null) ? 1.9 : Universe.Ship.Thrust;
+            var thrustTo = (Universe == null || Universe.Ship == null) ? 2.1 : Universe.Ship.ThrustTo;
+            var thrustMax = (Universe == null || Universe.Ship == null) ? 4.0 : Universe.Ship.Class.MaximumAcceleration;
+            DrawFaces(e, thrustMax);
+            thrust = Math.PI * (1 - thrust / thrustMax);
+            thrustTo = Math.PI * (1 - thrustTo / thrustMax);
+            DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(2.8f), BandRadius(5.2f), thrust, Math.PI / 18);
+            DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(5.2f), BandRadius(2.8f), thrustTo, Math.PI / 18);
             DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(0.8f), BandRadius(3.2f), heading, Math.PI / 18);
             DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(3.2f), BandRadius(0.8f), headingTo, Math.PI / 18);
             if (speed.Length > MathUtils.Epsilon)
                 DrawDiamond(e.Graphics, Palette.SecondPen, BandRadius(3.2f), BandRadius(0.8f), speed.Argument, Math.PI/18);
             DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(4.8f), BandRadius(7.2f), roll, Math.PI / 16);
             DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(7.2f), BandRadius(4.8f), rollTo, Math.PI / 16);
+            DrawDiamond(e.Graphics, Palette.LeftPen, BandRadius(6.8f), BandRadius(5.2f), roll - Math.PI/2, Math.PI / 24);
+            DrawDiamond(e.Graphics, Palette.RightPen, BandRadius(6.8f), BandRadius(5.2f), roll + Math.PI/2, Math.PI / 24);
             if (Universe == null || Universe.Ship == null)
                 return;
             //int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
@@ -186,7 +214,7 @@ namespace SF.Controls
             //g.DrawArc(pen, tailRect, (float)MathUtils.ToDegrees(head - sweep / 2 - Math.PI / 2), (float)MathUtils.ToDegrees(sweep));
         }
 
-        private void DrawScaleControl(PaintEventArgs e)
+        private void DrawFaces(PaintEventArgs e, double maxThrust)
         {
             var scale = MathUtils.NumberToText(WorldScale, unit);
             e.Graphics.DrawRectangle(Palette.BlackPen, plusButton);
@@ -195,46 +223,72 @@ namespace SF.Controls
             e.Graphics.DrawString("-", Font, Palette.BlackInk, minusButton, CenteredLayout);
             e.Graphics.DrawString(scale, Font, Palette.BlackInk, scaleLabel, CenteredLayout);
             e.Graphics.DrawLines(Palette.BlackPen, scaleRuler);
-        }
 
-        private void DrawRolloverFace(PaintEventArgs e)
-        {
-            var r = BandRadius(6);
+            var r6 = BandRadius(6);
             e.Graphics.DrawEllipse(Palette.BlackPen, BandN(5));
             e.Graphics.DrawEllipse(Palette.BlackPen, BandN(7));
-            e.Graphics.DrawString("0", Font, Palette.BlackInk, GetXY(m_center, r, 0), CenteredLayout);
-            e.Graphics.DrawString("-90", Font, Palette.BlackInk, GetXY(m_center, r, -Math.PI / 2), CenteredLayout);
-            e.Graphics.DrawString("180", Font, Palette.BlackInk, GetXY(m_center, r, Math.PI), CenteredLayout);
-            e.Graphics.DrawString("90", Font, Palette.BlackInk, GetXY(m_center, r, Math.PI / 2), CenteredLayout);
-        }
+            e.Graphics.DrawString("0", Font, Palette.BlackInk, GetXY(m_center, r6, 0), CenteredLayout);
+            e.Graphics.DrawString("-90", Font, Palette.BlackInk, GetXY(m_center, r6, -Math.PI/2), CenteredLayout);
+            e.Graphics.DrawString("180", Font, Palette.BlackInk, GetXY(m_center, r6, Math.PI), CenteredLayout);
+            e.Graphics.DrawString("90", Font, Palette.BlackInk, GetXY(m_center, r6, Math.PI/2), CenteredLayout);
 
-        private void DrawCompassFace(PaintEventArgs e)
-        {
             e.Graphics.DrawEllipse(Palette.BlackPen, BandN(1));
             e.Graphics.DrawEllipse(Palette.BlackPen, BandN(3));
             const int N = 12;
-            var r = BandRadius(2);
+            var r2 = BandRadius(2);
             for (int i = 1; i <= N; i++)
             {
-                var p = GetXY(m_center, r, 2*i*Math.PI/N);
+                var p = GetXY(m_center, r2, 2*i*Math.PI/N);
                 e.Graphics.DrawString((i*30).ToString(), Font, Palette.BlackInk, p, CenteredLayout);
             }
             var r1 = BandRadius(1);
-            var r2 = BandRadius(1.5f);
-            var r3 = BandRadius(2.5f);
-            var r4 = BandRadius(3);
+            var r15 = BandRadius(1.5f);
+            var r25 = BandRadius(2.5f);
+            var r3 = BandRadius(3);
             for (int i = 0; i < N*2; i++)
             {
                 var pen = Palette.BlackPencil;
                 var a = i*Math.PI/N;
                 if (i%2 == 1)
-                    e.Graphics.DrawLine(pen, GetXY(m_center, r1, a), GetXY(m_center, r4, a));
+                    e.Graphics.DrawLine(pen, GetXY(m_center, r1, a), GetXY(m_center, r3, a));
                 else
                 {
-                    e.Graphics.DrawLine(pen, GetXY(m_center, r1, a), GetXY(m_center, r2, a));
-                    e.Graphics.DrawLine(pen, GetXY(m_center, r3, a), GetXY(m_center, r4, a));
+                    e.Graphics.DrawLine(pen, GetXY(m_center, r1, a), GetXY(m_center, r15, a));
+                    e.Graphics.DrawLine(pen, GetXY(m_center, r25, a), GetXY(m_center, r3, a));
                 }
             }
+            e.Graphics.DrawPath(Palette.BlackPen, thrusterPath);
+            var r4 = BandRadius(4);
+            var r5 = BandRadius(5);
+            var r35 = BandRadius(3.5f);
+            var r45 = BandRadius(4.5f);
+            e.Graphics.DrawString("0", Font, Palette.BlackInk, m_center.X, m_center.Y + r4, CenteredLayout);
+            int zeros = (int) Math.Truncate(Math.Log10(maxThrust));
+            double exponent = Math.Pow(10, zeros);
+            double first = maxThrust/exponent;
+            double mark;
+            if (first < 1.3)
+                mark = 0.1;
+            else if (first < 2.5)
+                mark = 0.2;
+            else if (first < 6)
+                mark = 0.5;
+            else
+                mark = 1.0;
+            if (mark > 0)
+                for (int i = 1; i <= first/mark; i++)
+                {
+                    var angle = Math.PI*(1 - i*mark/first);
+                    if (i%2 == 1)
+                        e.Graphics.DrawLine(Palette.BlackPencil, GetXY(m_center, r3, angle), GetXY(m_center, r5, angle));
+                    else
+                    {
+                        var p = GetXY(m_center, r4, angle);
+                        e.Graphics.DrawString((i*mark).ToString("##.0"), Font, Palette.BlackInk, p, CenteredLayout);
+                        e.Graphics.DrawLine(Palette.BlackPencil, GetXY(m_center, r3, angle), GetXY(m_center, r35, angle));
+                        e.Graphics.DrawLine(Palette.BlackPencil, GetXY(m_center, r45, angle), GetXY(m_center, r5, angle));
+                    }
+                }
         }
 
         protected override void MouseHit(Point point, double alpha, MouseEventType type)
