@@ -10,14 +10,6 @@ namespace SF.Controls
 {
     public class NavigationControl : SpaceGridControl
     {
-        private int Modulo(int n, int M)
-        {
-            n = n % M;
-            if (n < 0)
-                n += M;
-            return n;
-        }
-
         private int DpiX, DpiY;
         private int margin;
         private Region compass;
@@ -26,6 +18,15 @@ namespace SF.Controls
         private Region roller;
         private Rectangle plusButton, minusButton, scaleLabel;
         private Point[] scaleRuler;
+
+        public const double DefaultMinScaleValue = 1000;
+        public const double DefaultMaxScaleValue = 5000000000;
+        public double MinScaleValue = DefaultMinScaleValue;
+        public double MaxScaleValue = DefaultMaxScaleValue;
+
+        public event EventHandler<ValueEventArgs<double>> HeadingToChanged;
+        public event EventHandler<ValueEventArgs<double>> RollToChanged;
+        public event EventHandler<ValueEventArgs<double>> ThrustToChanged;
 
         private string unit = "км";
         public string Unit
@@ -40,11 +41,6 @@ namespace SF.Controls
                 Invalidate();
             }
         }
-
-        public const double DefaultMinScaleValue = 1000;
-        public const double DefaultMaxScaleValue = 5000000000;
-        public double MinScaleValue = DefaultMinScaleValue;
-        public double MaxScaleValue = DefaultMaxScaleValue;
 
         private int BandRadius(float i)
         {
@@ -148,11 +144,11 @@ namespace SF.Controls
             var thrust = (Universe == null || Universe.Ship == null) ? 1.9 : Universe.Ship.Thrust;
             var thrustTo = (Universe == null || Universe.Ship == null) ? 2.1 : Universe.Ship.ThrustTo;
             var thrustMax = (Universe == null || Universe.Ship == null) ? 4.0 : Universe.Ship.Class.MaximumAcceleration;
-            DrawFaces(e, thrustMax);
             thrust = Math.PI * (1 - thrust / thrustMax);
             thrustTo = Math.PI * (1 - thrustTo / thrustMax);
-            DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(2.8f), BandRadius(5.2f), thrust, Math.PI / 18);
-            DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(5.2f), BandRadius(2.8f), thrustTo, Math.PI / 18);
+            DrawFaces(e, thrustMax);
+            DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(2.8f), BandRadius(5.2f), thrust, Math.PI / 18, false);
+            DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(5.2f), BandRadius(2.8f), thrustTo, Math.PI / 18, false);
             DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(0.8f), BandRadius(3.2f), heading, Math.PI / 18);
             DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(3.2f), BandRadius(0.8f), headingTo, Math.PI / 18);
             if (speed.Length > MathUtils.Epsilon)
@@ -161,36 +157,9 @@ namespace SF.Controls
             DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(7.2f), BandRadius(4.8f), rollTo, Math.PI / 16);
             DrawDiamond(e.Graphics, Palette.LeftPen, BandRadius(6.8f), BandRadius(5.2f), roll - Math.PI/2, Math.PI / 24);
             DrawDiamond(e.Graphics, Palette.RightPen, BandRadius(6.8f), BandRadius(5.2f), roll + Math.PI/2, Math.PI / 24);
-            if (Universe == null || Universe.Ship == null)
-                return;
-            //int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
-            //int hTo = MathUtils.ToDegreesInt(Universe.Ship.HeadingTo);
-            //var arrowHead = new[] { GetXY(m_center, r4, h), GetXY(m_center, r1, h), GetXY(m_center, r4, h) };
-            //var arrowHeadTo = new[] { GetXY(m_center, r1, hTo), GetXY(m_center, r4, hTo), GetXY(m_center, r1, hTo) };
-            //            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
-            //            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
-            //e.Graphics.DrawLines(Palette.NavyPen, arrowHead);
-            //e.Graphics.DrawLines(Palette.SignalPen, arrowHeadTo);
-            //            int h = MathUtils.ToDegreesInt(Universe.Ship.Heading);
-            //            int hTo = MathUtils.ToDegreesInt(Universe.Ship.HeadingTo);
-            ////            Palette.NavyPen
-            //            var arrow = new GraphicsPath();
-            //            arrow.AddArc(smallField, h - 5, h + 5);
-            //            arrow.AddLines(new[] { GetXY(r1, h - 5), GetXY(r4, h), GetXY(r1, h + 5)});
-            //            e.Graphics.FillPath(Palette.NavyBrush, arrow);
-            //            e.Graphics.DrawLine(Palette.NavyPen, GetXY(r1, h), GetXY(r4, h));
-            //            e.Graphics.DrawLine(Palette.SignalPen, GetXY(r1, hTo), GetXY(r4, hTo));
-            //e.Graphics.DrawString("N", Font, Palette.BlackInk, GetXY(smallRadius, 0), CenteredLayout);
-            //e.Graphics.DrawString("W", Font, Palette.BlackInk, GetXY(smallRadius, -90), CenteredLayout);
-            //e.Graphics.DrawString("S", Font, Palette.BlackInk, GetXY(smallRadius, 180), CenteredLayout);
-            //e.Graphics.DrawString("E", Font, Palette.BlackInk, GetXY(smallRadius, 90), CenteredLayout);
-
-            //            DrawArrow(e.Graphics, Palette.SupportPen, m_bigRadius, m_bigRadius, Secondary, 174);
-            //            DrawArrow(e.Graphics, Palette.NavyPen, m_bigRadius, m_bigRadius, Heading, 170);
-            //            DrawArrow(e.Graphics, Palette.SignalPen, m_bigRadius, m_halfSize, HeadingTo, 10);
         }
 
-        public void DrawArrow(Graphics g, Pen pen, int headRadius, int tailRadius, double head, double sweep)
+        public void DrawArrow(Graphics g, Pen pen, int headRadius, int tailRadius, double head, double sweep, bool opposite = true)
         {
             var left = GetXY(m_center, tailRadius, head - sweep/2);
             var right = GetXY(m_center, tailRadius, head + sweep/2);
@@ -200,6 +169,11 @@ namespace SF.Controls
             g.DrawLines(pen, new[] { left, point, right });
             g.DrawLine(pen, tail, point);
             g.DrawArc(pen, tailRect, (float)MathUtils.ToDegrees(head - sweep/2 - Math.PI / 2), (float)MathUtils.ToDegrees(sweep));
+            if (!opposite)
+                return;
+            point = GetXY(m_center, -headRadius, head);
+            tail = GetXY(m_center, -tailRadius, head);
+            g.DrawLine(pen, tail, point);
         }
 
         public void DrawDiamond(Graphics g, Pen pen, int headRadius, int tailRadius, double head, double sweep)
@@ -302,16 +276,30 @@ namespace SF.Controls
                 CompassHit(alpha);
             else if (roller.IsVisible(point))
                 RollHit(alpha);
+            else if (thruster.IsVisible(point))
+                ThrustHit(alpha);
         }
 
         private void CompassHit(double alpha)
         {
-            //throw new NotImplementedException();
+            var handler = HeadingToChanged;
+            if (handler != null)
+                handler(this, new ValueEventArgs<double>(alpha));
         }
 
         private void RollHit(double alpha)
         {
-            //throw new NotImplementedException();
+            var handler = RollToChanged;
+            if (handler != null)
+                handler(this, new ValueEventArgs<double>(alpha));
+        }
+
+        private void ThrustHit(double alpha)
+        {
+            var thrustTo = (1-alpha/Math.PI);
+            var handler = ThrustToChanged;
+            if (handler != null)
+                handler(this, new ValueEventArgs<double>(thrustTo));
         }
 
         private void ZoomIn()
