@@ -27,6 +27,9 @@ namespace Client
             spaceGridControl.Selectable =
                 SelectableObjects.Stars |
                 SelectableObjects.Ships;
+            spaceGridControl.HeadingToChanged += HeadingToChanged;
+            spaceGridControl.RollToChanged += RollToChanged;
+            spaceGridControl.ThrustToChanged += ThrustToChanged;
             Controls.Add(labelMessage);
         }
 
@@ -36,12 +39,6 @@ namespace Client
         }
 
         private SF.ClientLibrary.SpaceClient client;
-
-        //private const int TrajectorySize = 250;
-        //private SpaceGridControl.Curve Trajectory = new SpaceGridControl.Curve
-        //    {
-        //        Pencil = Pens.DarkGreen
-        //    };
 
         private Label labelMessage = new Label
         {
@@ -87,5 +84,32 @@ namespace Client
                 spaceGridControl.Origin = client.Universe.Ship.Position;
             spaceGridControl.Invalidate();
         }
+
+        private void HeadingToChanged(object sender, ValueEventArgs<double> e)
+        {
+            if (client == null || client.Universe == null)
+                return;
+            client.SetHeadingTo(e.Argument);
+        }
+
+        private void RollToChanged(object sender, ValueEventArgs<double> e)
+        {
+            if (client == null || client.Universe == null)
+                return;
+            client.SetRollTo(e.Argument);
+        }
+
+        private void ThrustToChanged(object sender, ValueEventArgs<double> e)
+        {
+            if (client == null || client.Universe == null)
+                return;
+            client.SetThrustTo(e.Argument);
+        }
+
+        //private const int TrajectorySize = 250;
+        //private SpaceGridControl.Curve Trajectory = new SpaceGridControl.Curve
+        //    {
+        //        Pencil = Pens.DarkGreen
+        //    };
     }
 }

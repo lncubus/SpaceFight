@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using SF.Space;
 
 namespace SF.Controls
@@ -296,7 +294,7 @@ namespace SF.Controls
 
         private void ThrustHit(double alpha)
         {
-            var thrustTo = (1-alpha/Math.PI);
+            var thrustTo = (1 - alpha/Math.PI)*Universe.Ship.Class.MaximumAcceleration;
             var handler = ThrustToChanged;
             if (handler != null)
                 handler(this, new ValueEventArgs<double>(thrustTo));

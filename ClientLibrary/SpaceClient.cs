@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 
+using SF.Space;
+
 namespace SF.ClientLibrary
 {
-    using SF.Space;
-
     public class SpaceClient : IDisposable
     {
         public static string Password = string.Empty;
@@ -71,6 +71,21 @@ namespace SF.ClientLibrary
             ClientData view = Client.GetView(Universe.Generation);
 //            w.Stop();
             Universe.UpdateData(view);
+        }
+
+        public void SetHeadingTo(double value)
+        {
+            Client.SetHeadingTo(value);
+        }
+
+        public void SetRollTo(double value)
+        {
+            Client.SetRollTo(value);
+        }
+
+        public void SetThrustTo(double value)
+        {
+            Client.SetThrustTo(value);
         }
     }
 }
