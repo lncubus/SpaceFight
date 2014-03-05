@@ -150,7 +150,7 @@ namespace SF.Controls
             DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(0.8f), BandRadius(3.2f), heading, Math.PI / 18);
             DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(3.2f), BandRadius(0.8f), headingTo, Math.PI / 18);
             if (speed.Length > MathUtils.Epsilon)
-                DrawDiamond(e.Graphics, Palette.SecondPen, BandRadius(3.2f), BandRadius(0.8f), speed.Argument, Math.PI/18);
+                DrawDiamond(e.Graphics, Palette.SecondPen, BandRadius(3.2f), BandRadius(0.8f), speed.Argument, Math.PI/18, true);
             DrawArrow(e.Graphics, Palette.NavyPen, BandRadius(4.8f), BandRadius(7.2f), roll, Math.PI / 16);
             DrawArrow(e.Graphics, Palette.SignalPen, BandRadius(7.2f), BandRadius(4.8f), rollTo, Math.PI / 16);
             DrawDiamond(e.Graphics, Palette.LeftPen, BandRadius(6.8f), BandRadius(5.2f), roll - Math.PI/2, Math.PI / 24);
@@ -174,7 +174,7 @@ namespace SF.Controls
             g.DrawLine(pen, tail, point);
         }
 
-        public void DrawDiamond(Graphics g, Pen pen, int headRadius, int tailRadius, double head, double sweep)
+        public void DrawDiamond(Graphics g, Pen pen, int headRadius, int tailRadius, double head, double sweep, bool opposite = false)
         {
             var r = (headRadius + tailRadius)/2;
             var left = GetXY(m_center, r, head - sweep / 2);
@@ -183,7 +183,11 @@ namespace SF.Controls
             var tail = GetXY(m_center, tailRadius, head);
             g.DrawPolygon(pen, new[] { left, point, right, tail });
             g.DrawLine(pen, tail, point);
-            //g.DrawArc(pen, tailRect, (float)MathUtils.ToDegrees(head - sweep / 2 - Math.PI / 2), (float)MathUtils.ToDegrees(sweep));
+            if (!opposite)
+                return;
+            point = GetXY(m_center, -headRadius, head);
+            tail = GetXY(m_center, -tailRadius, head);
+            g.DrawLine(pen, tail, point);
         }
 
         private void DrawFaces(PaintEventArgs e, double maxThrust)
@@ -295,6 +299,8 @@ namespace SF.Controls
         private void ThrustHit(double alpha)
         {
             var thrustTo = (1 - alpha/Math.PI)*Universe.Ship.Class.MaximumAcceleration;
+            if (thrustTo < 0)
+                thrustTo = 0;
             var handler = ThrustToChanged;
             if (handler != null)
                 handler(this, new ValueEventArgs<double>(thrustTo));

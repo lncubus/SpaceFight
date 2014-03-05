@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Text;
 using SF.Space;
 
 namespace SF.ServerLibrary
 {
-    using System.Text;
-
-    public sealed class Universe
+    public sealed partial class Universe
     {
         private static readonly Random Random = new Random();
         private static readonly SynchronizationContext Context = SynchronizationContext.Current;
@@ -29,7 +26,7 @@ namespace SF.ServerLibrary
         public IDictionary<int, Star> Stars { get; private set; }
         public IDictionary<int, ShipClass> ShipClasses { get; private set; }
         public IDictionary<int, MissileClass> MissileClasses { get; private set; }
-        public IDictionary<int, Ship> Ships { get; private set; }
+        public IDictionary<int, ServerShip> Ships { get; private set; }
         public IDictionary<int, Missile> Missiles { get; private set; }
 
         private Universe()
@@ -50,7 +47,7 @@ namespace SF.ServerLibrary
                Stars = p.Stars.ToDictionary(star => star.Id),
                ShipClasses = p.ShipClasses.ToDictionary(shipClass => shipClass.Id),
                MissileClasses = p.MissileClasses.ToDictionary(missileClass => missileClass.Id),
-               Ships = p.Ships.Select(data => new Ship(data)).ToDictionary(ship => ship.Id),
+               Ships = p.Ships.Select(data => new ServerShip(data)).ToDictionary(ship => ship.Id),
             };
             u.Initialize();
             u.UpdateControlsData(view.Controls);
@@ -148,6 +145,9 @@ namespace SF.ServerLibrary
                 {
                     double t = Time.TotalSeconds;
                     var dt = t - tPrev;
+                    foreach (var ship in Ships.Values)
+                        ship.Move(t, dt);
+                    tPrev = t;
                 }
             }
         }

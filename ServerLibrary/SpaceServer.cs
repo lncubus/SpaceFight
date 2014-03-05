@@ -13,7 +13,7 @@ namespace SF.ServerLibrary
         public const int Version = 0x0023; 
         public static Universe Universe;
         private string Password;
-        private Ship ship;
+        private ServerShip ship;
 
         public bool Login(int idShip)
         {
