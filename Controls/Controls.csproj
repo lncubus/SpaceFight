@@ -43,7 +43,11 @@
     <Compile Include="LogonDialog.Designer.cs">
       <DependentUpon>LogonDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="NavigationControl.cs">
+    <Compile Include="CompositeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CompositeControl.Pilot.cs">
+      <DependentUpon>CompositeControl.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PaletteDefinition.cs" />

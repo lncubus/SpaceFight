@@ -32,6 +32,15 @@ namespace SF.Space
         MouseDown = 2,
     }
 
+    public enum ControlMode
+    {
+        None = 0,
+        Pilot = 1,
+        Gunner = 2,
+        Tactic = 3,
+        Defense = 4,
+    }
+
     [Flags]
     public enum DrawingOptions
     {

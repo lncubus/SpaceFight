@@ -51,9 +51,6 @@
     <Compile Include="Universe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Universe.Dynamics.cs">
-      <DependentUpon>Universe.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Space\Space.csproj">

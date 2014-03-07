@@ -33,7 +33,7 @@ namespace Client
             this.components = new System.ComponentModel.Container();
             System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.spaceGridControl = new SF.Controls.NavigationControl();
+            this.spaceGridControl = new SF.Controls.CompositeControl();
             this.SuspendLayout();
             // 
             // timerUpdate
@@ -50,14 +50,18 @@ namespace Client
             this.spaceGridControl.CenteredLayout = stringFormat1;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spaceGridControl.Location = new System.Drawing.Point(0, 0);
+            this.spaceGridControl.Mode = SF.Space.ControlMode.Pilot;
             this.spaceGridControl.Name = "spaceGridControl";
+            this.spaceGridControl.Options = SF.Space.DrawingOptions.None;
             this.spaceGridControl.Polar = false;
             this.spaceGridControl.ReadOnly = false;
             this.spaceGridControl.Rotation = 0D;
+            this.spaceGridControl.Selectable = SF.Space.SelectableObjects.None;
             this.spaceGridControl.Selected = null;
             this.spaceGridControl.Size = new System.Drawing.Size(794, 588);
             this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 1;
+            this.spaceGridControl.Unit = "км";
             this.spaceGridControl.WorldScale = 2000000D;
             // 
             // ClientForm
@@ -77,7 +81,7 @@ namespace Client
         #endregion
 
         private System.Windows.Forms.Timer timerUpdate;
-        private NavigationControl spaceGridControl;
+        private CompositeControl spaceGridControl;
     }
 }
 
