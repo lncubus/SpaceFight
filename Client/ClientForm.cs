@@ -106,6 +106,30 @@ namespace Client
             client.SetThrustTo(e.Argument);
         }
 
+        private void pilotToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            spaceGridControl.Mode = ControlMode.Pilot;
+        }
+
+        private void fireControlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            spaceGridControl.Mode = ControlMode.Gunner;
+        }
+
+        private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetPalette(PaletteDefinition.White);
+            toolStrip.BackColor = BackColor = Color.White;
+            ForeColor = Color.Black;
+        }
+
+        private void blackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetPalette(PaletteDefinition.Black);
+            toolStrip.BackColor = BackColor = Color.DarkSlateGray;
+            ForeColor = Color.White;
+        }
+
         //private const int TrajectorySize = 250;
         //private SpaceGridControl.Curve Trajectory = new SpaceGridControl.Curve
         //    {

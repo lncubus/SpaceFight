@@ -88,13 +88,13 @@ namespace SF.Controls
         public static PaletteDefinition Black = new PaletteDefinition
             {
                 BlackInk = Brushes.WhiteSmoke,
-                ControlPaper = Brushes.Gray,
+                ControlPaper = Brushes.DarkSlateGray,
                 BlackPencil = Pens.LightBlue,
                 BlackPen = Pens.WhiteSmoke,
                 NavyPen = Pens.MediumTurquoise,
                 SignalPen = Pens.LightCoral,
                 SecondPen = Pens.Chartreuse,
-                WhitePaper = Brushes.DarkSlateGray,
+                WhitePaper = Brushes.Black,
                 MissileCircles = new ColorSelector<Pen>
                 {
                     Default = Pens.LightGray,
