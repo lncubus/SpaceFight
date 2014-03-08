@@ -13,11 +13,14 @@ namespace Client
 {
     public partial class ClientForm : Form
     {
+        public static int PredefinedIdShip;
+        public static ControlMode PredefinedControlMode;
+
         public ClientForm()
         {
             InitializeComponent();
             spaceGridControl.Visible = false;
-            timerUpdate.Enabled = true;
+            toolStrip.Visible = false;
             spaceGridControl.Options = 
                 DrawingOptions.FriendlyMissileCircles |
                 DrawingOptions.FriendlyVulnerableSectors |
@@ -53,26 +56,24 @@ namespace Client
         private void Login()
         {
             client = new SF.ClientLibrary.SpaceClient();
-            var credentials = LogonDialog.Execute(client.GetShipRegistry());
+            var credentials = PredefinedIdShip;
+            if (credentials == 0)
+                credentials = LogonDialog.Execute(client.GetShipRegistry());
             bool okay = credentials != 0 && client.Login(credentials);
             if (!okay)
             {
                 Close();
                 return;
             }
+            if (ControlMode.None != PredefinedControlMode)
+            {
+                btnMode.Visible = false;
+                spaceGridControl.Mode = PredefinedControlMode;
+            }
             spaceGridControl.Universe = client.Universe;
+            toolStrip.Visible = true;
             spaceGridControl.Visible = true;
             timerUpdate.Enabled = true;
-        }
-
-        private void timerUpdate_Tick(object sender, EventArgs e)
-        {
-            if (client == null)
-            {
-                timerUpdate.Enabled = false;
-                Login();
-            }
-            UpdateData();
         }
 
         private void UpdateData()
@@ -106,6 +107,16 @@ namespace Client
             client.SetThrustTo(e.Argument);
         }
 
+        private void ClientForm_Load(object sender, EventArgs e)
+        {
+            Login();
+        }
+
+        private void timerUpdate_Tick(object sender, EventArgs e)
+        {
+            UpdateData();
+        }
+
         private void pilotToolStripMenuItem_Click(object sender, EventArgs e)
         {
             spaceGridControl.Mode = ControlMode.Pilot;
@@ -129,11 +140,5 @@ namespace Client
             toolStrip.BackColor = BackColor = Color.DarkSlateGray;
             ForeColor = Color.White;
         }
-
-        //private const int TrajectorySize = 250;
-        //private SpaceGridControl.Curve Trajectory = new SpaceGridControl.Curve
-        //    {
-        //        Pencil = Pens.DarkGreen
-        //    };
     }
 }

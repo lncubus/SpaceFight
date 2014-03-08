@@ -34,10 +34,10 @@ namespace Client
             System.Drawing.StringFormat stringFormat1 = new System.Drawing.StringFormat();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.btnPalette = new System.Windows.Forms.ToolStripDropDownButton();
             this.btnMode = new System.Windows.Forms.ToolStripDropDownButton();
             this.pilotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fireControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnPalette = new System.Windows.Forms.ToolStripDropDownButton();
             this.whiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spaceGridControl = new SF.Controls.CompositeControl();
@@ -58,19 +58,9 @@ namespace Client
             this.btnPalette});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(32, 588);
+            this.toolStrip.Size = new System.Drawing.Size(18, 588);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.TextDirection = System.Windows.Forms.ToolStripTextDirection.Vertical270;
-            // 
-            // btnPalette
-            // 
-            this.btnPalette.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.whiteToolStripMenuItem,
-            this.blackToolStripMenuItem});
-            this.btnPalette.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnPalette.Name = "btnPalette";
-            this.btnPalette.Size = new System.Drawing.Size(29, 61);
-            this.btnPalette.Text = "Палитра";
             // 
             // btnMode
             // 
@@ -79,7 +69,7 @@ namespace Client
             this.fireControlToolStripMenuItem});
             this.btnMode.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMode.Name = "btnMode";
-            this.btnMode.Size = new System.Drawing.Size(29, 50);
+            this.btnMode.Size = new System.Drawing.Size(15, 50);
             this.btnMode.Text = "Режим";
             // 
             // pilotToolStripMenuItem
@@ -96,17 +86,27 @@ namespace Client
             this.fireControlToolStripMenuItem.Text = "Управление огнем";
             this.fireControlToolStripMenuItem.Click += new System.EventHandler(this.fireControlToolStripMenuItem_Click);
             // 
+            // btnPalette
+            // 
+            this.btnPalette.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.whiteToolStripMenuItem,
+            this.blackToolStripMenuItem});
+            this.btnPalette.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnPalette.Name = "btnPalette";
+            this.btnPalette.Size = new System.Drawing.Size(15, 61);
+            this.btnPalette.Text = "Палитра";
+            // 
             // whiteToolStripMenuItem
             // 
             this.whiteToolStripMenuItem.Name = "whiteToolStripMenuItem";
-            this.whiteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.whiteToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.whiteToolStripMenuItem.Text = "Белая";
             this.whiteToolStripMenuItem.Click += new System.EventHandler(this.whiteToolStripMenuItem_Click);
             // 
             // blackToolStripMenuItem
             // 
             this.blackToolStripMenuItem.Name = "blackToolStripMenuItem";
-            this.blackToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.blackToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.blackToolStripMenuItem.Text = "Черная";
             this.blackToolStripMenuItem.Click += new System.EventHandler(this.blackToolStripMenuItem_Click);
             // 
@@ -118,7 +118,7 @@ namespace Client
             stringFormat1.Trimming = System.Drawing.StringTrimming.None;
             this.spaceGridControl.CenteredLayout = stringFormat1;
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spaceGridControl.Location = new System.Drawing.Point(32, 0);
+            this.spaceGridControl.Location = new System.Drawing.Point(18, 0);
             this.spaceGridControl.Mode = SF.Space.ControlMode.None;
             this.spaceGridControl.Name = "spaceGridControl";
             this.spaceGridControl.Options = SF.Space.DrawingOptions.None;
@@ -127,7 +127,7 @@ namespace Client
             this.spaceGridControl.Rotation = 0D;
             this.spaceGridControl.Selectable = SF.Space.SelectableObjects.None;
             this.spaceGridControl.Selected = null;
-            this.spaceGridControl.Size = new System.Drawing.Size(762, 588);
+            this.spaceGridControl.Size = new System.Drawing.Size(776, 588);
             this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 1;
             this.spaceGridControl.Unit = "км";
@@ -144,6 +144,7 @@ namespace Client
             this.KeyPreview = true;
             this.Name = "ClientForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.ClientForm_Load);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
