@@ -7,7 +7,7 @@ namespace SF.Space
     public class MissileRack
     {
         [DataMember]
-        public int IdMMissileClass { get; set; }
+        public int IdMissileClass { get; set; }
         [DataMember]
         public int Count { get; set; }
         [XmlIgnore]

@@ -77,7 +77,13 @@ namespace SF.ServerLibrary
             MissileClasses.Values.ApplyNations(Nations);
             Stars.Values.ApplyNations(Nations);
             Ships.Values.ApplyNations(Nations);
-
+            foreach (var shipClass in ShipClasses.Values)
+            {   
+                foreach (var missileRack in shipClass.Right)
+                    missileRack.MissileClass = MissileClasses[missileRack.IdMissileClass];
+                foreach (var missileRack in shipClass.Left)
+                    missileRack.MissileClass = MissileClasses[missileRack.IdMissileClass];
+            }
             foreach (var ship in Ships.Values)
                 ship.Class = ShipClasses[ship.IdClass];
         }
