@@ -30,8 +30,12 @@ namespace SF.Space
         [DataMember]
         public double Wedge { get; set; }
         [DataMember]
-        public double ReloadTime { get; set; }
-        [DataMember]
         public double RechargeTime { get; set; }
+        [DataMember]
+        public int Missiles { get; set; }
+        [DataMember]
+        public MissileRack[] Right { get; set; }
+        [DataMember]
+        public MissileRack[] Left { get; set; }
     }
 }

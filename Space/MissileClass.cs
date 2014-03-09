@@ -23,5 +23,7 @@ namespace SF.Space
         public double Targeting { get; set; }
         [DataMember]
         public double HitDistance { get; set; }
+        [DataMember]
+        public double ReloadTime { get; set; }
     }
 }

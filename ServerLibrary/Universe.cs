@@ -77,6 +77,7 @@ namespace SF.ServerLibrary
             MissileClasses.Values.ApplyNations(Nations);
             Stars.Values.ApplyNations(Nations);
             Ships.Values.ApplyNations(Nations);
+
             foreach (var ship in Ships.Values)
                 ship.Class = ShipClasses[ship.IdClass];
         }

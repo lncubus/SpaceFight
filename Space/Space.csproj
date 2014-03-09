@@ -51,6 +51,7 @@
     <Compile Include="IShip.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="MissileClass.cs" />
+    <Compile Include="MissileRack.cs" />
     <Compile Include="ServerData.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipClass.cs" />
