@@ -158,6 +158,17 @@ namespace SF.Controls
                 DrawCompass(e.Graphics);
         }
 
+        private void DrawScale(Graphics g)
+        {
+            var scale = MathUtils.NumberToText(WorldScale, unit);
+            g.DrawRectangle(Palette.BlackPen, plusButton);
+            g.DrawRectangle(Palette.BlackPen, minusButton);
+            g.DrawString("+", Font, Palette.BlackInk, plusButton, CenteredLayout);
+            g.DrawString("-", Font, Palette.BlackInk, minusButton, CenteredLayout);
+            g.DrawString(scale, Font, Palette.BlackInk, scaleLabel, CenteredLayout);
+            g.DrawLines(Palette.BlackPen, scaleRuler);
+        }
+
         protected override void MouseHit(Point point, double alpha, MouseEventType type)
         {
             base.MouseHit(point, alpha, type);

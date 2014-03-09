@@ -143,17 +143,6 @@ namespace SF.Controls
                 }
         }
 
-        private void DrawScale(Graphics g)
-        {
-            var scale = MathUtils.NumberToText(WorldScale, unit);
-            g.DrawRectangle(Palette.BlackPen, plusButton);
-            g.DrawRectangle(Palette.BlackPen, minusButton);
-            g.DrawString("+", Font, Palette.BlackInk, plusButton, CenteredLayout);
-            g.DrawString("-", Font, Palette.BlackInk, minusButton, CenteredLayout);
-            g.DrawString(scale, Font, Palette.BlackInk, scaleLabel, CenteredLayout);
-            g.DrawLines(Palette.BlackPen, scaleRuler);
-        }
-
         private void CompassHit(double alpha)
         {
             var handler = HeadingToChanged;
