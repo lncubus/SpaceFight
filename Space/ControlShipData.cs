@@ -8,12 +8,13 @@ namespace SF.Space
         {
         }
 
-        public ControlShipData(IShip ship)
+        public ControlShipData(IShip ship, ShipClass shipClass)
         {
             Id = ship.Id;
             HeadingTo = ship.Heading;
             RollTo = ship.Roll;
             ThrustTo = ship.Thrust;
+            Missiles = shipClass.Missiles;
         }
 
         [DataMember]
@@ -24,5 +25,7 @@ namespace SF.Space
         public double RollTo { get; set; }
         [DataMember]
         public double ThrustTo { get; set; }
+        [DataMember]
+        public int Missiles { get; set; }
     }
 }

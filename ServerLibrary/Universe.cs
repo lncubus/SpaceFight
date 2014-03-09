@@ -111,7 +111,7 @@ namespace SF.ServerLibrary
                     var s = Ships[ship.Id];
                     s.VolatileShip = ship;
                     if (s.ControlShip == null)
-                        s.ControlShip = new ControlShipData(ship);
+                        s.ControlShip = new ControlShipData(ship, s.Class);
                 }
                 Missiles = v.Missiles.ToDictionary(missile => missile.Id);
             }
