@@ -5,6 +5,8 @@
         public readonly PermanentShipData PermanentShip;
         public VolatileShipData VolatileShip;
         public ControlShipData ControlShip;
+        public MissileRacksState Right;
+        public MissileRacksState Left;
 
         public Ship(PermanentShipData def)
         {
@@ -112,6 +114,5 @@
                     ControlShip.ThrustTo = value;
             }
         }
-    
     }
 }

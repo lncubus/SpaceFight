@@ -95,7 +95,14 @@ namespace SF.ServerLibrary
                 foreach (var ship in Ships.Values)
                     ship.ControlShip = null;
                 foreach (var ship in v.Ships)
-                    Ships[ship.Id].ControlShip = ship;
+                {
+                    var s = Ships[ship.Id];
+                    s.ControlShip = ship;
+                    s.Right = new MissileRacksState(s.Class.Right);
+                    s.Left = new MissileRacksState(s.Class.Left);
+                    s.Right.SetStatePairs(ship.Right);
+                    s.Left.SetStatePairs(ship.Left);
+                }
 //              Missiles = v.Missiles.ToDictionary(missile => missile.Id);
             }
         }
@@ -153,7 +160,10 @@ namespace SF.ServerLibrary
                     double t = Time.TotalSeconds;
                     var dt = t - tPrev;
                     foreach (var ship in Ships.Values)
+                    {
                         ship.Move(t, dt);
+                        ship.Reload(dt);
+                    }
                     tPrev = t;
                 }
             }
@@ -200,7 +210,7 @@ namespace SF.ServerLibrary
             {
                 return new ControlsViewData
                 {
-                    Ships = this.Ships.Values.Select(ship => ship.ControlShip).ToArray(),
+                    Ships = Ships.Values.Select(ship => ship.ControlShip).ToArray(),
                 };
             }
         }

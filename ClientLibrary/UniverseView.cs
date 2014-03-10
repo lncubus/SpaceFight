@@ -25,10 +25,17 @@ namespace SF.ClientLibrary
                 UpdatePermanentData(view.Permanent);
             if (view.Volatile != null)
                 UpdateVolatileData(view.Volatile);
-            if (view.Navigation != null)
+            var navi = view.Navigation;
+            if (navi != null)
             {
                 Ship = Ships[view.Navigation.Id];
-                Ship.ControlShip = view.Navigation;
+                Ship.ControlShip = navi;
+                if (Ship.Right == null)
+                    Ship.Right = new MissileRacksState(Ship.Class.Right);
+                if (Ship.Left == null)
+                    Ship.Left = new MissileRacksState(Ship.Class.Left);
+                Ship.Right.SetStatePairs(navi.Right);
+                Ship.Left.SetStatePairs(navi.Left);
             }
         }
 

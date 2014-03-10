@@ -42,6 +42,15 @@ namespace SF.ServerLibrary
             InternalMove(time, dt);
         }
 
+
+        public void Reload(double dt)
+        {
+            Right.Reload(dt);
+            Left.Reload(dt);
+            ControlShip.Right = Right.GetStatePairs();
+            ControlShip.Left = Left.GetStatePairs();
+        }
+
         private void InternalMove(double time, double dt)
         {
             if (!MathUtils.NearlyEqual(RollTo, roll.ToValue))
