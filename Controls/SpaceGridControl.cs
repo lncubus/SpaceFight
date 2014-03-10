@@ -233,11 +233,12 @@ namespace SF.Controls
             return (float)result;
         }
 
-        protected override void DrawBackgroound(PaintEventArgs e)
+        protected override void DrawBackgroound(Graphics g)
         {
+            base.DrawBackgroound(g);
             _client = new RectangleF(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
-            e.Graphics.FillRectangle(Palette.WhitePaper, _client);
-            e.Graphics.DrawRectangles(Palette.BlackPen, new[] { _client });
+            g.FillRectangle(Palette.WhitePaper, _client);
+            g.DrawRectangles(Palette.BlackPen, new[] { _client });
         }
 
         protected void DrawGridLines(Graphics graphics)
@@ -302,30 +303,30 @@ namespace SF.Controls
             }
         }
 
-        protected override void DrawContents(PaintEventArgs e)
+        protected override void DrawContents(Graphics g)
         {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             _client = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
-            DrawGridLines(e.Graphics);
+            DrawGridLines(g);
             if (Universe == null)
                 return;
             if (Universe.Stars != null && Universe.Stars.Count > 0)
                 foreach (var s in Universe.Stars.Values)
-                    DrawStar(e.Graphics, s);
+                    DrawStar(g, s);
             if (Curves != null && Curves.Count > 0)
                 foreach (var c in Curves)
-                    DrawCurve(e.Graphics, c);
+                    DrawCurve(g, c);
             if (Universe.Missiles != null && Universe.Missiles.Count > 0)
                 foreach (var missile in Universe.Missiles.Values)
-                    DrawMissile(e.Graphics, missile);
+                    DrawMissile(g, missile);
             if (Universe.Ships != null && Universe.Ships.Count > 0)
                 foreach (var ship in Universe.Ships.Values)
                     if (ship != Universe.Ship)
-                        DrawShip(e.Graphics, ship);
+                        DrawShip(g, ship);
             if (Universe.Ship != null)
-                DrawShip(e.Graphics, Universe.Ship);
+                DrawShip(g, Universe.Ship);
             if (Selected != null)
-                DrawSelection(e.Graphics, Selected);
+                DrawSelection(g, Selected);
         }
 
         protected void DrawCurve(Graphics graphics, Curve curve)

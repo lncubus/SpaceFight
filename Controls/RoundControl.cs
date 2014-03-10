@@ -68,13 +68,13 @@ namespace SF.Controls
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            DrawBackgroound(e);
+            DrawBackgroound(e.Graphics);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            DrawContents(e);
+            DrawContents(e.Graphics);
         }
 
         protected static Point GetXY(Point center, int radius, double angle)
@@ -100,11 +100,11 @@ namespace SF.Controls
         {
         }
 
-        protected virtual void DrawContents(PaintEventArgs e)
+        protected virtual void DrawContents(Graphics g)
         {
         }
 
-        protected virtual void DrawBackgroound(PaintEventArgs e)
+        protected virtual void DrawBackgroound(Graphics g)
         {
         }
     }

@@ -37,6 +37,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositeControl.Gunner.cs">
+      <DependentUpon>CompositeControl.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="LogonDialog.cs">
       <SubType>Form</SubType>
     </Compile>

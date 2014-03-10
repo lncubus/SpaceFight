@@ -138,24 +138,31 @@ namespace SF.Controls
             thrusterPath = path;
         }
 
-        protected override void DrawContents(PaintEventArgs e)
+        protected override void DrawContents(Graphics g)
         {
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            DpiX = (int)e.Graphics.DpiX;
-            DpiY = (int)e.Graphics.DpiY;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            DpiX = (int)g.DpiX;
+            DpiY = (int)g.DpiY;
             Calculate();
             if (ControlMode.Pilot == Mode)
             {
-                e.Graphics.FillRegion(Palette.ControlPaper, compass);
-                e.Graphics.FillRegion(Palette.ControlPaper, thruster);
-                e.Graphics.FillRegion(Palette.ControlPaper, roller);
+                g.FillRegion(Palette.ControlPaper, compass);
+                g.FillRegion(Palette.ControlPaper, thruster);
+                g.FillRegion(Palette.ControlPaper, roller);
             }
-            e.Graphics.FillRectangle(Palette.ControlPaper, plusButton);
-            e.Graphics.FillRectangle(Palette.ControlPaper, minusButton);
-            base.DrawContents(e);
-            DrawScale(e.Graphics);
-            if (ControlMode.Pilot == Mode)
-                DrawCompass(e.Graphics);
+            g.FillRectangle(Palette.ControlPaper, plusButton);
+            g.FillRectangle(Palette.ControlPaper, minusButton);
+            base.DrawContents(g);
+            DrawScale(g);
+            switch (Mode)
+            {
+                case ControlMode.Pilot:
+                    DrawCompass(g);
+                    break;
+                case ControlMode.Gunner:
+                    DrawRacks(g);
+                    break;
+            }
         }
 
         private void DrawScale(Graphics g)

@@ -49,5 +49,21 @@ namespace SF.Space
                 Reloading[i] = Math.Max(r - dt, 0);
             }
         }
+
+        public KeyValuePair<MissileRack, double[]>[] GetReloadingTimes()
+        {
+            var result = new KeyValuePair<MissileRack, double[]>[Racks.Length];
+            int k = 0;
+            for (int i = 0; i < Racks.Length; i++)
+            {
+                var rack = Racks[i];
+                var reload = new double[rack.Count];
+                for (int j = 0; j < rack.Count; j++)
+                    reload[j] = Reloading[k + j];
+                k += rack.Count;
+                result[i] = new KeyValuePair<MissileRack, double[]>(rack, reload);
+            }
+            return result;
+        }
     }
 }
