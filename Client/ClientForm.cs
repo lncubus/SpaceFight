@@ -74,6 +74,7 @@ namespace Client
             toolStrip.Visible = true;
             spaceGridControl.Visible = true;
             timerUpdate.Enabled = true;
+            timerUpdate_Tick(this, EventArgs.Empty);
         }
 
         private void UpdateData()

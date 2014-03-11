@@ -165,13 +165,7 @@ namespace SF.Controls
         private int _idSelected;
         private ParticleType _typeSelected;
 
-        protected override void OnMouseClick(MouseEventArgs e)
-        {
-            Selected = SelectParticle(e.Location);
-            base.OnMouseClick(e);
-        }
-
-        private IParticle SelectParticle(Point point)
+        protected IParticle SelectParticle(Point point)
         {
             if (Universe == null)
                 return null;
@@ -414,8 +408,9 @@ namespace SF.Controls
             bool isMyShip = ship == Universe.Ship;
             bool isFriendlyShip = !isMyShip && (Universe.Ship != null && Universe.Ship.Nation == ship.Nation);
             bool isHostileShip = (Universe.Ship != null && Universe.Ship.Nation != ship.Nation);
-            var range = //(isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
-                Universe.Constants.MaximumMissileRange;// : OwnShip.MissileRange();
+            var range = Universe.Constants.MaximumMissileRange;
+            //(isMyShip || isFriendlyShip || OwnShip == null || OwnShip != null) ?
+                // : OwnShip.MissileRange();
             //if (Options.HasFlag(DrawingOptions.FriendlySectorsByMyMissileRange) && OwnShip != null && OwnShip.Class != null)
             //    range = OwnShip.MissileRange();
             if ((isMyShip && !Options.HasFlag(DrawingOptions.MyVulnerableSectors)) ||
@@ -436,9 +431,24 @@ namespace SF.Controls
                 (isHostileShip && !Options.HasFlag(DrawingOptions.HostileMissileCircles)))
                 return;
             var pen = Palette.MissileCircles.Select(Universe.Ship, ship);
-            var range = Universe.Constants.MaximumMissileRange;
-                //(OwnShip != null && OwnShip.Nation != ship.Nation) ? Catalog.Instance.MaximumMissileRange : ship.MissileRange();
-            WorldDrawCircle(graphics, pen, ship.Position, range);
+            bool keelUp = Math.Cos(ship.Roll) < 0;
+            if (ship.Class == null || (ship.Class.Right == null && ship.Class.Left == null))
+                WorldDrawCircle(graphics, pen, ship.Position, Universe.Constants.MaximumMissileRange);
+            else
+            {
+                if (ship.Class.Right != null)
+                {
+                    var range = ship.Class.Right.MissileRange();
+                    var angle = ship.Heading + (keelUp ? -Math.PI / 2 : Math.PI / 2);
+                    WorldDrawArc(graphics, pen, ship.Position, range, angle, Math.PI);
+                }
+                if (ship.Class.Left != null)
+                {
+                    var range = ship.Class.Left.MissileRange();
+                    var angle = ship.Heading - (keelUp ? -Math.PI / 2 : Math.PI / 2);
+                    WorldDrawArc(graphics, pen, ship.Position, range, angle, Math.PI);
+                }
+            }
         }
 
         protected void DrawSelection(Graphics graphics, IParticle p)
@@ -549,22 +559,36 @@ namespace SF.Controls
                 graphics.DrawEllipse(pen, rect);
         }
 
+        protected void WorldDrawArc(Graphics graphics, Pen pen, Vector origin, double radius, double medianAngle, double sweepAngle)
+        {
+            WorldDrawArcOrPie(graphics, pen, origin, radius, medianAngle, sweepAngle, false);
+        }
+
         protected void WorldDrawPie(Graphics graphics, Pen pen, Vector origin, double radius, double medianAngle, double sweepAngle)
         {
-            var rx = WorldToDevice(graphics.DpiX, radius);
-            var ry = WorldToDevice(graphics.DpiY, radius);
-            var p = WorldToDevice(graphics, origin);
+            WorldDrawArcOrPie(graphics, pen, origin, radius, medianAngle, sweepAngle, true);
+        }
+
+        private void WorldDrawArcOrPie(Graphics graphics, Pen pen, Vector origin, double radius, double medianAngle, double sweepAngle, bool pie)
+        {
+            var rx = this.WorldToDevice(graphics.DpiX, radius);
+            var ry = this.WorldToDevice(graphics.DpiY, radius);
+            var p = this.WorldToDevice(graphics, origin);
             if (rx <= 0 || ry <= 0)
                 return;
-            var max = 2 * (_client.Width + _client.Height);
-            if (IsVisible(p) && (rx + ry > max))
-            {
+            var max = 2 * (this._client.Width + this._client.Height);
+            if (this.IsVisible(p) && (rx + ry > max))
                 rx = ry = max;
-            }
             var rect = new RectangleF(p.X - rx, p.Y - ry, 2 * rx, 2 * ry);
-            if (IsVisible(rect))
+            if (!this.IsVisible(rect))
+                return;
+            if (pie)
                 graphics.DrawPie(pen, rect,
-                    (float)MathUtils.ToDegrees(medianAngle - sweepAngle/ 2 - Math.PI / 2 - Rotation),
+                    (float)MathUtils.ToDegrees(medianAngle - sweepAngle / 2 - Math.PI / 2 - Rotation),
+                    (float)MathUtils.ToDegrees(sweepAngle));
+            else
+                graphics.DrawArc(pen, rect,
+                    (float)MathUtils.ToDegrees(medianAngle - sweepAngle / 2 - Math.PI / 2 - this.Rotation),
                     (float)MathUtils.ToDegrees(sweepAngle));
         }
     }

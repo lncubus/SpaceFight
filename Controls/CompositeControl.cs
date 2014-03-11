@@ -179,12 +179,28 @@ namespace SF.Controls
         protected override void MouseHit(Point point, double alpha, MouseEventType type)
         {
             base.MouseHit(point, alpha, type);
+            bool accepted = false;
             if (plusButton.Contains(point) && type == MouseEventType.MouseUp)
                 ZoomIn();
             else if (minusButton.Contains(point) && type == MouseEventType.MouseUp)
                 ZoomOut();
-            else if (ControlMode.Pilot == Mode)
-                CompassMouseHit(point, alpha);
+            else switch (this.Mode)
+            {
+                case ControlMode.Pilot:
+                    CompassMouseHit(point, alpha);
+                    break;
+                case ControlMode.Gunner:
+                    MissileControlMouseHit(point, alpha);
+                    break;
+                case ControlMode.Tactic:
+                    TacticMouseHit(point, alpha);
+                    break;
+            }
+        }
+
+        private void TacticMouseHit(Point point, double alpha)
+        {
+            Selected = SelectParticle(point);
         }
 
         private void ZoomIn()

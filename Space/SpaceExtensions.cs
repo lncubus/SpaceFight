@@ -26,22 +26,24 @@ namespace SF.Space
 
         public static void ApplyNations(this IEnumerable<INationObject> objects, IDictionary<int, Nation> nations)
         {
-            foreach (var INationObject in objects)
+            foreach (var nationObject in objects)
             {
-                int id = INationObject.IdNation;
-                INationObject.Nation = id == 0 ? null : nations[id];
+                int id = nationObject.IdNation;
+                nationObject.Nation = id == 0 ? null : nations[id];
             }
         }
 
-        //public static double MissileRange(this IShip ship)
-        //{
-        //    //if (string.IsNullOrEmpty(ship.MissileName))
-        //    //    return 0;
-        //    //if (ship.Missile == null)
-        //    //    return Catalog.Instance.MaximumMissileRange;
-        //    //var t = ship.Missile.FlyTime;
-        //    //return ship.Missile.Acceleration * t * t / 2;
-        //}
+        public static double MissileRange(this MissileClass missile)
+        {
+            return missile.Acceleration*missile.FlyTime*missile.FlyTime/2;
+        }
+
+        public static double MissileRange(this MissileRack[] racks)
+        {
+            if (racks == null || racks.Length == 0)
+                return 0;
+            return racks.Select(rack => rack.MissileClass.MissileRange()).Max();
+        }
 
         public static T ById<T>(this IDictionary<int, T> particles, int id)
         {

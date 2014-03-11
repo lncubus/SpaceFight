@@ -15,7 +15,7 @@ namespace SF.Controls
         public RoundControl()
         {
             DoubleBuffered = true;
-            Size = new System.Drawing.Size(200, 200);
+            Size = new Size(200, 200);
             CenteredLayout = new StringFormat
             {
                 Alignment = StringAlignment.Center,

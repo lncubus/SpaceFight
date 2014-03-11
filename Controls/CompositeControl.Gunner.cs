@@ -40,56 +40,59 @@ namespace SF.Controls
 
         private void DrawRacks(Graphics g)
         {
-//            var rightRacks = (Universe == null || Universe.Ship == null) ? defaultRacks : Universe.Ship.Class.Right;
-//            var leftRacks = (Universe == null || Universe.Ship == null) ? defaultRacks : Universe.Ship.Class.Left;
             var right = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Right.GetReloadingTimes();
             var left = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Left.GetReloadingTimes();
-            DrawRacks(g, 1, right);
-            DrawRacks(g, -1, left);
-            //Universe.Ship.Right.Reloading
-            //var heading = (Universe == null || Universe.Ship == null) ? 1.0 : Universe.Ship.Heading;
-            //var headingTo = (Universe == null || Universe.Ship == null) ? 1.1 : Universe.Ship.HeadingTo;
-            //var speed = (Universe == null || Universe.Ship == null) ? Vector.Direction(1.3) : Universe.Ship.Speed;
-            //var roll = (Universe == null || Universe.Ship == null) ? 2.7 : Universe.Ship.Roll;
-            //var rollTo = (Universe == null || Universe.Ship == null) ? 2.9 : Universe.Ship.RollTo;
-            //var thrust = (Universe == null || Universe.Ship == null) ? 1.9 : Universe.Ship.Thrust;
-            //var thrustTo = (Universe == null || Universe.Ship == null) ? 2.1 : Universe.Ship.ThrustTo;
-            //var thrustMax = (Universe == null || Universe.Ship == null) ? 4.0 : Universe.Ship.Class.MaximumAcceleration;
-
+            double maxTime = right.Union(left).Select(pair => pair.Key.MissileClass.ReloadTime).Max();
+            DrawRacks(g, 1, maxTime, right);
+            DrawRacks(g, -1, maxTime, left);
         }
 
-        private void DrawRacks(Graphics g, int direction, KeyValuePair<MissileRack, double[]>[] racks)
+        private void DrawRacks(Graphics g, int direction, double maxTime, KeyValuePair<MissileRack, double[]>[] racks)
         {
-            double maxTime = racks.Select(pair => pair.Key.MissileClass.ReloadTime).Max();
             int k = 0;
-            var size = new Size
+            var height = m_size - MathUtils.Gold(m_size);
+            var width = MathUtils.Gold(margin);
+            foreach (KeyValuePair<MissileRack, double[]> rack in racks)
             {
-                Width = MathUtils.Gold(margin),
-                Height = m_size - MathUtils.Gold(m_size),
-            };
-            for (int i = 0; i < racks.Length; i++)
-            {
-                var reload = racks[i].Value;
+                var missile = rack.Key.MissileClass;
+                var reload = rack.Value;
+                var m = missile.ReloadTime/maxTime;
                 for (int j = 0; j < reload.Length; j++, k++)
                 {
-                    Rectangle tube = new Rectangle
+                    var x = m_center.X + direction*(m_size/2 - k*margin) + ((direction > 0) ? -width : 0);
+                    var tube = new Rectangle
                     {
-                        X = m_center.X + direction * (m_size/2 - k * margin), 
-                        Y = m_center.Y, 
-                        Size = size,
+                        X = x,
+                        Y = m_center.Y,
+                        Width = width,
+                        Height = (int)(m*height)
                     };
-                    g.DrawRectangle(Palette.BlackPencil, tube);
+                    var r = reload[j]/missile.ReloadTime;
+                    Pen pen;
+                    if (r < 0)
+                        pen = Palette.SignalPen;
+                    else if (r > 0)
+                        pen = Palette.BlackPen;
+                    else
+                        pen = Palette.NavyPen;
+                    g.DrawRectangle(pen, tube);
+                    if (r < 0)
+                    {
+                        g.DrawLine(pen, tube.Left, tube.Top, tube.Right, tube.Bottom);
+                        g.DrawLine(pen, tube.Left, tube.Bottom, tube.Right, tube.Top);
+                    }
+                    else if (r > 0)
+                    {
+                        var y = tube.Top + (int)(r * tube.Height);
+                        g.DrawLine(pen, tube.Left, y, tube.Right, y);
+                    }
                 }
             }
+        }
 
-            //int k = 0;
-            //for (int i = 0; i < right.Length; i++)
-            //{
-                
-            //    var r = right.Reloading[i]/right.;
-            //}
-            
-            
+        private void MissileControlMouseHit(Point point, double alpha)
+        {
+            //throw new NotImplementedException();
         }
     }
 }
