@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace SF.Space
 {
@@ -29,8 +30,10 @@ namespace SF.Space
         [DataMember]
         public int Missiles { get; set; }
         [DataMember]
+        [XmlIgnore]
         public KeyValuePair<int, double>[] Right { get; set; }
         [DataMember]
+        [XmlIgnore]
         public KeyValuePair<int, double>[] Left { get; set; }
     }
 }

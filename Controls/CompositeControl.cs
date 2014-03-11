@@ -123,6 +123,7 @@ namespace SF.Controls
                     break;
                 case ControlMode.Gunner:
                     CalculateMissiles();
+                    DrawRackBacks(g);
                     break;
             }
             g.FillRectangle(Palette.ControlPaper, plusButton);

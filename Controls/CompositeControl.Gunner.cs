@@ -12,24 +12,33 @@ namespace SF.Controls
         private KeyValuePair<MissileRack, double[]>[] right;
         private KeyValuePair<MissileRack, double[]>[] left;
 
+        private struct Tube
+        {
+            public Rectangle rectangle;
+            public int level;
+            public string name;
+        }
+
+        private Tube[] rightRectangles;
+        private Tube[] leftRectangles;
+
         private void CalculateMissiles()
         {
             right = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Right.GetReloadingTimes();
             left = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Left.GetReloadingTimes();
             maxReloadTime = right.Union(left).Select(pair => pair.Key.MissileClass.ReloadTime).Max();
+            CalculateMissileRectangles(right, 1, ref rightRectangles);
+            CalculateMissileRectangles(left, -1, ref leftRectangles);
         }
 
-        private void DrawRacks(Graphics g)
-        {
-            DrawRacks(g, 1, right);
-            DrawRacks(g, -1, left);
-        }
-
-        private void DrawRacks(Graphics g, int direction, KeyValuePair<MissileRack, double[]>[] racks)
+        private void CalculateMissileRectangles(KeyValuePair<MissileRack, double[]>[] racks, int direction, ref Tube[] rectangles)
         {
             int k = 0;
             var height = m_size - MathUtils.Gold(m_size);
             var width = MathUtils.Gold(margin);
+            int n = racks.Sum(pair => pair.Value.Length);
+            if (rectangles == null || rectangles.Length != n)
+                rectangles = new Tube[n];
             foreach (KeyValuePair<MissileRack, double[]> rack in racks)
             {
                 var missile = rack.Key.MissileClass;
@@ -38,33 +47,73 @@ namespace SF.Controls
                 for (int j = 0; j < reload.Length; j++, k++)
                 {
                     var x = m_center.X + direction*(m_size/2 - k*margin) + ((direction > 0) ? -width : 0);
-                    var tube = new Rectangle
+                    var r = reload[j] / missile.ReloadTime;
+                    int l = r > 0 ? m_center.Y + (int) (r*m*height) : (r < 0 ? -1 : 0);
+                    rectangles[k] = new Tube
                     {
-                        X = x,
-                        Y = m_center.Y,
-                        Width = width,
-                        Height = (int)(m*height)
+                        level = l,
+                        name = missile.Name,
+                        rectangle = new Rectangle
+                        {
+                            X = x,
+                            Y = m_center.Y,
+                            Width = width,
+                            Height = (int) (m*height),
+                        }
                     };
-                    var r = reload[j]/missile.ReloadTime;
-                    Pen pen;
-                    if (r < 0)
-                        pen = Palette.SignalPen;
-                    else if (r > 0)
-                        pen = Palette.BlackPen;
-                    else
-                        pen = Palette.NavyPen;
-                    g.DrawRectangle(pen, tube);
-                    if (r < 0)
-                    {
-                        g.DrawLine(pen, tube.Left, tube.Top, tube.Right, tube.Bottom);
-                        g.DrawLine(pen, tube.Left, tube.Bottom, tube.Right, tube.Top);
-                    }
-                    else if (r > 0)
-                    {
-                        var y = tube.Top + (int)(r * tube.Height);
-                        g.DrawLine(pen, tube.Left, y, tube.Right, y);
-                    }
                 }
+            }
+        }
+
+        private void DrawRacks(Graphics g)
+        {
+            DrawRacks(g, rightRectangles);
+            DrawRacks(g, leftRectangles);
+        }
+
+        private void DrawRackBacks(Graphics g)
+        {
+            DrawRackBacks(g, rightRectangles);
+            DrawRackBacks(g, leftRectangles);
+        }
+
+        private void DrawRackBacks(Graphics g, Tube[] rectangles)
+        {
+            foreach (var tube in rectangles)
+            {
+                Brush brush;
+                if (tube.level < 0)
+                    brush = Palette.RedInk;
+                else if (tube.level > 0)
+                    brush = Palette.YellowInk;
+                else
+                    brush = Palette.GreenInk;
+                if (tube.level <= 0)
+                    g.FillRectangle(brush, tube.rectangle);
+                else if (tube.level > 0)
+                    g.FillRectangle(brush, tube.rectangle.Left, tube.level, tube.rectangle.Width, tube.rectangle.Bottom - tube.level);
+            }
+        }
+
+        private void DrawRacks(Graphics g, Tube[] rectangles)
+        {
+            foreach (var tube in rectangles)
+            {
+                Pen pen;
+                if (tube.level < 0)
+                    pen = Palette.SignalPen;
+                else if (tube.level > 0)
+                    pen = Palette.BlackPen;
+                else
+                    pen = Palette.NavyPen;
+                g.DrawRectangle(pen, tube.rectangle);
+                if (tube.level < 0)
+                {
+                    g.DrawLine(pen, tube.rectangle.Left, tube.rectangle.Top, tube.rectangle.Right, tube.rectangle.Bottom);
+                    g.DrawLine(pen, tube.rectangle.Left, tube.rectangle.Bottom, tube.rectangle.Right, tube.rectangle.Top);
+                }
+                else if (tube.level > 0)
+                    g.DrawLine(pen, tube.rectangle.Left, tube.level, tube.rectangle.Right, tube.level);
             }
         }
 
