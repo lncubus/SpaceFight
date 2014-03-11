@@ -571,16 +571,16 @@ namespace SF.Controls
 
         private void WorldDrawArcOrPie(Graphics graphics, Pen pen, Vector origin, double radius, double medianAngle, double sweepAngle, bool pie)
         {
-            var rx = this.WorldToDevice(graphics.DpiX, radius);
-            var ry = this.WorldToDevice(graphics.DpiY, radius);
-            var p = this.WorldToDevice(graphics, origin);
+            var rx = WorldToDevice(graphics.DpiX, radius);
+            var ry = WorldToDevice(graphics.DpiY, radius);
+            var p = WorldToDevice(graphics, origin);
             if (rx <= 0 || ry <= 0)
                 return;
-            var max = 2 * (this._client.Width + this._client.Height);
-            if (this.IsVisible(p) && (rx + ry > max))
+            var max = 2 * (_client.Width + _client.Height);
+            if (IsVisible(p) && (rx + ry > max))
                 rx = ry = max;
             var rect = new RectangleF(p.X - rx, p.Y - ry, 2 * rx, 2 * ry);
-            if (!this.IsVisible(rect))
+            if (!IsVisible(rect))
                 return;
             if (pie)
                 graphics.DrawPie(pen, rect,
@@ -588,7 +588,7 @@ namespace SF.Controls
                     (float)MathUtils.ToDegrees(sweepAngle));
             else
                 graphics.DrawArc(pen, rect,
-                    (float)MathUtils.ToDegrees(medianAngle - sweepAngle / 2 - Math.PI / 2 - this.Rotation),
+                    (float)MathUtils.ToDegrees(medianAngle - sweepAngle / 2 - Math.PI / 2 - Rotation),
                     (float)MathUtils.ToDegrees(sweepAngle));
         }
     }

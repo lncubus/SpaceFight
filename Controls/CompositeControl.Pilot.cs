@@ -1,11 +1,46 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using SF.Space;
 
 namespace SF.Controls
 {
     partial class CompositeControl
     {
+        private Region compass;
+        private Region thruster;
+        private GraphicsPath thrusterPath;
+        private Region roller;
+
+        private void CalculateCompass()
+        {
+            var b1 = BandN(1);
+            var b3 = BandN(3);
+            var b5 = BandN(5);
+            var b7 = BandN(7);
+            var path = new GraphicsPath();
+            path.AddEllipse(b1);
+            path.AddEllipse(b3);
+            compass = new Region(path);
+            path = new GraphicsPath();
+            path.AddEllipse(b5);
+            path.AddEllipse(b7);
+            roller = new Region(path);
+            path = new GraphicsPath();
+            path.AddLine(m_center.X, b5.Top, m_center.X, b3.Top);
+            path.AddArc(b3, -90, 180);
+            var p = new[]
+            {
+                new Point(m_center.X, b3.Bottom),
+                new Point(m_center.X - margin, m_center.Y + BandRadius(4)),
+                new Point(m_center.X, b5.Bottom),
+            };
+            path.AddLines(p);
+            path.AddArc(b5, 90, -180);
+            thruster = new Region(path);
+            thrusterPath = path;
+        }
+
         private void CompassMouseHit(Point point, double alpha)
         {
             if (compass.IsVisible(point))
@@ -14,6 +49,13 @@ namespace SF.Controls
                 RollHit(alpha);
             else if (thruster.IsVisible(point))
                 ThrustHit(alpha);
+        }
+
+        private void DrawCompassBack(Graphics g)
+        {
+            g.FillRegion(Palette.ControlPaper, compass);
+            g.FillRegion(Palette.ControlPaper, thruster);
+            g.FillRegion(Palette.ControlPaper, roller);
         }
 
         private void DrawCompass(Graphics g)

@@ -8,46 +8,24 @@ namespace SF.Controls
 {
     partial class CompositeControl
     {
-        private static KeyValuePair<MissileRack, double[]>[] defaultReloadingTimes =
+        private double maxReloadTime;
+        private KeyValuePair<MissileRack, double[]>[] right;
+        private KeyValuePair<MissileRack, double[]>[] left;
+
+        private void CalculateMissiles()
         {
-            new KeyValuePair<MissileRack, double[]>
-            (
-                new MissileRack
-                {
-                    Count = 3,
-                    MissileClass = new MissileClass
-                    {
-                        Name = "Стрела",
-                        ReloadTime = 120,
-                    }
-                },
-                new []{ 0.0, 120.0, -1}
-            ),
-            new KeyValuePair<MissileRack, double[]>
-            (
-                new MissileRack
-                {
-                    Count = 2,
-                    MissileClass = new MissileClass
-                    {
-                        Name = "Дротик",
-                        ReloadTime = 180,
-                    }
-                },
-                new []{ 0.0, 90.0 }
-            ),
-        };
+            right = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Right.GetReloadingTimes();
+            left = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Left.GetReloadingTimes();
+            maxReloadTime = right.Union(left).Select(pair => pair.Key.MissileClass.ReloadTime).Max();
+        }
 
         private void DrawRacks(Graphics g)
         {
-            var right = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Right.GetReloadingTimes();
-            var left = (Universe == null || Universe.Ship == null) ? defaultReloadingTimes : Universe.Ship.Left.GetReloadingTimes();
-            double maxTime = right.Union(left).Select(pair => pair.Key.MissileClass.ReloadTime).Max();
-            DrawRacks(g, 1, maxTime, right);
-            DrawRacks(g, -1, maxTime, left);
+            DrawRacks(g, 1, right);
+            DrawRacks(g, -1, left);
         }
 
-        private void DrawRacks(Graphics g, int direction, double maxTime, KeyValuePair<MissileRack, double[]>[] racks)
+        private void DrawRacks(Graphics g, int direction, KeyValuePair<MissileRack, double[]>[] racks)
         {
             int k = 0;
             var height = m_size - MathUtils.Gold(m_size);
@@ -56,7 +34,7 @@ namespace SF.Controls
             {
                 var missile = rack.Key.MissileClass;
                 var reload = rack.Value;
-                var m = missile.ReloadTime/maxTime;
+                var m = missile.ReloadTime/maxReloadTime;
                 for (int j = 0; j < reload.Length; j++, k++)
                 {
                     var x = m_center.X + direction*(m_size/2 - k*margin) + ((direction > 0) ? -width : 0);
@@ -94,5 +72,35 @@ namespace SF.Controls
         {
             //throw new NotImplementedException();
         }
+
+        private static KeyValuePair<MissileRack, double[]>[] defaultReloadingTimes =
+        {
+            new KeyValuePair<MissileRack, double[]>
+            (
+                new MissileRack
+                {
+                    Count = 3,
+                    MissileClass = new MissileClass
+                    {
+                        Name = "Стрела",
+                        ReloadTime = 120,
+                    }
+                },
+                new []{ 0.0, 120.0, -1}
+            ),
+            new KeyValuePair<MissileRack, double[]>
+            (
+                new MissileRack
+                {
+                    Count = 2,
+                    MissileClass = new MissileClass
+                    {
+                        Name = "Дротик",
+                        ReloadTime = 180,
+                    }
+                },
+                new []{ 0.0, 90.0 }
+            ),
+        };
     }
 }

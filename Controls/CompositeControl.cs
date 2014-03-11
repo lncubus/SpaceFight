@@ -10,10 +10,6 @@ namespace SF.Controls
     {
         private int DpiX, DpiY;
         private int margin;
-        private Region compass;
-        private Region thruster;
-        private GraphicsPath thrusterPath;
-        private Region roller;
         private Rectangle plusButton, minusButton, scaleLabel;
         private Point[] scaleRuler;
 
@@ -78,9 +74,8 @@ namespace SF.Controls
             return Band(BandRadius(i));
         }
         
-        private void Calculate()
+        private void CalculateScale()
         {
-            margin = m_size / 24;
             scaleLabel = new Rectangle
             {
                 X = ClientRectangle.Right - 3*margin - DpiX,
@@ -111,31 +106,6 @@ namespace SF.Controls
                 new Point(x1, 2*margin),
                 new Point(x1, 3*margin/2),
             };
-            var b1 = BandN(1);
-            var b3 = BandN(3);
-            var b5 = BandN(5);
-            var b7 = BandN(7);
-            var path = new GraphicsPath();
-            path.AddEllipse(b1);
-            path.AddEllipse(b3);
-            compass = new Region(path);
-            path = new GraphicsPath();
-            path.AddEllipse(b5);
-            path.AddEllipse(b7);
-            roller = new Region(path);
-            path = new GraphicsPath();
-            path.AddLine(m_center.X, b5.Top, m_center.X, b3.Top);
-            path.AddArc(b3, -90, 180);
-            var p = new[]
-            {
-                new Point(m_center.X, b3.Bottom),
-                new Point(m_center.X - margin, m_center.Y + BandRadius(4)),
-                new Point(m_center.X, b5.Bottom),
-            };
-            path.AddLines(p);
-            path.AddArc(b5, 90, -180);
-            thruster = new Region(path);
-            thrusterPath = path;
         }
 
         protected override void DrawContents(Graphics g)
@@ -143,12 +113,17 @@ namespace SF.Controls
             g.SmoothingMode = SmoothingMode.HighQuality;
             DpiX = (int)g.DpiX;
             DpiY = (int)g.DpiY;
-            Calculate();
-            if (ControlMode.Pilot == Mode)
+            margin = m_size / 24;
+            CalculateScale();
+            switch (Mode)
             {
-                g.FillRegion(Palette.ControlPaper, compass);
-                g.FillRegion(Palette.ControlPaper, thruster);
-                g.FillRegion(Palette.ControlPaper, roller);
+                case ControlMode.Pilot:
+                    CalculateCompass();
+                    DrawCompassBack(g);
+                    break;
+                case ControlMode.Gunner:
+                    CalculateMissiles();
+                    break;
             }
             g.FillRectangle(Palette.ControlPaper, plusButton);
             g.FillRectangle(Palette.ControlPaper, minusButton);
@@ -179,12 +154,11 @@ namespace SF.Controls
         protected override void MouseHit(Point point, double alpha, MouseEventType type)
         {
             base.MouseHit(point, alpha, type);
-            bool accepted = false;
             if (plusButton.Contains(point) && type == MouseEventType.MouseUp)
                 ZoomIn();
             else if (minusButton.Contains(point) && type == MouseEventType.MouseUp)
                 ZoomOut();
-            else switch (this.Mode)
+            else switch (Mode)
             {
                 case ControlMode.Pilot:
                     CompassMouseHit(point, alpha);
