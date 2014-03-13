@@ -34,10 +34,11 @@ namespace SF.Controls
         public Pen NavyPen;
         public Pen SignalPen;
         public Pen SecondPen;
+        public Brush SignalInk;
         public Pen LeftPen = Pens.LightCoral;
         public Pen RightPen = Pens.LawnGreen;
         public Brush RedInk = Brushes.LightCoral;
-        public Brush YellowInk = Brushes.DarkGoldenrod;
+        public Brush YellowInk = Brushes.Khaki;
         public Brush GreenInk = Brushes.LawnGreen;
         public ColorSelector<Pen> VulnerableSectors;
         public ColorSelector<Pen> MissileCircles;
@@ -49,6 +50,7 @@ namespace SF.Controls
             WhitePaper = Brushes.White,
             BlackInk = Brushes.Black,
             ControlPaper = Brushes.AliceBlue,
+            SignalInk = Brushes.Firebrick,
             BlackPencil = Pens.DarkGray,
             BlackPen = Pens.Black,
             NavyPen = Pens.Navy,
@@ -92,6 +94,7 @@ namespace SF.Controls
             {
                 BlackInk = Brushes.WhiteSmoke,
                 ControlPaper = Brushes.DarkSlateGray,
+                SignalInk = Brushes.LightCoral,
                 BlackPencil = Pens.LightBlue,
                 BlackPen = Pens.WhiteSmoke,
                 NavyPen = Pens.MediumTurquoise,

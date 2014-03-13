@@ -38,13 +38,6 @@ namespace SF.Space
             return missile.Acceleration*missile.FlyTime*missile.FlyTime/2;
         }
 
-        public static double MissileRange(this MissileRack[] racks)
-        {
-            if (racks == null || racks.Length == 0)
-                return 0;
-            return racks.Select(rack => rack.MissileClass.MissileRange()).Max();
-        }
-
         public static T ById<T>(this IDictionary<int, T> particles, int id)
         {
             if (id == 0)
@@ -53,16 +46,6 @@ namespace SF.Space
             particles.TryGetValue(id, out result);
             return result;
         }
-
-        //public static bool IsLight(this IShip ship)
-        //{
-        //    return ship.Class.Superclass == ShipSuperclass.LAC;
-        //}
-
-        //public static bool InSpace(this IHelm ship)
-        //{
-        //    return ship.State != ShipState.Annihilated && ship.State != ShipState.Hyperspace && string.IsNullOrEmpty(ship.Carrier);
-        //}
 
         public static bool IsDead(this IShip ship)
         {
@@ -74,10 +57,15 @@ namespace SF.Space
             return Math.Sin((target.Position - helm.Position).Argument - helm.Heading) < 0;
         }
 
+        public static bool IsKeelUp(this IShip helm)
+        {
+            return Math.Cos(helm.Roll) < 0;
+        }
+
         public static bool IsLeftBoard(this IShip helm, IParticle target)
         {
             var left = helm.IsLeft(target);
-            if (Math.Cos(helm.Roll) < 0)
+            if (IsKeelUp(helm))
                 left = !left;
             return left;
         }

@@ -12,9 +12,12 @@ namespace SF.Controls
         private KeyValuePair<MissileRack, double[]>[] right;
         private KeyValuePair<MissileRack, double[]>[] left;
 
+        public event EventHandler<ValueEventArgs<Launch>> Fired;
+
         private struct Tube
         {
             public Rectangle rectangle;
+            public double reloading;
             public int level;
             public string name;
         }
@@ -52,6 +55,7 @@ namespace SF.Controls
                     rectangles[k] = new Tube
                     {
                         level = l,
+                        reloading = r,
                         name = missile.Name,
                         rectangle = new Rectangle
                         {
@@ -75,6 +79,10 @@ namespace SF.Controls
         {
             DrawRackBacks(g, rightRectangles);
             DrawRackBacks(g, leftRectangles);
+            var height = m_size - MathUtils.Gold(m_size);
+            int n = Universe == null || Universe.Ship == null ? 19 : Universe.Ship.Missiles;
+            var brush = (n == 0) ? Palette.SignalInk : Palette.BlackInk;
+            g.DrawString("Ракет в погребе: " + n, Font, brush, m_center.X, m_center.Y - height, CenteredLayout);
         }
 
         private void DrawRackBacks(Graphics g, Tube[] rectangles)
@@ -82,16 +90,17 @@ namespace SF.Controls
             foreach (var tube in rectangles)
             {
                 Brush brush;
-                if (tube.level < 0)
+                if (tube.reloading < 0)
                     brush = Palette.RedInk;
-                else if (tube.level > 0)
+                else if (tube.reloading > 0)
                     brush = Palette.YellowInk;
                 else
                     brush = Palette.GreenInk;
-                if (tube.level <= 0)
+                if (tube.reloading <= 0)
                     g.FillRectangle(brush, tube.rectangle);
-                else if (tube.level > 0)
+                else if (tube.reloading > 0)
                     g.FillRectangle(brush, tube.rectangle.Left, tube.level, tube.rectangle.Width, tube.rectangle.Bottom - tube.level);
+                g.DrawString(tube.name, Font, Palette.BlackInk, tube.rectangle, VerticalLayout);
             }
         }
 
@@ -100,14 +109,14 @@ namespace SF.Controls
             foreach (var tube in rectangles)
             {
                 Pen pen;
-                if (tube.level < 0)
+                if (tube.reloading < 0)
                     pen = Palette.SignalPen;
-                else if (tube.level > 0)
+                else if (tube.reloading > 0)
                     pen = Palette.BlackPen;
                 else
                     pen = Palette.NavyPen;
                 g.DrawRectangle(pen, tube.rectangle);
-                if (tube.level < 0)
+                if (tube.reloading < 0)
                 {
                     g.DrawLine(pen, tube.rectangle.Left, tube.rectangle.Top, tube.rectangle.Right, tube.rectangle.Bottom);
                     g.DrawLine(pen, tube.rectangle.Left, tube.rectangle.Bottom, tube.rectangle.Right, tube.rectangle.Top);
@@ -117,9 +126,43 @@ namespace SF.Controls
             }
         }
 
-        private void MissileControlMouseHit(Point point, double alpha)
+        private bool MissileControlMouseHit(Point point, double alpha)
         {
-            //throw new NotImplementedException();
+            if (CheckTubes(false, point))
+                return true;
+            if (CheckTubes(true, point))
+                return true;
+            return false;
+        }
+
+        private bool CheckTubes(bool isLeft, Point point)
+        {
+            Tube[] tubes = isLeft ? leftRectangles : rightRectangles;
+            for (int i = 0; i < tubes.Length; i++)
+            {
+                var tube = tubes[i];
+                if (tube.rectangle.Contains(point) && MathUtils.NearlyEqual(tube.reloading, 0))
+                {
+                    Fire(isLeft, i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void Fire(bool isLeft, int n)
+        {
+            var handler = Fired;
+            if (handler != null)
+            {
+                var launch = new Launch
+                {
+                    isLeft = isLeft,
+                    number = n,
+                    target = Selected,
+                };
+                handler(this, new ValueEventArgs<Launch>(launch));
+            }
         }
 
         private static KeyValuePair<MissileRack, double[]>[] defaultReloadingTimes =

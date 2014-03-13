@@ -29,9 +29,6 @@ namespace SF.Space
         void SetThrustTo(double value);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void Fire(int idShipTo, int[] launchers);
-
-        [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void Launch(int idShip);
+        void Fire(bool isLeft, int number, int idTarget);
     }
 }

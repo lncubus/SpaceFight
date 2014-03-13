@@ -10,7 +10,8 @@ namespace SF.Controls
     public class RoundControl : UserControl
     {
 	    public bool ReadOnly { get; set; }
-        public StringFormat CenteredLayout { get; set; }
+        public StringFormat CenteredLayout;
+        public StringFormat VerticalLayout;
 
         public RoundControl()
         {
@@ -18,6 +19,13 @@ namespace SF.Controls
             Size = new Size(200, 200);
             CenteredLayout = new StringFormat
             {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center,
+                Trimming = StringTrimming.None,
+            };
+            VerticalLayout = new StringFormat
+            {
+                FormatFlags = StringFormatFlags.DirectionVertical,
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center,
                 Trimming = StringTrimming.None,

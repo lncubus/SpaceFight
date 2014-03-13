@@ -431,22 +431,27 @@ namespace SF.Controls
                 (isHostileShip && !Options.HasFlag(DrawingOptions.HostileMissileCircles)))
                 return;
             var pen = Palette.MissileCircles.Select(Universe.Ship, ship);
-            bool keelUp = Math.Cos(ship.Roll) < 0;
             if (ship.Class == null || (ship.Class.Right == null && ship.Class.Left == null))
                 WorldDrawCircle(graphics, pen, ship.Position, Universe.Constants.MaximumMissileRange);
             else
             {
                 if (ship.Class.Right != null)
                 {
-                    var range = ship.Class.Right.MissileRange();
-                    var angle = ship.Heading + (keelUp ? -Math.PI / 2 : Math.PI / 2);
-                    WorldDrawArc(graphics, pen, ship.Position, range, angle, Math.PI);
+                    foreach (var rack in ship.Class.Right)
+                    {
+                        var range = rack.MissileClass.MissileRange();
+                        var angle = ship.Heading + (ship.IsKeelUp() ? -Math.PI / 2 : Math.PI / 2);
+                        WorldDrawArc(graphics, pen, ship.Position, range, angle, Math.PI);
+                    }
                 }
                 if (ship.Class.Left != null)
                 {
-                    var range = ship.Class.Left.MissileRange();
-                    var angle = ship.Heading - (keelUp ? -Math.PI / 2 : Math.PI / 2);
-                    WorldDrawArc(graphics, pen, ship.Position, range, angle, Math.PI);
+                    foreach (var rack in ship.Class.Left)
+                    {
+                        var range = rack.MissileClass.MissileRange();
+                        var angle = ship.Heading - (ship.IsKeelUp() ? -Math.PI / 2 : Math.PI / 2);
+                        WorldDrawArc(graphics, pen, ship.Position, range, angle, Math.PI);
+                    }
                 }
             }
         }

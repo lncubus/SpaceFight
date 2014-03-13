@@ -33,6 +33,7 @@ namespace Client
             spaceGridControl.HeadingToChanged += HeadingToChanged;
             spaceGridControl.RollToChanged += RollToChanged;
             spaceGridControl.ThrustToChanged += ThrustToChanged;
+            spaceGridControl.Fired += Fired;
             Controls.Add(labelMessage);
         }
 
@@ -82,8 +83,18 @@ namespace Client
             if (client == null || client.Universe == null)
                 return;
             client.UpdateView();
-            if (client.Universe.Ship != null)
-                spaceGridControl.Origin = client.Universe.Ship.Position;
+            var ship = client.Universe.Ship;
+            switch (spaceGridControl.Mode)
+            {
+                case ControlMode.Pilot:
+                    spaceGridControl.Origin = ship.Position;
+                    spaceGridControl.Rotation = 0;
+                    break;
+                case ControlMode.Gunner:
+                    spaceGridControl.Origin = client.Universe.Ship.Position;
+                    spaceGridControl.Rotation = ship.Heading;
+                    break;
+            }
             spaceGridControl.Invalidate();
         }
 
@@ -108,6 +119,11 @@ namespace Client
             client.SetThrustTo(e.Argument);
         }
 
+        private void Fired(object sender, ValueEventArgs<Launch> e)
+        {
+            client.Fire(e.Argument);
+        }
+
         private void ClientForm_Load(object sender, EventArgs e)
         {
             Login();
@@ -121,11 +137,13 @@ namespace Client
         private void pilotToolStripMenuItem_Click(object sender, EventArgs e)
         {
             spaceGridControl.Mode = ControlMode.Pilot;
+            spaceGridControl.Polar = false;
         }
 
         private void fireControlToolStripMenuItem_Click(object sender, EventArgs e)
         {
             spaceGridControl.Mode = ControlMode.Gunner;
+            spaceGridControl.Polar = true;
         }
 
         private void whiteToolStripMenuItem_Click(object sender, EventArgs e)

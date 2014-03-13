@@ -165,17 +165,21 @@ namespace SF.Controls
                     CompassMouseHit(point, alpha);
                     break;
                 case ControlMode.Gunner:
-                    MissileControlMouseHit(point, alpha);
+                    if (Selected == null)
+                        TacticMouseHit(point, alpha, type);
+                    else if (!MissileControlMouseHit(point, alpha))
+                        TacticMouseHit(point, alpha, type);
                     break;
                 case ControlMode.Tactic:
-                    TacticMouseHit(point, alpha);
+                    TacticMouseHit(point, alpha, type);
                     break;
             }
         }
 
-        private void TacticMouseHit(Point point, double alpha)
+        private void TacticMouseHit(Point point, double alpha, MouseEventType type)
         {
-            Selected = SelectParticle(point);
+            if (MouseEventType.MouseUp == type)
+                Selected = SelectParticle(point);
         }
 
         private void ZoomIn()

@@ -8,35 +8,13 @@ namespace SF.Space
     {
         public MissileRack[] Racks { get; private set; }
         public int TotalCount { get; private set; }
-        public double[] Reloading { get; private set; }
+        public double[] Reloading { get; set; }
 
         public MissileRacksState(MissileRack[] racks)
         {
             Racks = racks;
             TotalCount = Racks.Sum(rack => rack.Count);
-            SetStatePairs(null);
-        }
-
-        public KeyValuePair<int, double>[] GetStatePairs()
-        {
-            var result = Reloading.
-                Select((value, index) => new KeyValuePair<int, double>(index, value)).
-                Where(pair => !MathUtils.NearlyEqual(pair.Value, 0)).
-                ToArray();
-            return result.Length == 0 ? null : result;
-        }
-
-        public void SetStatePairs(KeyValuePair<int, double>[] pairs)
-        {
-            if (Reloading == null || Reloading.Length != TotalCount)
-                Reloading = new double[TotalCount];
-            else
-                for (int i = 0; i < Reloading.Length; i++)
-                    Reloading[i] = 0;
-            if (pairs == null || pairs.Length == 0)
-                return;
-            foreach (var pair in pairs)
-                Reloading[pair.Key] = pair.Value;
+            Reloading = new double[TotalCount];
         }
 
         public void Reload(double dt)
@@ -48,6 +26,16 @@ namespace SF.Space
                     continue;
                 Reloading[i] = Math.Max(r - dt, 0);
             }
+        }
+
+        public bool Fire(int number)
+        {
+            bool failed = number >= TotalCount || !MathUtils.NearlyEqual(Reloading[number], 0);
+            if (failed)
+                return false;
+            var rack = GetRack(number);
+            Reloading[number] = rack.MissileClass.ReloadTime;
+            return true;
         }
 
         public KeyValuePair<MissileRack, double[]>[] GetReloadingTimes()
@@ -64,6 +52,16 @@ namespace SF.Space
                 result[i] = new KeyValuePair<MissileRack, double[]>(rack, reload);
             }
             return result;
+        }
+
+        public MissileRack GetRack(int index)
+        {
+            foreach (var rack in Racks)
+                if (index < rack.Count)
+                    return rack;
+                else
+                    index -= rack.Count;
+            throw new IndexOutOfRangeException("Invalid missile tube number");
         }
     }
 }

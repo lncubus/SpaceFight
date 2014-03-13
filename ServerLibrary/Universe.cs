@@ -94,14 +94,20 @@ namespace SF.ServerLibrary
             {
                 foreach (var ship in Ships.Values)
                     ship.ControlShip = null;
-                foreach (var ship in v.Ships)
+                foreach (var control in v.Ships)
                 {
-                    var s = Ships[ship.Id];
-                    s.ControlShip = ship;
-                    s.Right = new MissileRacksState(s.Class.Right);
-                    s.Left = new MissileRacksState(s.Class.Left);
-                    s.Right.SetStatePairs(ship.Right);
-                    s.Left.SetStatePairs(ship.Left);
+                    var ship = Ships[control.Id];
+                    ship.ControlShip = control;
+                    ship.Right = new MissileRacksState(ship.Class.Right);
+                    ship.Left = new MissileRacksState(ship.Class.Left);
+                    if (control.Right != null && control.Right.Length == ship.Right.Reloading.Length)
+                        ship.Right.Reloading = control.Right;
+                    else
+                        control.Right = ship.Right.Reloading;
+                    if (control.Left != null && control.Left.Length == ship.Left.Reloading.Length)
+                        ship.Left.Reloading = control.Left;
+                    else
+                        control.Left = ship.Left.Reloading;
                 }
 //              Missiles = v.Missiles.ToDictionary(missile => missile.Id);
             }

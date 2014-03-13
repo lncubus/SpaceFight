@@ -63,4 +63,11 @@ namespace SF.Space
         Stars = 0x02,
         Missiles = 0x04,
     };
+
+    public class Launch
+    {
+        public bool isLeft;
+        public int number;
+        public IParticle target;
+    }
 }

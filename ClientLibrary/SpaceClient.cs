@@ -87,5 +87,10 @@ namespace SF.ClientLibrary
         {
             Client.SetThrustTo(value);
         }
+
+        public void Fire(Launch launch)
+        {
+            Client.Fire(launch.isLeft, launch.number, launch.target.Id);
+        }
     }
 }

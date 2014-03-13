@@ -64,14 +64,17 @@ namespace SF.ServerLibrary
             ship.ThrustTo = value;
         }
 
-        public void Fire(int idShipTo, int[] launchers)
+        public void Fire(bool isLeft, int number, int idTarget)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Launch(int idShip)
-        {
-            throw new NotImplementedException();
+            if (ship.Missiles == 0)
+                return;
+            var target = Universe.Ships.ById(idTarget);
+            if (isLeft != ship.IsLeftBoard(target))
+                return;
+            var board = isLeft ? ship.Left : ship.Right;
+            if (!board.Fire(number))
+                return;
+            ship.Missiles--;
         }
     }
 }

@@ -114,5 +114,18 @@
                     ControlShip.ThrustTo = value;
             }
         }
+
+        public int Missiles
+        {
+            get
+            {
+                return ControlShip == null ? 0 : ControlShip.Missiles;
+            }
+            set
+            {
+                if (ControlShip != null)
+                    ControlShip.Missiles = value;
+            }
+        }
     }
 }

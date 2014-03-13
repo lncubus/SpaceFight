@@ -47,8 +47,6 @@ namespace SF.ServerLibrary
         {
             Right.Reload(dt);
             Left.Reload(dt);
-            ControlShip.Right = Right.GetStatePairs();
-            ControlShip.Left = Left.GetStatePairs();
         }
 
         private void InternalMove(double time, double dt)

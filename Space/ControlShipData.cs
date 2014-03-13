@@ -30,10 +30,8 @@ namespace SF.Space
         [DataMember]
         public int Missiles { get; set; }
         [DataMember]
-        [XmlIgnore]
-        public KeyValuePair<int, double>[] Right { get; set; }
+        public double[] Right { get; set; }
         [DataMember]
-        [XmlIgnore]
-        public KeyValuePair<int, double>[] Left { get; set; }
+        public double[] Left { get; set; }
     }
 }

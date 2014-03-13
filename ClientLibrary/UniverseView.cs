@@ -34,8 +34,8 @@ namespace SF.ClientLibrary
                     Ship.Right = new MissileRacksState(Ship.Class.Right);
                 if (Ship.Left == null)
                     Ship.Left = new MissileRacksState(Ship.Class.Left);
-                Ship.Right.SetStatePairs(navi.Right);
-                Ship.Left.SetStatePairs(navi.Left);
+                Ship.Right.Reloading = navi.Right;
+                Ship.Left.Reloading = navi.Left;
             }
         }
 
