@@ -234,7 +234,7 @@ namespace SF.ServerLibrary
                 if (ship.Missiles == 0)
                     return;
                 var target = Ships.ById(idTarget);
-                if (isLeft != ship.IsLeftBoard(target))
+                if (target == null || isLeft != ship.IsLeftBoard(target))
                     return;
                 var board = isLeft ? ship.Left : ship.Right;
                 var missileClass = board.GetRack(number).MissileClass;

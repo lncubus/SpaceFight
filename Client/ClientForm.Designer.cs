@@ -40,6 +40,7 @@ namespace Client
             this.whiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spaceGridControl = new SF.Controls.CompositeControl();
+            this.tacticalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +58,7 @@ namespace Client
             this.btnPalette});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(18, 588);
+            this.toolStrip.Size = new System.Drawing.Size(32, 588);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.TextDirection = System.Windows.Forms.ToolStripTextDirection.Vertical270;
             // 
@@ -65,23 +66,24 @@ namespace Client
             // 
             this.btnMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pilotToolStripMenuItem,
-            this.fireControlToolStripMenuItem});
+            this.fireControlToolStripMenuItem,
+            this.tacticalToolStripMenuItem});
             this.btnMode.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMode.Name = "btnMode";
-            this.btnMode.Size = new System.Drawing.Size(15, 50);
+            this.btnMode.Size = new System.Drawing.Size(29, 50);
             this.btnMode.Text = "Режим";
             // 
             // pilotToolStripMenuItem
             // 
             this.pilotToolStripMenuItem.Name = "pilotToolStripMenuItem";
-            this.pilotToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.pilotToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.pilotToolStripMenuItem.Text = "Пилотирование";
             this.pilotToolStripMenuItem.Click += new System.EventHandler(this.pilotToolStripMenuItem_Click);
             // 
             // fireControlToolStripMenuItem
             // 
             this.fireControlToolStripMenuItem.Name = "fireControlToolStripMenuItem";
-            this.fireControlToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.fireControlToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.fireControlToolStripMenuItem.Text = "Управление огнем";
             this.fireControlToolStripMenuItem.Click += new System.EventHandler(this.fireControlToolStripMenuItem_Click);
             // 
@@ -92,7 +94,7 @@ namespace Client
             this.blackToolStripMenuItem});
             this.btnPalette.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnPalette.Name = "btnPalette";
-            this.btnPalette.Size = new System.Drawing.Size(15, 61);
+            this.btnPalette.Size = new System.Drawing.Size(29, 61);
             this.btnPalette.Text = "Палитра";
             // 
             // whiteToolStripMenuItem
@@ -112,7 +114,7 @@ namespace Client
             // spaceGridControl
             // 
             this.spaceGridControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spaceGridControl.Location = new System.Drawing.Point(18, 0);
+            this.spaceGridControl.Location = new System.Drawing.Point(32, 0);
             this.spaceGridControl.Mode = SF.Space.ControlMode.None;
             this.spaceGridControl.Name = "spaceGridControl";
             this.spaceGridControl.Options = SF.Space.DrawingOptions.None;
@@ -121,11 +123,18 @@ namespace Client
             this.spaceGridControl.Rotation = 0D;
             this.spaceGridControl.Selectable = SF.Space.SelectableObjects.None;
             this.spaceGridControl.Selected = null;
-            this.spaceGridControl.Size = new System.Drawing.Size(776, 588);
+            this.spaceGridControl.Size = new System.Drawing.Size(762, 588);
             this.spaceGridControl.StaticGrid = true;
             this.spaceGridControl.TabIndex = 1;
             this.spaceGridControl.Unit = "км";
             this.spaceGridControl.WorldScale = 2000000D;
+            // 
+            // tacticalToolStripMenuItem
+            // 
+            this.tacticalToolStripMenuItem.Name = "tacticalToolStripMenuItem";
+            this.tacticalToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.tacticalToolStripMenuItem.Text = "Тактическая карта";
+            this.tacticalToolStripMenuItem.Click += new System.EventHandler(this.tacticalToolStripMenuItem_Click);
             // 
             // ClientForm
             // 
@@ -157,6 +166,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem fireControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem whiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tacticalToolStripMenuItem;
     }
 }
 

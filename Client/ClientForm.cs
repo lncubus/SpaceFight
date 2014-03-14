@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SF.ClientLibrary;
 using SF.Controls;
 using SF.Space;
 
@@ -36,6 +37,8 @@ namespace Client
             spaceGridControl.Fired += Fired;
             Controls.Add(labelMessage);
         }
+
+        private bool initialized = false;
 
         private void SetPalette(PaletteDefinition palette)
         {
@@ -71,7 +74,10 @@ namespace Client
                 btnMode.Visible = false;
                 spaceGridControl.Mode = PredefinedControlMode;
             }
+            else
+                spaceGridControl.Mode = ControlMode.Tactic;
             spaceGridControl.Universe = client.Universe;
+            spaceGridControl.WorldScale = client.Universe.Constants.DefaultScale;
             toolStrip.Visible = true;
             spaceGridControl.Visible = true;
             timerUpdate.Enabled = true;
@@ -84,6 +90,12 @@ namespace Client
                 return;
             client.UpdateView();
             var ship = client.Universe.Ship;
+            if (!initialized)
+            {
+                Text = client.Universe.Ship.Name;
+                spaceGridControl.Origin = ship.Position;
+                initialized = true;
+            }
             switch (spaceGridControl.Mode)
             {
                 case ControlMode.Pilot:
@@ -144,6 +156,11 @@ namespace Client
         {
             spaceGridControl.Mode = ControlMode.Gunner;
             spaceGridControl.Polar = true;
+        }
+
+        private void tacticalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            spaceGridControl.Mode = ControlMode.Tactic;
         }
 
         private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
