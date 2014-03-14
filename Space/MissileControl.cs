@@ -30,6 +30,8 @@ namespace SF.Space
         public Ecm Jammer { get; set; }
         [DataMember]
         public double Remaining { get; set; }
+        [DataMember]
+        public double HitDistance { get; set; }
 
         public void Move(double time, double dt)
         {

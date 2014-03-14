@@ -187,9 +187,93 @@ namespace SF.ServerLibrary
                     {
                         missile.Move(t, dt);
                     }
+                    CheckCollisions(t, dt);
                     tPrev = t;
                 }
             }
+        }
+
+        private void CheckCollisions(double t, double dt)
+        {
+            if (dt < MathUtils.Epsilon)
+                return;
+            var ships = Ships.Values.Where(helm => helm.VolatileShip != null).ToArray();
+            var missiles = Missiles.Values.Where(control => control.Arrow != null).ToArray();
+            foreach (var ship in ships)
+                foreach (var star in Stars.Values)
+                    if (Collision(ship, star, dt))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format(
+                            "Корабль {0} врезался в планету {1}.", ship.Name, star.Name));
+                        DestroyShip(ship);
+                    }
+            foreach (var missile in missiles)
+                foreach (Star star in Stars.Values)
+                    if (Collision(missile.Arrow, star, dt))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format(
+                            "Ракета врезалась в планету {0}", star.Name));
+                        missile.Arrow = null;
+                    }
+            foreach (var missile in missiles)
+            {
+                var target = (ServerShip)missile.Target;
+                if (target.VolatileShip == null)
+                {
+                    System.Diagnostics.Trace.WriteLine(string.Format(
+                        "Ракета потеряла цель {0}", target.Name));
+                    missile.Arrow = null;
+                }
+                else if (Collision(missile.Arrow, target, dt, missile.HitDistance))
+                {
+                    System.Diagnostics.Trace.WriteLine(string.Format("Ракета поразила корабль {0}.", target.Name));
+                    var v = missile.Arrow.Speed - target.Speed;
+                    double angle = Math.Abs(target.Heading - v.Argument) % (2 * Math.PI);
+                    if (angle > Math.PI)
+                        angle = Math.PI - angle;
+                    var throat = (Math.PI - angle) < Constants.DefaultThroatAngle / 2;
+                    var skirt = angle < Constants.DefaultSkirtAngle / 2;
+                    System.Diagnostics.Trace.WriteLine(string.Format("Угол {0}{1}.", MathUtils.ToDegreesInt(angle), throat ? " горло" : skirt ? " юбка" : string.Empty));
+                    double severity;
+                    if (throat || skirt)
+                        severity = ThroatDamage();
+                    else if (Random.NextDouble() <= target.Board())
+                        severity = BoardDamage();
+                    else
+                        severity = 0;
+                    if (severity > 0)
+                        DamageShip(target, severity);
+                    missile.Arrow = null;
+                }
+            }
+            foreach (var one in ships)
+                foreach (var two in ships)
+                    if (one != two && Collision(one, two, dt))
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
+                        DamageShip(one, CollisionDamage());
+                        DamageShip(two, CollisionDamage());
+                    }
+        }
+
+        private double BoardDamage()
+        {
+            return Random.NextDouble();
+        }
+
+        private double ThroatDamage()
+        {
+            return 2*Random.NextDouble();
+        }
+
+        private double CollisionDamage()
+        {
+            return 4*Random.NextDouble();
+        }
+
+        private void DestroyShip(ServerShip ship)
+        {
+            ship.VolatileShip = null;
         }
 
         public static void InternalTest()
@@ -260,10 +344,30 @@ namespace SF.ServerLibrary
                     Jammer = jammer,
                     Thrust = missileClass.Acceleration,
                     Remaining = missileClass.FlyTime,
+                    HitDistance = missileClass.HitDistance,
                     Started = Time.TotalSeconds,
                 };
                 Missiles.Add(id, control);
             }
+        }
+
+        private bool Collision(IParticle missile, IParticle target, double dt, double crossRadius = 0)
+        {
+            var S = missile.Position - target.Position;
+            var V = missile.Speed - target.Speed;
+            // Collision at t = 0
+            if (S.Length <= crossRadius)
+                return true;
+            var Vx2Vy2 = V.SquareLength;
+            var VxSxVySy = V * S;
+            // No collision within time interval
+            if (Vx2Vy2 * dt <= Math.Abs(VxSxVySy))
+                return false;
+            // Potential collision time
+            var t = -VxSxVySy / Vx2Vy2;
+            var s = S + V * t;
+            // Was that near enough?
+            return s.Length <= crossRadius;
         }
 
         private ControlsViewData GetControlsData()
