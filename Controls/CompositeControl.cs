@@ -165,9 +165,9 @@ namespace SF.Controls
                     CompassMouseHit(point, alpha);
                     break;
                 case ControlMode.Gunner:
-                    if (Selected == null)
+                    if (Selected == null || Universe.Ship == Selected)
                         TacticMouseHit(point, alpha, type);
-                    else if (!MissileControlMouseHit(point, alpha))
+                    else if (!MissileControlMouseHit(point))
                         TacticMouseHit(point, alpha, type);
                     break;
                 case ControlMode.Tactic:

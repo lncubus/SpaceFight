@@ -64,10 +64,19 @@ namespace SF.Space
         Missiles = 0x04,
     };
 
+    public enum Ecm
+    {
+        None = 0,
+        Vertical = 1,
+        Horizontal = 2,
+        Round = 4,
+    }
+    
     public class Launch
     {
         public bool isLeft;
         public int number;
         public IParticle target;
+        public Ecm jammer;
     }
 }

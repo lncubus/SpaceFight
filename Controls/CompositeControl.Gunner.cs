@@ -126,7 +126,7 @@ namespace SF.Controls
             }
         }
 
-        private bool MissileControlMouseHit(Point point, double alpha)
+        private bool MissileControlMouseHit(Point point)
         {
             if (CheckTubes(false, point))
                 return true;

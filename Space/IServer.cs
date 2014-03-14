@@ -29,6 +29,6 @@ namespace SF.Space
         void SetThrustTo(double value);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void Fire(bool isLeft, int number, int idTarget);
+        void Fire(bool isLeft, int number, int idTarget, Ecm jammer);
     }
 }

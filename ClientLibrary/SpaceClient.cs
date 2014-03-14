@@ -90,7 +90,7 @@ namespace SF.ClientLibrary
 
         public void Fire(Launch launch)
         {
-            Client.Fire(launch.isLeft, launch.number, launch.target.Id);
+            Client.Fire(launch.isLeft, launch.number, launch.target.Id, launch.jammer);
         }
     }
 }

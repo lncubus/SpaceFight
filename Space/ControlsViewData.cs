@@ -10,8 +10,8 @@ namespace SF.Space
         [XmlArrayItem("Ship")]
         public ControlShipData[] Ships { get; set; }
 
-        //[DataMember]
-        //[XmlArrayItem("Missile")]
-        //public ControlMissileData[] Missiles { get; set; }
+        [DataMember]
+        [XmlArrayItem("Missile")]
+        public MissileControl[] Missiles { get; set; }
     }
 }

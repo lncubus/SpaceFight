@@ -13,6 +13,7 @@ namespace SF.ServerLibrary
         private static readonly Random Random = new Random();
         private static readonly SynchronizationContext Context = SynchronizationContext.Current;
         private object m_locker = new object();
+        private int IdNext = 10001;
 
         public const int SmallDelay = 100;
 
@@ -27,7 +28,7 @@ namespace SF.ServerLibrary
         public IDictionary<int, ShipClass> ShipClasses { get; private set; }
         public IDictionary<int, MissileClass> MissileClasses { get; private set; }
         public IDictionary<int, ServerShip> Ships { get; private set; }
-        public IDictionary<int, Missile> Missiles { get; private set; }
+        public IDictionary<int, MissileControl> Missiles { get; private set; }
 
         private Universe()
         {
@@ -109,7 +110,13 @@ namespace SF.ServerLibrary
                     else
                         control.Left = ship.Left.Reloading;
                 }
-//              Missiles = v.Missiles.ToDictionary(missile => missile.Id);
+                Missiles = v.Missiles.ToDictionary(missile => missile.Id);
+                if (Missiles.Any())
+                {
+                    int idMax = Missiles.Keys.Max() + 1;
+                    if (idMax > IdNext)
+                        IdNext = idMax;
+                }
             }
         }
 
@@ -119,14 +126,20 @@ namespace SF.ServerLibrary
             {
                 foreach (var ship in Ships.Values)
                     ship.VolatileShip = null;
-                foreach (var ship in v.Ships)
+                foreach (var s in v.Ships)
                 {
-                    var s = Ships[ship.Id];
-                    s.VolatileShip = ship;
-                    if (s.ControlShip == null)
-                        s.ControlShip = new ControlShipData(ship, s.Class);
+                    var ship = Ships[s.Id];
+                    ship.VolatileShip = s;
+                    if (ship.ControlShip == null)
+                        ship.ControlShip = new ControlShipData(s, ship.Class);
                 }
-                Missiles = v.Missiles.ToDictionary(missile => missile.Id);
+                foreach (var m in v.Missiles)
+                {
+                    var control = Missiles[m.Id];
+                    control.Arrow = m;
+                    control.Origin = Ships[control.IdOrigin];
+                    control.Target = Ships[control.IdTarget];
+                }
             }
         }
 
@@ -205,8 +218,43 @@ namespace SF.ServerLibrary
                 {
                     Time = this.Time,
                     Ships = this.Ships.Values.Select(ship => ship.VolatileShip).ToArray(),
-                    Missiles = this.Missiles.Values.ToArray(),
+                    Missiles = this.Missiles.Values.Select(control => control.Arrow).Where(missile => missile != null).ToArray(),
                 };
+            }
+        }
+
+        public void Fire(ServerShip ship, bool isLeft, int number, int idTarget, Ecm jammer)
+        {
+            lock (m_locker)
+            {
+                if (ship.Missiles == 0)
+                    return;
+                var target = Ships.ById(idTarget);
+                if (isLeft != ship.IsLeftBoard(target))
+                    return;
+                var board = isLeft ? ship.Left : ship.Right;
+                if (!board.Fire(number))
+                    return;
+                ship.Missiles--;
+                int id = Interlocked.Increment(ref IdNext);
+                var missile = new Missile
+                {
+                    Id = id,
+                    Position = ship.Position,
+                    Speed = ship.Speed,
+                    Acceleration = ship.Acceleration,
+                };
+                var control = new MissileControl
+                {
+                    Id = id,
+                    Arrow = missile,
+                    Origin = ship,
+                    Target = target,
+                    IdOrigin = ship.Id,
+                    IdTarget = target.Id,
+                    Jammer = jammer,
+                };
+                Missiles.Add(id, control);
             }
         }
 
@@ -217,6 +265,7 @@ namespace SF.ServerLibrary
                 return new ControlsViewData
                 {
                     Ships = Ships.Values.Select(ship => ship.ControlShip).ToArray(),
+                    Missiles = Missiles.Values.ToArray(),
                 };
             }
         }

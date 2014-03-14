@@ -64,17 +64,9 @@ namespace SF.ServerLibrary
             ship.ThrustTo = value;
         }
 
-        public void Fire(bool isLeft, int number, int idTarget)
+        public void Fire(bool isLeft, int number, int idTarget, Ecm jammer)
         {
-            if (ship.Missiles == 0)
-                return;
-            var target = Universe.Ships.ById(idTarget);
-            if (isLeft != ship.IsLeftBoard(target))
-                return;
-            var board = isLeft ? ship.Left : ship.Right;
-            if (!board.Fire(number))
-                return;
-            ship.Missiles--;
+            Universe.Fire(ship, isLeft, number, idTarget, jammer);
         }
     }
 }
