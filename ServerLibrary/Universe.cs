@@ -183,6 +183,10 @@ namespace SF.ServerLibrary
                         ship.Move(t, dt);
                         ship.Reload(dt);
                     }
+                    foreach (var missile in Missiles.Values)
+                    {
+                        missile.Move(t, dt);
+                    }
                     tPrev = t;
                 }
             }
@@ -233,6 +237,7 @@ namespace SF.ServerLibrary
                 if (isLeft != ship.IsLeftBoard(target))
                     return;
                 var board = isLeft ? ship.Left : ship.Right;
+                var missileClass = board.GetRack(number).MissileClass;
                 if (!board.Fire(number))
                     return;
                 ship.Missiles--;
@@ -253,6 +258,9 @@ namespace SF.ServerLibrary
                     IdOrigin = ship.Id,
                     IdTarget = target.Id,
                     Jammer = jammer,
+                    Thrust = missileClass.Acceleration,
+                    Remaining = missileClass.FlyTime,
+                    Started = Time.TotalSeconds,
                 };
                 Missiles.Add(id, control);
             }
