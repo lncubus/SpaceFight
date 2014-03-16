@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace SF.Space
 {
@@ -33,5 +31,13 @@ namespace SF.Space
         public double[] Right { get; set; }
         [DataMember]
         public double[] Left { get; set; }
+        [DataMember]
+        public double EngineDamage { get; set; }
+        [DataMember]
+        public double NavigationDamage { get; set; }
+        [DataMember]
+        public double AttackDamage { get; set; }
+        [DataMember]
+        public double DefenseDamage { get; set; }
     }
 }

@@ -201,7 +201,7 @@ namespace SF.ServerLibrary
             var missiles = Missiles.Values.Where(control => control.Arrow != null).ToArray();
             foreach (var ship in ships)
                 foreach (var star in Stars.Values)
-                    if (Collision(ship, star, dt))
+                    if (Collision(ship, star, dt, star.Radius + ship.Class.Wedge))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
                             "Корабль {0} врезался в планету {1}.", ship.Name, star.Name));
@@ -209,7 +209,7 @@ namespace SF.ServerLibrary
                     }
             foreach (var missile in missiles)
                 foreach (Star star in Stars.Values)
-                    if (Collision(missile.Arrow, star, dt))
+                    if (Collision(missile.Arrow, star, dt, star.Radius))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format(
                             "Ракета врезалась в планету {0}", star.Name));
@@ -248,7 +248,7 @@ namespace SF.ServerLibrary
             }
             foreach (var one in ships)
                 foreach (var two in ships)
-                    if (one != two && Collision(one, two, dt))
+                    if (one != two && Collision(one, two, dt, one.Class.Wedge + two.Class.Wedge))
                     {
                         System.Diagnostics.Trace.WriteLine(string.Format("Корабли {0} и {1} столкниулись.", one.Name, two.Name));
                         DamageShip(one, CollisionDamage());
@@ -274,6 +274,27 @@ namespace SF.ServerLibrary
         private void DestroyShip(ServerShip ship)
         {
             ship.VolatileShip = null;
+        }
+
+        private void DamageShip(ServerShip ship, double damage)
+        {
+            var damages = new double[]
+            {
+                ship.ControlShip.EngineDamage,
+                ship.ControlShip.NavigationDamage,
+                ship.ControlShip.AttackDamage,
+                ship.ControlShip.DefenseDamage,
+            };
+            for (int i = 0; i < damages.Length; i++)
+            {
+                damages[i] = Math.Min(1, damages[i] + damage*Random.NextDouble());
+            }
+            ship.ControlShip.EngineDamage = damages[0];
+            ship.ControlShip.NavigationDamage = damages[1];
+            ship.ControlShip.AttackDamage = damages[2];
+            ship.ControlShip.DefenseDamage = damages[3];
+            ship.VolatileShip.HealthRate = 1 - damages.Sum() / damages.Length;
+            ship.UpdateHealth(Time.TotalSeconds);
         }
 
         public static void InternalTest()

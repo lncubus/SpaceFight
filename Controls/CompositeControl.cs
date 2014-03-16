@@ -139,6 +139,25 @@ namespace SF.Controls
                     DrawRacks(g);
                     break;
             }
+            if (Universe.Ship.ControlShip != null)
+            {
+                var c = Universe.Ship.ControlShip;
+                var message = string.Format(
+                    "Повреждения\nДвигатель:\t{0}%\nУправление:\t{1}%\nРакеты:\t\t{2}%\nЗащита:\t\t{3}%",
+                    (int)(100*c.EngineDamage),
+                    (int)(100*c.NavigationDamage),
+                    (int)(100*c.AttackDamage),
+                    (int)(100*c.DefenseDamage)
+                    );
+                var size = g.MeasureString(message, Font);
+                var rect = new RectangleF
+                {
+                    X = (float) (m_size/24.0),
+                    Y = (float) (m_size - size.Height - m_size/24.0),
+                    Size = size,
+                };
+                g.DrawString(message, Font, Palette.BlackInk, rect);
+            }
         }
 
         private void DrawScale(Graphics g)

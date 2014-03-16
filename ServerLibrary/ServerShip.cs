@@ -42,7 +42,6 @@ namespace SF.ServerLibrary
             InternalMove(time, dt);
         }
 
-
         public void Reload(double dt)
         {
             Right.Reload(dt);
@@ -112,6 +111,14 @@ namespace SF.ServerLibrary
             v0 = Speed;
             t0 = time;
             initialized = true;
+        }
+
+        public void UpdateHealth(double time)
+        {
+            roll.Respeed(time, 2*Math.PI/Class.RoundRollTime*(1-ControlShip.NavigationDamage));
+            heading.Respeed(time, 2*Math.PI/Class.FullTurnTime*(1 - ControlShip.NavigationDamage));
+            thrust.Respeed(time,
+                Class.MaximumAcceleration/Class.FullAccelerationTime*(1 - ControlShip.EngineDamage));
         }
     }
 }
