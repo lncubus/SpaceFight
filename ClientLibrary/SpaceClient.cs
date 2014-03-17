@@ -10,7 +10,7 @@ namespace SF.ClientLibrary
     public class SpaceClient : IDisposable
     {
         public static string Password = string.Empty;
-        public const int Version = 0x0023;
+        public const int Version = 0x0024;
         private readonly IServer Client;
         private readonly ChannelFactory<IServer> Factory;
         public UniverseView Universe { get; private set; }

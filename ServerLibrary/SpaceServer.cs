@@ -10,7 +10,7 @@ namespace SF.ServerLibrary
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class SpaceServer : IServer
     {
-        public const int Version = 0x0023; 
+        public const int Version = 0x0024; 
         public static Universe Universe;
         private string Password;
         private ServerShip ship;
