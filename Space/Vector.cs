@@ -66,6 +66,7 @@ namespace SF.Space
                 // this order, see Direction
                 if (Length <= MathUtils.Epsilon)
                     return 0;
+#warning Invalid argument implementation, Math.Atan2 arguments order changed
                 return Math.Atan2(X, Y);
             }
         }
